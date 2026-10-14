@@ -106,7 +106,7 @@ const dagtijd=s=>new Date(s).toLocaleString("nl-NL",{weekday:"short",hour:"2-dig
 const geleden=s=>{if(!s)return "nooit";const m=Math.round((Date.now()-new Date(s))/60000);return m<1?"zojuist":m<60?m+" min geleden":m<1440?Math.round(m/60)+" uur geleden":Math.round(m/1440)+" dagen geleden"};
 let gezien=new Set();
 function teken(d){
-  const bron=Object.values(d.bronnen||{});const onb=bron.filter(b=>b.status!=="GEMETEN");
+  const bron=Object.entries(d.bronnen||{}).filter(([k])=>k!=="prioriteiten").map(([,v])=>v);const onb=bron.filter(b=>b.status!=="GEMETEN");
   const leeftijd=(Date.now()-new Date(d.gemeten_om))/60000;
   document.getElementById("bronregel").textContent=`gemeten ${hhmm(d.gemeten_om)} · ${bron.length-onb.length}/${bron.length} bronnen gemeten`;
   const bi=d.burnin||{};const tel=d.telling||{};
@@ -134,7 +134,8 @@ function teken(d){
     const re=el("span","reacties",p.reacties==null?"":(p.reacties+" reactie"+(p.reacties===1?"":"s")+(p.bijgewerkt?" · "+geleden(p.bijgewerkt):"")));
     const a=el("a","knop","Reageer");a.href=p.url;a.target="_blank";a.rel="noopener";
     const links=el("span");links.append(ti," ",pil);r.append(el("span","code",p.code),links,re,a);pr.append(r)}
-  document.getElementById("prio-sam").textContent=`${(d.prioriteiten||[]).length} prioriteiten · ${bijJou} bij jou of in overleg · reageren via het privé-issue (alleen jij)`;
+  const pb=(d.bronnen||{}).prioriteiten;const pnoot=pb&&pb.status!=="GEMETEN"?" · status en reacties nog niet leesbaar (leessleutel mist toegang tot projectenregister)":"";
+  document.getElementById("prio-sam").textContent=`${(d.prioriteiten||[]).length} prioriteiten · ${bijJou} bij jou of in overleg · reageren via het privé-issue (alleen jij)${pnoot}`;
   const m=document.getElementById("meter");m.replaceChildren();let actief=0,bezig=0;
   for(const a of d.accounts||[]){
     const k=el("div","acc"+(a.bezig?" bezig":""));const n=el("div","naam");n.append(el("span",null,a.naam));
