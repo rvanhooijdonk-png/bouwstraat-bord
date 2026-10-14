@@ -140,8 +140,11 @@ def main():
     tel_tijd = tijd(stand.get("gemeten_om")) if isinstance(stand, dict) and isinstance(stand.get("gemeten_om"), str) else None
     venster = stand.get("venster") if isinstance(stand, dict) and isinstance(stand.get("venster"), dict) else {}
     venster_van = tijd(venster.get("van")) if isinstance(venster.get("van"), str) else None
+    venster_tot = tijd(venster.get("tot")) if isinstance(venster.get("tot"), str) else None
     telling_geldig = (isinstance(stand, dict) and stand.get("volledig") is True and tel_tijd is not None
-                      and NU - tel_tijd <= timedelta(minutes=30) and venster_van is not None and venster_van <= t0)
+                      and timedelta(0) <= NU - tel_tijd <= timedelta(minutes=30)
+                      and venster_van is not None and venster_tot is not None
+                      and venster_van <= t0 <= venster_tot and venster_van <= venster_tot)
     niets_lopend = (telling_geldig and u.get("bron", {}).get("status") == "GEMETEN" and isinstance(u.get("lopend"), int)
                     and not isinstance(u.get("lopend"), bool) and u.get("lopend") == 0)
     orders, ticker = [], []
@@ -186,7 +189,7 @@ def main():
         elif review.get("state") == "pending" or tests.get("state") == "success":
             fase, uitkomst = "beoordeling", None
         elif not recent:
-            fase, uitkomst = "onbekend", "onbekend"
+            fase, uitkomst = "open, stand onbekend (ouder dan 3 dagen)", None  # blijft zichtbaar bij Lopend (Astra R6)
         else:
             fase, uitkomst = "bouw", None
         if uitkomst is None and geopend < NU - timedelta(minutes=90):
@@ -250,7 +253,7 @@ def main():
                                           if isinstance(u.get(k), int) and not isinstance(u.get(k), bool)}}
     json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": telling_publiek, "orders": orders,
                "accounts": accounts, "ticker": ticker[:150], "burnin": burnin,
-               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"], "werkvoorraad": CONFIG.get("werkvoorraad", [])},
+               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"], "werkvoorraad": CONFIG.get("werkvoorraad", []), "content": CONFIG.get("content", {})},
               sys.stdout, ensure_ascii=False, indent=1)
 
 

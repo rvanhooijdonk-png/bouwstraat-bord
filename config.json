@@ -476,289 +476,878 @@
       "spoor": "Bouwstraat",
       "status": "loopt",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "einde 01:17; eindmeting door de mini",
+      "klaar_als": "24 uur, 10 echte uitkomsten, 0 ingrepen"
     },
     {
       "titel": "Bouwstraat-bord: publieke velden dicht, uitkomsten alleen eindstanden",
       "spoor": "Bouwstraat",
       "status": "bij Astra",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "Astra-hertoets, daarna live zetten",
+      "klaar_als": "Astra GO en live pagina gecontroleerd"
     },
     {
       "titel": "Modellenradar per bron + wekelijkse controle (maandag)",
       "spoor": "Modellenvloot",
       "status": "afgeleverd",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "—",
+      "klaar_als": "wekelijkse run draait"
     },
     {
       "titel": "Modellenvloot: Opus 5.5, Sonnet 5.5, Haiku 5.5 (nog zonder rol)",
       "spoor": "Modellenvloot",
       "status": "afgeleverd",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "kwaliteit toetsen op eigen taken",
+      "klaar_als": "rol toegekend na toetsing"
     },
     {
       "titel": "Radar: open punten Astra (Markdown escapen, melding herhaalbaar)",
       "spoor": "Modellenvloot",
       "status": "gepland",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "Markdown escapen, melding herhaalbaar",
+      "klaar_als": "Astra GO"
     },
     {
       "titel": "Gemini-reviews werken weer",
       "spoor": "Stackbreed",
       "status": "afgeleverd",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "—",
+      "klaar_als": "werkt"
     },
     {
       "titel": "Gemini-script fail-closed (COA #82)",
       "spoor": "Stackbreed",
       "status": "bij Astra",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "CI-run en één echte review",
+      "klaar_als": "gemerged na Astra GO"
     },
     {
       "titel": "Controlevolgorde: zelf → Astra → Gemini (OB-0950)",
       "spoor": "Stackbreed",
       "status": "afgeleverd",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "—",
+      "klaar_als": "vastgelegd"
     },
     {
       "titel": "Beehiiv-API aangesloten (alleen lezen)",
       "spoor": "Nieuwsbrief",
       "status": "afgeleverd",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "—",
+      "klaar_als": "leest"
     },
     {
       "titel": "Proef: één Beehiiv-concept aanmaken (niet versturen)",
       "spoor": "Nieuwsbrief",
       "status": "wacht op jou",
       "wie": "jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md",
+      "volgende": "jouw akkoord",
+      "klaar_als": "concept zichtbaar in Beehiiv, niet verstuurd"
     },
     {
       "titel": "P0: eerste long-read + nieuwsbrief via het publishing board",
       "spoor": "Long-read",
       "status": "gepland",
       "wie": "stack + jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md",
+      "volgende": "stijltraining eerst",
+      "klaar_als": "concept in WordPress en Beehiiv, jouw akkoord"
     },
     {
       "titel": "Schrijfstijl-training (blogs en nieuwsbrieven, gouden set, blinde toets)",
       "spoor": "Long-read",
       "status": "bij Astra",
       "wie": "stack + jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-schrijfstijl/plannen/VOORSTEL_SCHRIJFSTIJL_TRAINING_V1.md"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-schrijfstijl/plannen/VOORSTEL_SCHRIJFSTIJL_TRAINING_V1.md",
+      "volgende": "corpusregister, gouden set",
+      "klaar_als": "blinde toets gehaald per taal en vorm"
     },
     {
       "titel": "Artikelscript: nieuw artikel als WordPress-concept (weblog #1)",
       "spoor": "Long-read",
       "status": "bij Astra",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "extra WordPress-proef",
+      "klaar_als": "gemerged na Astra GO"
     },
     {
       "titel": "Publishing board (PIPELINE-OUTPUT): ontwerp",
       "spoor": "Publishing board",
       "status": "bij Astra",
       "wie": "stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/ontwerp-publishing-board/plannen/ONTWERP_PUBLISHING_BOARD_V1.md"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/ontwerp-publishing-board/plannen/ONTWERP_PUBLISHING_BOARD_V1.md",
+      "volgende": "Astra-hertoets",
+      "klaar_als": "ontwerp vrijgegeven"
     },
     {
       "titel": "Publishing board bouwen (opdracht, productie, voorstellen, feedback, publiceren, kalender)",
       "spoor": "Publishing board",
       "status": "gepland",
       "wie": "autocoding",
-      "link": null
+      "link": null,
+      "volgende": "na het ontwerp, via autocoding",
+      "klaar_als": "stappen 1–6 werken"
     },
     {
       "titel": "Kopbeelden per artikel met Gemini (huisstijl site)",
       "spoor": "Publishing board",
       "status": "gepland",
       "wie": "autocoding",
-      "link": null
+      "link": null,
+      "volgende": "akkoord per batch (kosten)",
+      "klaar_als": "beeld per artikel in huisstijl"
     },
     {
       "titel": "Social: alleen winnende posts, extern leren, tagging",
       "spoor": "Social",
       "status": "bij Astra",
       "wie": "stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/plannen/VOORSTEL_SOCIAL_WINNERS_V1.md"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/plannen/VOORSTEL_SOCIAL_WINNERS_V1.md",
+      "volgende": "Astra-hertoets",
+      "klaar_als": "voorstel vrijgegeven"
     },
     {
       "titel": "Social: keuze publicatie- en meettool (maandkosten)",
       "spoor": "Social",
       "status": "wacht op jou",
       "wie": "jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/kennis/social-onderzoek-2026-10.md"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/kennis/social-onderzoek-2026-10.md",
+      "volgende": "matrix per account met totaalprijs",
+      "klaar_als": "jouw keuze"
     },
     {
       "titel": "Social: extern corpus futuristen, patronenboek, winnaarstoets",
       "spoor": "Social",
       "status": "gepland",
       "wie": "autocoding",
-      "link": null
+      "link": null,
+      "volgende": "lijst futuristen labelen",
+      "klaar_als": "patronenboek klaar"
     },
     {
       "titel": "SEO/GEO per artikel + groeiplan content",
       "spoor": "Weblog",
       "status": "bij Astra",
       "wie": "stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-seo-geo/plannen/VOORSTEL_SEO_GEO_PER_ARTIKEL_V1.md"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-seo-geo/plannen/VOORSTEL_SEO_GEO_PER_ARTIKEL_V1.md",
+      "volgende": "Astra-hertoets",
+      "klaar_als": "voorstel vrijgegeven"
     },
     {
       "titel": "Groot onderhoudsplan weblog (9 sporen)",
       "spoor": "Weblog",
       "status": "bij Astra",
       "wie": "stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-seo-geo/plannen/ONDERHOUDSPLAN_WEBLOG_V1.md"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-seo-geo/plannen/ONDERHOUDSPLAN_WEBLOG_V1.md",
+      "volgende": "akkoorden per batch",
+      "klaar_als": "sporen afgewerkt"
     },
     {
       "titel": "Weblog spoor 2: cookiebanner, één GA4, nulmeting, Search Console-API",
       "spoor": "Weblog",
       "status": "wacht op jou",
       "wie": "jij",
-      "link": null
+      "link": null,
+      "volgende": "jouw keuze cookiebanner",
+      "klaar_als": "één betrouwbare meting"
     },
     {
       "titel": "Weblog spoor 3: artikelonderhoud (titels, alt-teksten, dunne en vertaalde artikelen)",
       "spoor": "Weblog",
       "status": "gepland",
       "wie": "autocoding",
-      "link": null
+      "link": null,
+      "volgende": "batches voorbereiden",
+      "klaar_als": "lijsten leeg"
     },
     {
       "titel": "Weblog spoor 4–6: SEO-techniek, interne links en hubs, GEO-meting",
       "spoor": "Weblog",
       "status": "gepland",
       "wie": "autocoding",
-      "link": null
+      "link": null,
+      "volgende": "na spoor 2",
+      "klaar_als": "hubs, links en GEO-meting lopen"
     },
     {
       "titel": "Weblog spoor 7–8: nieuwe content, hoofdsite, reputatie, campagnes",
       "spoor": "Weblog",
       "status": "gepland",
       "wie": "stack + jij",
-      "link": null
+      "link": null,
+      "volgende": "na stijltraining en nieuwe site",
+      "klaar_als": "eerste nieuwe artikelen live"
     },
     {
       "titel": "research-intelligence fase 4 (bewijscontrole) in PIPELINE-INPUT",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "autocoding",
-      "link": null
+      "link": null,
+      "volgende": "bouworder",
+      "klaar_als": "claims gecontroleerd door andere modelfamilie"
     },
     {
       "titel": "Series: YouTube en podcasts volgen + futuristen-video's automatisch analyseren",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "autocoding",
-      "link": null
+      "link": null,
+      "volgende": "handover opslaan, lijst series",
+      "klaar_als": "nieuwe afleveringen komen vanzelf binnen"
     },
     {
       "titel": "Projectenregister en bord geordend",
       "spoor": "Overzicht",
       "status": "afgeleverd",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "—",
+      "klaar_als": "—"
     },
     {
       "titel": "Repo's doorzoeken op taken die nog niet in het register staan",
       "spoor": "Overzicht",
       "status": "afgeleverd",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "—",
+      "klaar_als": "vondsten in het register"
     },
     {
       "titel": "PIPELINE-INPUT-scans: open melding nalopen",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "melding nalopen",
+      "klaar_als": "scans draaien weer"
     },
     {
       "titel": "COA: taken in gewone taal, testharnas, betrouwbaarheid, open PR's",
       "spoor": "Assistent",
       "status": "gepland",
       "wie": "autocoding",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "na de vrijgave",
+      "klaar_als": "Telegram werkt, taken in gewone taal"
     },
     {
       "titel": "PIPELINE-INPUT: bronnen uit YouTube, TikTok en Reddit, periodieke bron-audit",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "autocoding",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "onderzoek kanalen",
+      "klaar_als": "nieuwe bronnen in bronnen.yaml"
     },
     {
       "titel": "Mail-agent: follow-up-concepten, afzender-mapping, opruiming",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "autocoding",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "omleggen naar triage",
+      "klaar_als": "nieuwsbrieven in triage"
     },
     {
       "titel": "Keynotes: collectie ordenen, slides-analyse, ontdubbeling archief",
       "spoor": "Presentaties",
       "status": "gepland",
       "wie": "stack + jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "canonieke molen vaststellen",
+      "klaar_als": "archief ontdubbeld, slides geanalyseerd"
     },
     {
       "titel": "Takenhub: audit- en verbeterprogramma (roadmap, audits, review)",
       "spoor": "Office",
       "status": "gepland",
       "wie": "autocoding",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "audit doornemen",
+      "klaar_als": "reset afgerond (P4)"
     },
     {
       "titel": "Site-agents: eerste ronde uit het bestaande plan, na de burn-in",
       "spoor": "Websites",
       "status": "wacht op jou",
       "wie": "jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "jouw keuze uit het plan",
+      "klaar_als": "eerste ronde live"
     },
     {
       "titel": "Markten en onderzoek: algo-trading-order, NQ-programma (wacht op data)",
       "spoor": "Markten en onderzoek",
       "status": "later",
       "wie": "jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "jouw toelichting",
+      "klaar_als": "—"
     },
     {
       "titel": "Modelpool: goedkope builder en handover (command-canon)",
       "spoor": "Modellenvloot",
       "status": "gepland",
       "wie": "autocoding",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "issues doornemen",
+      "klaar_als": "afgehandeld"
     },
     {
       "titel": "Series: bestaande media-hub als basis gebruiken",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "autocoding",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
+      "volgende": "koppelen aan PIPELINE-INPUT",
+      "klaar_als": "series zichtbaar in triage"
     },
     {
-      "titel": "Granola-koppeling uitwerken",
+      "titel": "Control-center: praten met je stack (P2)",
+      "spoor": "Stackbreed",
+      "status": "gepland",
+      "wie": "stack",
+      "link": null,
+      "volgende": "hangt af van COA",
+      "klaar_als": "je kunt de stack in gewone taal aansturen"
+    },
+    {
+      "titel": "Websites: nieuwe hoofdsite afmaken (P3)",
+      "spoor": "Websites",
+      "status": "loopt",
+      "wie": "stack (website-sessie)",
+      "link": null,
+      "volgende": "teksten en beelden op de werktak",
+      "klaar_als": "nieuwe site live met redirects"
+    },
+    {
+      "titel": "Takenhub resetten (P4)",
+      "spoor": "Office",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": null,
+      "volgende": "audit doornemen",
+      "klaar_als": "takenhub voelt goed"
+    },
+    {
+      "titel": "PIPELINE-INPUT doornemen + leeftijdscontrole (P5)",
+      "spoor": "Content-keten",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": null,
+      "volgende": "jij neemt de laatste versie door",
+      "klaar_als": "oud-maar-relevant gescheiden van oud"
+    },
+    {
+      "titel": "Presentaties-archief ordenen (P9)",
+      "spoor": "Presentaties",
+      "status": "gepland",
+      "wie": "stack",
+      "link": null,
+      "volgende": "ontdubbeling na meting",
+      "klaar_als": "één canoniek archief"
+    },
+    {
+      "titel": "Keynote-creator blijft leren (P10)",
+      "spoor": "Presentaties",
+      "status": "loopt",
+      "wie": "stack",
+      "link": null,
+      "volgende": "leert van goedgekeurde slides",
+      "klaar_als": "doorlopend"
+    },
+    {
+      "titel": "Trechter elke keer leeg (P11)",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "stack",
-      "link": null
+      "link": null,
+      "volgende": "ronde-routine",
+      "klaar_als": "na elke ronde leeg"
     },
     {
-      "titel": "14 taken met beveiligings-, back-up- of outreachdetails (alleen in het privé-register)",
+      "titel": "Content-input en -output: dit overzicht onderhouden",
       "spoor": "Overzicht",
+      "status": "loopt",
+      "wie": "stack",
+      "link": null,
+      "volgende": "bij elke nieuwe bron of elk nieuw middel bijwerken",
+      "klaar_als": "overzicht compleet"
+    },
+    {
+      "titel": "Back-up office-database: open melding nalopen",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "melding nalopen en werking meten",
+      "klaar_als": "back-up draait en is getest"
+    },
+    {
+      "titel": "Website: open beveiligingsmelding bij formulieren nalopen",
+      "spoor": "Websites",
+      "status": "gepland",
+      "wie": "stack (website-sessie)",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "melding nalopen",
+      "klaar_als": "opgelost en getest"
+    },
+    {
+      "titel": "Beveiliging weblog-server: updates, inlogbeleid, 2FA beheerders",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "jij + stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "onderhoudsvenster kiezen",
+      "klaar_als": "updates gedaan, inlogbeleid en 2FA op orde"
+    },
+    {
+      "titel": "Oude toegangssleutels zonder vervaldatum opruimen",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "jij + stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "lijst doornemen (alleen namen)",
+      "klaar_als": "alleen sleutels met vervaldatum over"
+    },
+    {
+      "titel": "Back-ups buiten huis + versleuteling + herstelproef",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "jij + stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "nieuwe opslagsleutel aanmaken (jij)",
+      "klaar_als": "herstel aantoonbaar gelukt"
+    },
+    {
+      "titel": "Herstelproef van alle back-ups (nooit bewezen)",
+      "spoor": "Beveiliging en back-up",
       "status": "gepland",
       "wie": "stack + jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "plan doornemen",
+      "klaar_als": "herstel bewezen"
+    },
+    {
+      "titel": "Driftmeldingen stack-control afhandelen",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "meldingen doornemen",
+      "klaar_als": "geen open drift"
+    },
+    {
+      "titel": "Beveiligingsring rond de hele stack (P1)",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "overzicht sleutels (namen) en toegangsmatrix",
+      "klaar_als": "wekelijks beveiligingsrapport"
+    },
+    {
+      "titel": "JevMedia uitfaseren (oude beheerders en plugins)",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "jouw besluit",
+      "klaar_als": "alleen bekende beheerders over"
+    },
+    {
+      "titel": "Telefoonmelding bij storing",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "dienst kiezen",
+      "klaar_als": "melding komt binnen bij uitval"
+    },
+    {
+      "titel": "Outreach-data: adressenbestand beheren en uitbreiden (P7)",
+      "spoor": "Outreach",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "sprints 2–6 voorbereiden (droogloop)",
+      "klaar_als": "bestand actueel, met grondslag per contact"
+    },
+    {
+      "titel": "Outreach: provider-tests en adresverificatie",
+      "spoor": "Outreach",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "kosten vooraf (OB-0949)",
+      "klaar_als": "verificatie werkt op een proefbatch"
+    },
+    {
+      "titel": "Cold-email-stack (P8)",
+      "spoor": "Outreach",
+      "status": "later",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "besluit over kosten en versturen",
+      "klaar_als": "—"
+    },
+    {
+      "titel": "Nieuwsbrief: bestaande contacten alleen met aantoonbare toestemming",
+      "spoor": "Outreach",
+      "status": "later",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "privacytoets en beslisboom",
+      "klaar_als": "pas na apart besluit"
+    },
+    {
+      "titel": "Granola-koppeling uitwerken (sleutel staat klaar)",
+      "spoor": "Content-keten",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "morgen uitwerken",
+      "klaar_als": "eerste notities als input, met toestemming"
     }
   ],
-  "publieke_velden_besluit": "14-10 (TOEZICHT, ter bevestiging door Richard): uit privé-bronnen alleen vaste statusteksten, PR-nummers, tijden, accounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties. Nooit titels, beschrijvingen of tekst uit privé-bronnen. Werkvoorraad: alleen titels zonder beveiligings-, back-up-, sleutel-, account-, outreach- of adresdetails en zonder interne aantallen; statussen zijn planning, geen meting. Ter bevestiging door Richard.",
-  "werkvoorraad_toelating": "planning (handmatig bijgehouden), geen meting"
+  "publieke_velden_besluit": "OB-0952 (Richard, 14-10): alle taken staan op het publieke bord, ook beveiliging, back-up en outreach. Nooit: geheimen, sleutels, wachtwoorden, IP-adressen, accountnamen of exploiteerbare details van een zwakke plek. Uit privé-bronnen: alleen vaste statusteksten, PR-nummers, tijden, accounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties.",
+  "werkvoorraad_toelating": "planning (handmatig bijgehouden), geen meting",
+  "content": {
+    "input": [
+      {
+        "naam": "Scans (dagelijks/wekelijks)",
+        "wat": "AI-scans met websearch over de markt",
+        "stand": "deels",
+        "waar": "trend-pipeline",
+        "volgende": "open melding nalopen; scans weer laten lopen"
+      },
+      {
+        "naam": "Trechter",
+        "wat": "X-bookmarks, Instapaper en meer: elk item naar één bak",
+        "stand": "deels",
+        "waar": "stack-trechter",
+        "volgende": "elke ronde leeg (P11)"
+      },
+      {
+        "naam": "Nieuwsbrieven van anderen",
+        "wat": "via de mail-agent naar triage in plaats van als samenvatting",
+        "stand": "deels",
+        "waar": "mail_agent",
+        "volgende": "omleggen, terugwerkend vanaf augustus (P12)"
+      },
+      {
+        "naam": "Eigen invoer in de Studio",
+        "wat": "artikel, knipsel, idee, boek",
+        "stand": "bestaat",
+        "waar": "trend-pipeline (Studio)",
+        "volgende": "koppelen aan het publishing board"
+      },
+      {
+        "naam": "Vrije opdracht",
+        "wat": "onderwerp opgeven of om 10 voorstellen vragen",
+        "stand": "idee",
+        "waar": "publishing board (ontwerp)",
+        "volgende": "bouwen in stap 2 van het board"
+      },
+      {
+        "naam": "Series: YouTube en podcasts",
+        "wat": "nieuwe afleveringen van gevolgde series komen vanzelf binnen",
+        "stand": "deels",
+        "waar": "media-hub (MVP klaar) + transcriptie",
+        "volgende": "hoofdstuk 'Series' in PIPELINE-INPUT"
+      },
+      {
+        "naam": "Futuristen-video's",
+        "wat": "automatisch zoeken en analyseren volgens jouw 12-delige format",
+        "stand": "gepland",
+        "waar": "handover podcast/video-analyse",
+        "volgende": "lijst futuristen (onderzoek ligt er), daarna automatische analyse"
+      },
+      {
+        "naam": "research-intelligence",
+        "wat": "verdiepen en bewijs controleren per onderwerp",
+        "stand": "deels",
+        "waar": "research-intelligence (t/m fase 3)",
+        "volgende": "fase 4: bewijscontrole"
+      },
+      {
+        "naam": "AI-search en websearch",
+        "wat": "Anthropic- en OpenAI-websearch, OpenAlex, Crossref, GDELT, Google News",
+        "stand": "bestaat",
+        "waar": "Long-read-research",
+        "volgende": "onderbrengen in research-intelligence"
+      },
+      {
+        "naam": "Eigen kennisbank",
+        "wat": "vault met ongeveer 23.000 notities, met allowlist en privacyklassen",
+        "stand": "deels",
+        "waar": "research-intelligence",
+        "volgende": "alleen met 'gebruik mijn kennisbank'"
+      },
+      {
+        "naam": "Granola",
+        "wat": "notities van gesprekken en meetings",
+        "stand": "gepland",
+        "waar": "sleutel staat klaar",
+        "volgende": "morgen uitwerken; alleen met toestemming van deelnemers"
+      },
+      {
+        "naam": "Kennisdossiers",
+        "wat": "frameworks-scan, voorbeeldscans",
+        "stand": "bestaat",
+        "waar": "projectenregister/kennis",
+        "volgende": "top 10 frameworks op de agenda"
+      },
+      {
+        "naam": "Keynote-archief",
+        "wat": "ongeveer 1000 presentaties, slides-analyse",
+        "stand": "deels",
+        "waar": "keynote-archief",
+        "volgende": "ontdubbelen; slides-analyse hervatten (P9)"
+      },
+      {
+        "naam": "Zoekvragen (SEO/GEO)",
+        "wat": "wat mensen zoeken en aan AI vragen",
+        "stand": "deels",
+        "waar": "weblog-onderhoud (Search Console, 20 GEO-vragen)",
+        "volgende": "Search Console-API, maandelijkse GEO-meting"
+      },
+      {
+        "naam": "Nieuwe bronnen: YouTube, TikTok, Reddit",
+        "wat": "creators en communities als bron",
+        "stand": "gepland",
+        "waar": "trend-pipeline (1.49)",
+        "volgende": "onderzoek naar de beste kanalen"
+      },
+      {
+        "naam": "Eigen archief als bron",
+        "wat": "ongeveer 2000 blogs en 116 nieuwsbrieven, oud maar nog relevant",
+        "stand": "bestaat",
+        "waar": "weblog + Beehiiv",
+        "volgende": "leeftijdscontrole en hergebruik"
+      },
+      {
+        "naam": "Vragen uit de zaal en van lezers",
+        "wat": "vragen na keynotes en reacties op posts",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "vastleggen na elke keynote"
+      }
+    ],
+    "output": [
+      {
+        "naam": "Long-read / blog NL",
+        "wat": "artikel van 2000–3500 woorden op het weblog",
+        "stand": "deels",
+        "waar": "WordPress + plaats-concept.sh (PR #1)",
+        "volgende": "stijltraining, daarna eerste concept"
+      },
+      {
+        "naam": "Long-read / blog EN",
+        "wat": "Engelse versie (EN levert 97% van de klikken)",
+        "stand": "deels",
+        "waar": "WordPress (WPML)",
+        "volgende": "per artikel kiezen: NL, EN of beide"
+      },
+      {
+        "naam": "Nieuwsbrief NL",
+        "wat": "Beehiiv, vast format met keynote-blok",
+        "stand": "bestaat",
+        "waar": "Beehiiv (API leest)",
+        "volgende": "proef: één concept via de API"
+      },
+      {
+        "naam": "Nieuwsbrief EN",
+        "wat": "Beehiiv, 'The best newsletter about the future'",
+        "stand": "bestaat",
+        "waar": "Beehiiv",
+        "volgende": "zelfde proef"
+      },
+      {
+        "naam": "LinkedIn",
+        "wat": "posts, reeks van 3, carrousel",
+        "stand": "deels",
+        "waar": "trend-pipeline/kanalen/linkedin",
+        "volgende": "winnaarstoets en publicatietool"
+      },
+      {
+        "naam": "X",
+        "wat": "posts en draadjes, 1–2 hashtags",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "na de toolkeuze"
+      },
+      {
+        "naam": "Instagram",
+        "wat": "carrousel en reels; zoekwoorden in caption en beeld",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "na de toolkeuze"
+      },
+      {
+        "naam": "TikTok",
+        "wat": "korte video, zoekwoord in de eerste seconden",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "eigen route (video, ondertitels)"
+      },
+      {
+        "naam": "YouTube Shorts",
+        "wat": "korte video uit keynotefragmenten",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "samen met TikTok"
+      },
+      {
+        "naam": "YouTube lang",
+        "wat": "keynotefragmenten en uitleg",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "bestaand keynotemateriaal ordenen"
+      },
+      {
+        "naam": "Threads",
+        "wat": "tekstposts, stabiele groei volgens het onderzoek",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "laag, mee met X"
+      },
+      {
+        "naam": "Faceless video",
+        "wat": "korte video's per artikel",
+        "stand": "deels",
+        "waar": "faceless-video",
+        "volgende": "als middel in het pakket"
+      },
+      {
+        "naam": "Podcast / audio-artikel",
+        "wat": "artikel voorgelezen of een gesprek",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "kosten stem (OB-0949)"
+      },
+      {
+        "naam": "E-book / whitepaper",
+        "wat": "bundel van 5–8 long-reads per thema, als download",
+        "stand": "idee",
+        "waar": "long-reads + Beehiiv-formulier",
+        "volgende": "eerste thema kiezen"
+      },
+      {
+        "naam": "Trendrapport per kwartaal",
+        "wat": "rapport met data en visie",
+        "stand": "idee",
+        "waar": "scans + research-intelligence",
+        "volgende": "opzet en eerste editie"
+      },
+      {
+        "naam": "Quote-kaarten en infographics",
+        "wat": "één beeld, één inzicht of cijfer",
+        "stand": "idee",
+        "waar": "Gemini-beeld",
+        "volgende": "sjabloon in de huisstijl"
+      },
+      {
+        "naam": "Carrousels",
+        "wat": "6–10 slides met de kern van een artikel",
+        "stand": "idee",
+        "waar": "keynote-creator + beeld",
+        "volgende": "sjabloon"
+      },
+      {
+        "naam": "Keynote-slides",
+        "wat": "1–3 slides per onderwerp",
+        "stand": "bestaat",
+        "waar": "keynote-creator",
+        "volgende": "koppelen aan het pakket"
+      },
+      {
+        "naam": "Webinar / livestream",
+        "wat": "live sessie, daarna fragmenten",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "eerste thema"
+      },
+      {
+        "naam": "Masterclass / cursus",
+        "wat": "reeks lessen per thema",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "na e-book"
+      },
+      {
+        "naam": "Persbericht / opiniestuk",
+        "wat": "versie voor media en vakbladen",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "bij sterke long-reads"
+      },
+      {
+        "naam": "Websitepagina's",
+        "wat": "lezing- en sectorpagina's met bewijs",
+        "stand": "deels",
+        "waar": "richardvanhooijdonk.com",
+        "volgende": "nieuwe site afmaken"
+      },
+      {
+        "naam": "Interactieve tool of quiz",
+        "wat": "contentmagneet met score en rapport",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "keuze welk onderwerp"
+      },
+      {
+        "naam": "Vertaling NL ↔ EN",
+        "wat": "als middel, met controle op claims",
+        "stand": "deels",
+        "waar": "weblog (34 EN-versies live)",
+        "volgende": "per pakket"
+      },
+      {
+        "naam": "Boek",
+        "wat": "de beste stukken gebundeld en herschreven",
+        "stand": "idee",
+        "waar": "—",
+        "volgende": "lange termijn"
+      }
+    ],
+    "ideeen": [
+      "Wekelijkse futuristenradar: 5 zwakke signalen uit gevolgde series → LinkedIn + rubriek in de nieuwsbrief",
+      "Vraag van de week: een echte zoek- of AI-vraag → kort antwoordartikel (GEO)",
+      "Keynote-nabrander: na elke lezing een pakket voor de organisator (samenvatting, slides, 3 posts) → reviews en leads",
+      "Voorspellingslog: Richards voorspellingen met datum, elk jaar publiek getoetst (geloofwaardigheid, citeerbaar)",
+      "Evergreen-carrousel: elke week een oud succesvol artikel als carrousel",
+      "Grafiek van de week: één scherp cijfer met duiding",
+      "Mythes ontkracht: korte reeks tegen gangbare AI-hypes",
+      "AI-uitleg voor niet-techneuten: korte NL-video's",
+      "Sector-edities van de nieuwsbrief (zorg, onderwijs, overheid …) passend bij de sectorpagina's",
+      "Hergebruikmatrix: per artikel automatisch 10 afgeleiden voorgesteld",
+      "Kalender rond vaste momenten: CES, WEF, begin van het jaar, met de keynote-agenda",
+      "Externe vermeldingen bijhouden: interviews, podcasts, gastartikelen (voor GEO)",
+      "Lezersvragen-sessie: elk kwartaal live vragen beantwoorden",
+      "Jaaroverzicht 'Wat kwam uit, wat niet': voorspellingen terugblik",
+      "Intake-inzichten (Granola, alleen met toestemming): wat klanten vragen → onderwerpen"
+    ],
+    "noot": "Overzicht en planning, geen meting. 'idee' is nog niet besloten."
+  }
 }

@@ -24,7 +24,8 @@ def laad():
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
 
-def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, onvolledig=False):
+def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, onvolledig=False, venster_tot_voor_t0=False, toekomst=False):
+    from datetime import timedelta as _td2
     t0 = m.CONFIG["burnin"]["t0"]
     na = m.NU.isoformat().replace("+00:00", "Z")
     prs = []
@@ -35,12 +36,17 @@ def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, on
                 "closed_at": None, "head": {"sha": "k"}})
     prs.append({"number": 201, "title": "[ROUTE2 geheimaccount] PROEF-A1", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "g"}})
+    oud = (m.NU - _td2(days=10)).isoformat().replace("+00:00", "Z")
+    prs.append({"number": 203, "title": "[ROUTE2 codex1] BURNIN-99", "created_at": oud, "merged_at": None,
+                "closed_at": None, "head": {"sha": "oud"}})
     prs.append({"number": 202, "title": "[ROUTE2 codex1] PROEF-ACME", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "a"}})
     from datetime import timedelta as _td
-    gem = (m.NU - _td(hours=2)).isoformat().replace("+00:00", "Z") if telling_oud else na
+    gem = (m.NU - _td(hours=2)).isoformat().replace("+00:00", "Z") if telling_oud else (
+        (m.NU + _td(minutes=10)).isoformat().replace("+00:00", "Z") if toekomst else na)
     van = (m.tijd(t0) - _td(hours=1)).isoformat().replace("+00:00", "Z")
-    telling = {"gemeten_om": gem, "volledig": not onvolledig, "venster": {"van": van, "tot": na}, "stilstand": {"order_zonder_voortgang_45_minuten": False, "notitie": KANARIE},
+    tot = (m.tijd(t0) - _td(minutes=30)).isoformat().replace("+00:00", "Z") if venster_tot_voor_t0 else na
+    telling = {"gemeten_om": gem, "volledig": not onvolledig, "venster": {"van": van, "tot": tot}, "stilstand": {"order_zonder_voortgang_45_minuten": False, "notitie": KANARIE},
                "vrij_veld": KANARIE, "ingrepen": {"pr_nummers": [55, "57; " + KANARIE, 999], "bron": {"status": "GEMETEN"}},
                "uitkomsten": {"merged": 0, "no_go": 10, "lopend": lopend, "pogingen_totaal": 10, "notitie": KANARIE,
                               "bron": {"status": "GEMETEN"}}}
@@ -100,6 +106,10 @@ check("oude telling (2 uur) met 0 lopend maakt open afgekeurde PR's geen eindsta
       draai("rood", 0, telling_oud=True)["burnin"]["uitkomsten"] == 0)
 check("onvolledige telling met 0 lopend maakt open afgekeurde PR's geen eindstand",
       draai("rood", 0, onvolledig=True)["burnin"]["uitkomsten"] == 0)
+check("venster dat vóór de burn-in-start eindigt telt niet",
+      draai("rood", 0, venster_tot_voor_t0=True)["burnin"]["uitkomsten"] == 0)
+check("meettijd in de toekomst telt niet", draai("rood", 0, toekomst=True)["burnin"]["uitkomsten"] == 0)
+check("open PR ouder dan 3 dagen blijft zichtbaar als lopend", any(o["pr"] == 203 and o["uitkomst"] is None for o in d["orders"]))
 d_verl = draai("verlaten", 1)
 check("verlaten opdrachten blijven zichtbaar als lopend (geen uitkomst)", all(o["uitkomst"] is None for o in d_verl["orders"] if o["order"].startswith("BURNIN-")))
 check("telling-uitkomsten alleen gehele getallen, geen notitie", d_rood_klaar["telling"]["uitkomsten"] == {"merged": 0, "no_go": 10, "lopend": 0, "pogingen_totaal": 10})
@@ -116,10 +126,16 @@ check("onleesbare PR's blokkeren de publicatie", code not in (0, None) and not u
 
 # Publieke werkvoorraad: geen beveiligings-, back-up-, sleutel-, account-, outreach- of adresdetails (Astra R5).
 import re as _re
-GEVOELIG = _re.compile(r"back-?up|beveilig|token|sleutel|wachtwoord|formulier|2FA|server|outreach|adres|provider|contacten|accounts|betaal|veiligheid|drift|kwetsba|lek", _re.I)
+# OB-0952: taken mogen publiek; exploiteerbare details en geheimen niet.
+GEVOELIG = _re.compile(r"wachtwoord|password|\broot\b|\bssh\b|\b\d{1,3}(\.\d{1,3}){3}\b|gelekt|lekte|onversleuteld|open_basedir|vhost|api[_-]?key|ghp_|sk-[A-Za-z0-9]|AIza|heinmaas|sheheryar|BEEHIIV_API_KEY|GRANOLA_API_KEY", _re.I)
 cfg = json.loads((PAD.parent.parent / "config.json").read_text(encoding="utf-8"))
-fout_titels = [w["titel"] for w in cfg.get("werkvoorraad", []) if GEVOELIG.search(w["titel"]) and "alleen in het privé-register" not in w["titel"]]
-check("publieke werkvoorraad bevat geen gevoelige details", not fout_titels, str(fout_titels))
+teksten = [w.get(k, "") or "" for w in cfg.get("werkvoorraad", []) for k in ("titel", "volgende", "klaar_als")]
+ct = cfg.get("content", {})
+teksten += [x.get(k, "") or "" for kol in ("input", "output") for x in ct.get(kol, []) for k in ("naam", "wat", "waar", "volgende")]
+teksten += ct.get("ideeen", [])
+teksten += [open(PAD.parent.parent / "stack.html", encoding="utf-8").read()]
+fout_titels = [x[:80] for x in teksten if GEVOELIG.search(x) and "alleen in het privé-register" not in x and "details privé" not in x and "details alleen in het privé-register" not in x]
+check("publieke tekst bevat geen geheimen of exploiteerbare details", not fout_titels, str(fout_titels))
 
 print("\nALLE PROEVEN GROEN" if not FOUT else "\nER ZIJN FOUTEN")
 sys.exit(FOUT)
