@@ -189,6 +189,12 @@
       "code": "P12",
       "titel": "Mail-agent opgaan in PIPELINE-INPUT",
       "wie": "overleg"
+    },
+    {
+      "nr": 15,
+      "code": "P13",
+      "titel": "Modellenvloot bijwerken en regelmatig controleren",
+      "wie": "stack"
     }
   ],
   "register_url": "https://github.com/rvanhooijdonk-png/projectenregister",
@@ -403,24 +409,17 @@
       "prio": true,
       "items": [
         [
-          "37",
-          "Adressenbestand",
+          "37+38",
+          "Outreach-data (adressenbestand + scraper)",
           "stack (P7)",
           [
-            "crm-intelligence-control"
-          ]
-        ],
-        [
-          "38",
-          "Scraper",
-          "voeding",
-          [
+            "crm-intelligence-control",
             "scraper"
           ]
         ],
         [
           "O1",
-          "Cold-email-stack",
+          "Cold-email-stack (bouwt op Outreach-data)",
           "overleg (P8)",
           []
         ]
@@ -431,6 +430,15 @@
       "prio": true,
       "items": [
         [
+          "8",
+          "Modellenvloot (+ kimi-pilot)",
+          "prioriteit (P13)",
+          [
+            "modellenvloot",
+            "kimi-pilot"
+          ]
+        ],
+        [
           "S1",
           "Beveiligingsring",
           "stack (P1)",
@@ -439,9 +447,9 @@
         [
           "S2",
           "Control-center",
-          "stack (P2)",
+          "stack (P2) · hangt af van COA",
           [
-            "COA?",
+            "COA",
             "bouwstraat-bord"
           ]
         ],
@@ -451,6 +459,21 @@
           "burn-in run 1",
           [
             "stack-director-route2"
+          ]
+        ]
+      ]
+    },
+    {
+      "naam": "Assistent",
+      "prio": false,
+      "items": [
+        [
+          "25",
+          "COA (CHIEF)",
+          "nog niet klaar · Telegram werkt nog niet",
+          [
+            "COA",
+            "COA-brug"
           ]
         ]
       ]
@@ -523,7 +546,6 @@
             "dashboard",
             "stack-dashboard-agent-slice",
             "p0-capture-foundation",
-            "kimi-pilot",
             "debounce-mcp",
             "poortproef-wegwerp"
           ]
