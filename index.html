@@ -106,6 +106,7 @@ function teken(d){
   if(leeftijd>20){niveau="let";kop="Het bord loopt achter.";tekst=`Laatste meting ${geleden(d.gemeten_om)}. Controleer of de Action draait.`}
   else if(vast){niveau="fout";kop="Er staat een opdracht stil.";tekst="Een opdracht heeft al meer dan 45 minuten geen voortgang."}
   else if(ing>0){niveau="fout";kop="Er is ingegrepen tijdens de burn-in.";tekst="PR "+bi.ingrepen_prs.join(", ")+" telt als ingreep na de start."}
+  else if(onb.length&&onb.length===bron.length){niveau="fout";kop="Het bord kan route 2 niet lezen.";tekst="Geen enkele bron was te lezen ("+[...new Set(onb.map(b=>b.fout))].join(", ")+"). Controleer de leessleutel ROUTE2_LEES_TOKEN. Er wordt geen nul verzonnen."}
   else if(onb.length||ing==null){niveau="let";kop="Bijna alles gemeten.";tekst="Niet alle bronnen waren te lezen: "+(onb.length?onb.length+" onbewezen":"ingrepen onbewezen")+". Er wordt geen nul verzonnen."}
   else{kop=`Alles loopt. ${bi.naam||"Burn-in"}: ${bi.verstreken_uur} van 24 uur, zonder ingreep.`;tekst=`${bi.uitkomsten}/${bi.orders_aantal} opdrachten afgerond: ${bi.samengevoegd} samengevoegd, ${bi.afgekeurd} afgekeurd. Niets staat vast.`}
   document.getElementById("oordeel").className="oordeel "+(niveau==="goed"?"":niveau);
@@ -119,7 +120,7 @@ function teken(d){
   const m=document.getElementById("meter");m.replaceChildren();let actief=0,bezig=0;
   for(const a of d.accounts||[]){
     const k=el("div","acc"+(a.bezig?" bezig":""));const n=el("div","naam");n.append(el("span",null,a.naam));
-    let pil;if(!a.aangesloten)pil=el("span","pil uit",a.noot||"niet aangesloten");else if(a.bezig){pil=el("span","pil bezig","bezig");bezig++}else pil=el("span","pil goed","vrij");
+    let pil;if(a.onbekend&&a.aangesloten)pil=el("span","pil let","onbewezen");else if(!a.aangesloten)pil=el("span","pil uit",a.noot||"niet aangesloten");else if(a.bezig){pil=el("span","pil bezig","bezig");bezig++}else pil=el("span","pil goed","vrij");
     if(a.aangesloten)actief++;n.append(pil);
     k.append(n,el("span","rol",a.rol),el("span","nu",a.bezig?a.bezig:(a.aangesloten?"wacht op werk":"—")),el("span","laatst",`laatst actief: ${geleden(a.laatst)} · ${a.stappen_24u} stappen/24u`));m.append(k)}
   document.getElementById("meter-sam").textContent=`${bezig} bezig · ${actief} aangesloten · ${(d.accounts||[]).length} totaal`;

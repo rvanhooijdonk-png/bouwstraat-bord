@@ -45,7 +45,9 @@ def lees(naam, functie):
         bronnen[naam] = {"status": "GEMETEN", "gemeten_om": NU.isoformat()}
         return waarde
     except Exception as exc:  # alleen het type, nooit inhoud
-        bronnen[naam] = {"status": "ONBEWEZEN", "fout": type(exc).__name__, "gemeten_om": NU.isoformat()}
+        code = getattr(exc, "code", None)
+        bronnen[naam] = {"status": "ONBEWEZEN", "fout": type(exc).__name__ + (f" {code}" if code else ""),
+                         "gemeten_om": NU.isoformat()}
         return None
 
 
@@ -171,6 +173,9 @@ def main():
         burnin["ingrepen_na_t0"] = None if ing.get("bron", {}).get("status") == "ONBEWEZEN" else len(na)
         burnin["ingrepen_prs"] = na
 
+    if bronnen.get("pull_requests", {}).get("status") != "GEMETEN":
+        for a in accounts:
+            a["onbekend"] = True
     json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": stand, "orders": orders,
                "accounts": accounts, "ticker": ticker[:150], "burnin": burnin,
                "projecten": CONFIG["projecten"], "wacht_op_richard": CONFIG["wacht_op_richard"]},
