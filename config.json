@@ -1028,6 +1028,15 @@
       "link": "https://github.com/rvanhooijdonk-png/projectenregister",
       "volgende": "morgen uitwerken",
       "klaar_als": "eerste notities als input, met toestemming"
+    },
+    {
+      "titel": "Route 2: oude open opdrachten opruimen (na de burn-in)",
+      "spoor": "Bouwstraat",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": null,
+      "volgende": "lijst maken; jij geeft één keer akkoord",
+      "klaar_als": "'Lopend' toont alleen echt lopend werk"
     }
   ],
   "publieke_velden_besluit": "OB-0952 (Richard, 14-10): alle taken staan op het publieke bord, ook beveiliging, back-up en outreach. Nooit: geheimen, sleutels, wachtwoorden, IP-adressen, inlog- of beheeraccounts van systemen (WordPress, server, externe diensten) of exploiteerbare details van een zwakke plek. Wel toegestaan: de rolnamen van de bouwaccounts van de stack (codex1–4, claude3/4), omdat Richard die in de meter wil zien (14-10: 'ik zie geen meetresultaten/accounts'). Uit privé-bronnen: alleen vaste statusteksten, PR-nummers, tijden, bouwaccounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties.",
