@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bouwstraat-bord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Eén kolom van "gaat het goed" naar detail: oordeel, wacht op jou, meter, ticker, burn-in, opdrachten. */
+:root{
+  --bg:#f3f4f2;--vlak:#fff;--vlak2:#e9ebe7;--lijn:#d3d7d0;--tekst:#1c211d;--zacht:#5b645d;
+  --accent:#1f5f8b;--accent-zacht:#dce8f1;--goed:#2f7a46;--goed-zacht:#dff0e4;--let:#a3650b;--let-zacht:#f8ecd6;
+  --fout:#b23a2f;--fout-zacht:#f6e0dd;--uit:#8b928c;
+  --f-kop:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;--f-tekst:"IBM Plex Sans",system-ui,sans-serif;--f-data:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:light}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#141816;--vlak:#1c211e;--vlak2:#252b27;--lijn:#343c36;--tekst:#e6eae6;--zacht:#9aa49c;
+  --accent:#6aa9d6;--accent-zacht:#1d3444;--goed:#62b57c;--goed-zacht:#1d3424;--let:#e0a447;--let-zacht:#3a2d16;
+  --fout:#e5786d;--fout-zacht:#3d1f1c;--uit:#6d756f;color-scheme:dark}}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--tekst);font:15px/1.5 var(--f-tekst);margin:0;padding-top:env(safe-area-inset-top,0px)}
+.pagina{max-width:1180px;margin:0 auto;padding-block:20px 48px;padding-inline:16px;display:grid;gap:20px}
+h1,h2,h3{font-family:var(--f-kop);margin:0;text-wrap:balance}
+h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--zacht);font-weight:600}
+.data{font-family:var(--f-data);font-variant-numeric:tabular-nums}
+.top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px 16px;font:12px var(--f-data);color:var(--zacht)}
+.oordeel{background:var(--vlak);border:1px solid var(--lijn);border-left:6px solid var(--goed);border-radius:6px;padding:18px 20px;display:grid;gap:8px}
+.oordeel.let{border-left-color:var(--let)}.oordeel.fout{border-left-color:var(--fout)}
+.oordeel h1{font-size:clamp(22px,4vw,32px);line-height:1.15}
+.oordeel p{margin:0;color:var(--zacht);max-width:72ch}
+.vers{display:inline-flex;align-items:center;gap:8px;font:13px var(--f-data);color:var(--zacht)}
+.stip{width:9px;height:9px;border-radius:50%;background:var(--goed);box-shadow:0 0 0 3px var(--goed-zacht)}
+.stip.let{background:var(--let);box-shadow:0 0 0 3px var(--let-zacht)}.stip.fout{background:var(--fout);box-shadow:0 0 0 3px var(--fout-zacht)}
+.jij{background:var(--let-zacht);border:1px solid var(--lijn);border-radius:6px;padding:14px 20px;display:grid;gap:8px}
+.jij h2{color:var(--let)}.jij ol{margin:0;padding-left:20px;display:grid;gap:4px}.jij span{color:var(--zacht);font-size:13px}
+.blok{background:var(--vlak);border:1px solid var(--lijn);border-radius:6px;padding:16px 18px;display:grid;gap:12px;min-width:0}
+.blokkop{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+.klein{font-size:13px;color:var(--zacht)}
+.meter{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.acc{border:1px solid var(--lijn);border-radius:5px;padding:10px 12px;display:grid;gap:4px;background:var(--vlak)}
+.acc.bezig{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+.acc .naam{display:flex;justify-content:space-between;align-items:baseline;gap:6px;font:600 16px var(--f-data)}
+.acc .rol{font-size:12px;color:var(--zacht)}
+.acc .nu{font-size:13px}
+.acc .laatst{font:12px var(--f-data);color:var(--zacht)}
+.pil{font:500 12px var(--f-data);padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pil.goed{background:var(--goed-zacht);color:var(--goed)}.pil.let{background:var(--let-zacht);color:var(--let)}
+.pil.fout{background:var(--fout-zacht);color:var(--fout)}.pil.uit{background:var(--vlak2);color:var(--uit)}
+.pil.bezig{background:var(--accent);color:var(--vlak)}
+.duo{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:12px}
+@media (max-width:860px){.duo{grid-template-columns:1fr}}
+.ticker{list-style:none;margin:0;padding:0;max-height:520px;overflow-y:auto;display:grid}
+.ticker li{display:grid;grid-template-columns:62px 14px 1fr;gap:8px;align-items:baseline;padding:6px 2px;border-bottom:1px solid var(--lijn);font-size:14px}
+.ticker .tt{font:12px var(--f-data);color:var(--zacht)}
+.ticker .k{width:8px;height:8px;border-radius:50%;background:var(--uit);align-self:center}
+.k.goed{background:var(--goed)}.k.fout{background:var(--fout)}.k.start,.k.bezig{background:var(--accent)}.k.telling,.k.aanvoer{background:var(--uit)}
+.ticker .acc-naam{font:12px var(--f-data);color:var(--zacht)}
+.ticker li.nieuw{animation:in 1.2s ease-out}
+@keyframes in{from{background:var(--accent-zacht)}to{background:transparent}}
+.balk{height:10px;background:var(--vlak2);border-radius:99px;overflow:hidden}.balk i{display:block;height:100%;background:var(--accent)}
+.eisen{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.eisen li{display:grid;grid-template-columns:20px 1fr auto;gap:8px;font-size:14px;align-items:baseline}
+.eisen .t{font:600 14px var(--f-data)}.t.ja{color:var(--goed)}.t.open{color:var(--let)}.t.nee{color:var(--fout)}
+.eisen small{font:12px var(--f-data);color:var(--zacht)}
+.tabel{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font:600 12px var(--f-kop);text-transform:uppercase;letter-spacing:.06em;color:var(--zacht);padding:4px 6px;border-bottom:1px solid var(--lijn)}
+td{padding:6px;border-bottom:1px solid var(--lijn)}td.data{white-space:nowrap}
+a{color:var(--accent)}
+details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:uppercase;letter-spacing:.08em;color:var(--zacht)}
+.bron{font:12px var(--f-data);color:var(--zacht)}
+@media (prefers-reduced-motion:reduce){.ticker li.nieuw{animation:none}}
+</style>
+</head>
+<body>
+<main class="pagina">
+  <div class="top"><span>Bouwstraat · route 2 · bijgewerkt door GitHub Actions, alleen lezend</span><span id="bronregel">laden…</span></div>
+  <section class="oordeel" id="oordeel"><h1 id="oordeel-kop">Gegevens laden…</h1><p id="oordeel-tekst"></p><span class="vers"><span class="stip" id="stip"></span><span id="vers">—</span></span></section>
+  <section class="jij"><h2>Wacht op jou</h2><ol id="jij"></ol></section>
+  <section class="blok"><div class="blokkop"><h2>Meter · accounts</h2><span class="klein" id="meter-sam"></span></div><div class="meter" id="meter"></div></section>
+  <div class="duo">
+    <section class="blok"><div class="blokkop"><h2>Ticker · wat er gebeurt</h2><span class="klein">nieuwste boven · ververst elke minuut</span></div><ul class="ticker" id="ticker"></ul></section>
+    <section class="blok"><div class="blokkop"><h2 id="bi-naam">Burn-in</h2><span class="klein data" id="bi-tijd"></span></div>
+      <div class="balk"><i id="bi-balk" style="width:0"></i></div><ul class="eisen" id="bi-eisen"></ul>
+      <h2 style="margin-top:6px">Lopend</h2><div id="lopend" class="klein"></div></section>
+  </div>
+  <section class="blok"><details><summary id="af-kop">Opdrachten</summary><div class="tabel" style="margin-top:10px"><table><thead><tr><th>PR</th><th>Opdracht</th><th>Bouwer</th><th>Uitkomst</th><th>Tijd</th></tr></thead><tbody id="orders"></tbody></table></div></details></section>
+  <p class="bron" id="bronnen"></p>
+</main>
+<script>
+const REPO="https://github.com/rvanhooijdonk-png/stack-director-route2/pull/";
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const hhmm=s=>new Date(s).toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Amsterdam"});
+const dagtijd=s=>new Date(s).toLocaleString("nl-NL",{weekday:"short",hour:"2-digit",minute:"2-digit",timeZone:"Europe/Amsterdam"});
+const geleden=s=>{if(!s)return "nooit";const m=Math.round((Date.now()-new Date(s))/60000);return m<1?"zojuist":m<60?m+" min geleden":m<1440?Math.round(m/60)+" uur geleden":Math.round(m/1440)+" dagen geleden"};
+let gezien=new Set();
+function teken(d){
+  const bron=Object.values(d.bronnen||{});const onb=bron.filter(b=>b.status!=="GEMETEN");
+  const leeftijd=(Date.now()-new Date(d.gemeten_om))/60000;
+  document.getElementById("bronregel").textContent=`gemeten ${hhmm(d.gemeten_om)} · ${bron.length-onb.length}/${bron.length} bronnen gemeten`;
+  const bi=d.burnin||{};const tel=d.telling||{};
+  const vast=tel.stilstand&&tel.stilstand.order_zonder_voortgang_45_minuten;
+  const ing=bi.ingrepen_na_t0;
+  let niveau="goed",kop,tekst;
+  if(leeftijd>20){niveau="let";kop="Het bord loopt achter.";tekst=`Laatste meting ${geleden(d.gemeten_om)}. Controleer of de Action draait.`}
+  else if(vast){niveau="fout";kop="Er staat een opdracht stil.";tekst="Een opdracht heeft al meer dan 45 minuten geen voortgang."}
+  else if(ing>0){niveau="fout";kop="Er is ingegrepen tijdens de burn-in.";tekst="PR "+bi.ingrepen_prs.join(", ")+" telt als ingreep na de start."}
+  else if(onb.length||ing==null){niveau="let";kop="Bijna alles gemeten.";tekst="Niet alle bronnen waren te lezen: "+(onb.length?onb.length+" onbewezen":"ingrepen onbewezen")+". Er wordt geen nul verzonnen."}
+  else{kop=`Alles loopt. ${bi.naam||"Burn-in"}: ${bi.verstreken_uur} van 24 uur, zonder ingreep.`;tekst=`${bi.uitkomsten}/${bi.orders_aantal} opdrachten afgerond: ${bi.samengevoegd} samengevoegd, ${bi.afgekeurd} afgekeurd. Niets staat vast.`}
+  document.getElementById("oordeel").className="oordeel "+(niveau==="goed"?"":niveau);
+  document.getElementById("oordeel-kop").textContent=kop;document.getElementById("oordeel-tekst").textContent=tekst;
+  document.getElementById("stip").className="stip "+(niveau==="goed"?"":niveau);
+  document.getElementById("vers").textContent=`gemeten ${hhmm(d.gemeten_om)} (${geleden(d.gemeten_om)}) · telling ${tel.gemeten_om?hhmm(tel.gemeten_om):"onbekend"}, ${tel.volledig?"volledig":"onvolledig"}`;
+
+  const jij=document.getElementById("jij");jij.replaceChildren();
+  for(const w of d.wacht_op_richard||[]){const li=el("li",null,w.wat+" ");li.append(el("span",null,`(${w.wanneer}; ${w.duur})`));jij.append(li)}
+
+  const m=document.getElementById("meter");m.replaceChildren();let actief=0,bezig=0;
+  for(const a of d.accounts||[]){
+    const k=el("div","acc"+(a.bezig?" bezig":""));const n=el("div","naam");n.append(el("span",null,a.naam));
+    let pil;if(!a.aangesloten)pil=el("span","pil uit",a.noot||"niet aangesloten");else if(a.bezig){pil=el("span","pil bezig","bezig");bezig++}else pil=el("span","pil goed","vrij");
+    if(a.aangesloten)actief++;n.append(pil);
+    k.append(n,el("span","rol",a.rol),el("span","nu",a.bezig?a.bezig:(a.aangesloten?"wacht op werk":"—")),el("span","laatst",`laatst actief: ${geleden(a.laatst)} · ${a.stappen_24u} stappen/24u`));m.append(k)}
+  document.getElementById("meter-sam").textContent=`${bezig} bezig · ${actief} aangesloten · ${(d.accounts||[]).length} totaal`;
+
+  const t=document.getElementById("ticker");const eerste=gezien.size===0;t.replaceChildren();
+  for(const r of d.ticker||[]){const sleutel=r.t+r.tekst;const li=el("li",(!eerste&&!gezien.has(sleutel))?"nieuw":"");
+    li.append(el("span","tt",hhmm(r.t)),el("span","k "+r.soort));const tx=el("span",null,r.tekst);
+    if(r.account){tx.append(" ");tx.append(el("span","acc-naam",r.account))}
+    if(r.pr){tx.append(" ");const a=el("a",null,"#"+r.pr);a.href=REPO+r.pr;a.target="_blank";a.rel="noopener";tx.append(a)}
+    li.append(tx);t.append(li);gezien.add(sleutel)}
+
+  document.getElementById("bi-naam").textContent=bi.naam||"Burn-in";
+  document.getElementById("bi-tijd").textContent=`${bi.verstreken_uur} / 24 uur · einde ${bi.einde?dagtijd(bi.einde):"?"}`;
+  document.getElementById("bi-balk").style.width=Math.min(100,(bi.verstreken_uur||0)/24*100)+"%";
+  const e=document.getElementById("bi-eisen");e.replaceChildren();
+  const eis=(ok,wat,stand)=>{const li=el("li");li.append(el("span","t "+(ok===true?"ja":ok===false?"nee":"open"),ok===true?"✓":ok===false?"✗":"…"),el("span",null,wat),el("small",null,stand));e.append(li)};
+  eis(bi.uitkomsten>=bi.orders_aantal?true:null,"Tien echte uitkomsten",`${bi.uitkomsten}/${bi.orders_aantal}`);
+  eis(ing==null?null:ing===0,"Nul ingrepen na de start",ing==null?"onbewezen":String(ing));
+  eis(true,"Mac minstens 4 uur offline",bi.mac_offline?bi.mac_offline.split(":")[0]:"");
+  eis((bi.verstreken_uur||0)>=24?true:null,"24 uur aaneengesloten",`${Math.max(0,24-(bi.verstreken_uur||0)).toFixed(1)} u te gaan`);
+  const lop=(d.orders||[]).filter(o=>!o.uitkomst);const L=document.getElementById("lopend");L.replaceChildren();
+  if(!lop.length)L.textContent="Niets in uitvoering. Een lege wachtrij is geen stilstand.";
+  for(const o of lop){const p=el("div");p.append(el("b",null,o.order)," ",`${o.fase} · bouwer ${o.bouwer} · sinds ${hhmm(o.geopend)}`);L.append(p)}
+
+  const tb=document.getElementById("orders");tb.replaceChildren();const af=(d.orders||[]).filter(o=>o.uitkomst&&o.uitkomst!=="onbekend");
+  document.getElementById("af-kop").textContent=`Opdrachten (${af.length} met uitkomst)`;
+  for(const o of af){const tr=el("tr");const a=el("a",null,"#"+o.pr);a.href=REPO+o.pr;a.target="_blank";a.rel="noopener";const td=el("td","data");td.append(a);
+    const k=o.uitkomst==="samengevoegd"?"goed":o.uitkomst==="zonder uitkomst"?"uit":"fout";const u=el("td");u.append(el("span","pil "+k,o.uitkomst));
+    tr.append(td,el("td",null,o.order),el("td","data",o.bouwer),u,el("td","data",o.afgerond?dagtijd(o.afgerond):"—"));tb.append(tr)}
+  document.getElementById("bronnen").textContent=onb.length?"Onbewezen bronnen: "+onb.map(b=>b.fout).join(", "):"Alle bronnen gemeten. Bron: GitHub-API van route 2 (PR's, statussen, telling), alleen lezen.";
+}
+async function laad(){try{const r=await fetch("data.json?"+Date.now(),{cache:"no-store"});if(!r.ok)throw new Error(r.status);teken(await r.json())}
+  catch(e){document.getElementById("oordeel-kop").textContent="Gegevens niet te laden.";document.getElementById("oordeel-tekst").textContent="data.json kon niet worden opgehaald ("+e.message+"). De pagina probeert het elke minuut opnieuw."}}
+laad();setInterval(laad,60000);
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+{
+  "route2_repo": "rvanhooijdonk-png/stack-director-route2",
+  "standaard_beoordelaar": "codex2",
+  "accounts": [
+    {"naam": "codex1", "rol": "bouwer", "aangesloten": true},
+    {"naam": "codex2", "rol": "beoordelaar", "aangesloten": true},
+    {"naam": "codex3", "rol": "bouwer", "aangesloten": true},
+    {"naam": "codex4", "rol": "Astra (koerscontrole)", "aangesloten": true},
+    {"naam": "claude3", "rol": "bouwer", "aangesloten": false, "noot": "sleutel nodig"},
+    {"naam": "claude4", "rol": "bouwer", "aangesloten": false, "noot": "sleutel nodig"},
+    {"naam": "claude1", "rol": "—", "aangesloten": false, "noot": "vervalt zondag"},
+    {"naam": "claude2", "rol": "—", "aangesloten": false, "noot": "vervalt zondag"}
+  ],
+  "projecten": [
+    {"id": "route2", "naam": "route 2", "aangesloten": true},
+    {"id": "trend-pipeline", "naam": "trend-pipeline", "aangesloten": false},
+    {"id": "futurezone", "naam": "futurezone", "aangesloten": false}
+  ],
+  "burnin": {
+    "naam": "Burn-in run 1",
+    "t0": "2026-10-13T23:17:41Z",
+    "einde": "2026-10-14T23:17:41Z",
+    "start_pr": 55,
+    "orders_prefix": "BURNIN-",
+    "orders_aantal": 10,
+    "vooraf_ingrepen": [53, 55, 56, 57],
+    "mac_offline": "OB-0948: MacBook 07:30–12:55 zonder internet"
+  },
+  "wacht_op_richard": [
+    {"wat": "Sleutels voor claude3 en claude4 zetten", "wanneer": "na het einde van run 1", "duur": "±1 minuut per account"},
+    {"wat": "Kiezen welk project als eerste aansluit", "wanneer": "na de vrijgave", "duur": "voorstel: trend-pipeline"}
+  ]
+}
