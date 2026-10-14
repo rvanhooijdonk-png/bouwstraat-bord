@@ -834,6 +834,13 @@
       "status": "gepland",
       "wie": "autocoding",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Granola-koppeling uitwerken (sleutel staat klaar)",
+      "spoor": "Content-keten",
+      "status": "gepland",
+      "wie": "stack",
+      "link": null
     }
   ],
   "publieke_velden_besluit": "14-10 (TOEZICHT, ter bevestiging door Richard): uit privé-bronnen alleen vaste statusteksten, PR-nummers, tijden, accounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties. Nooit titels, beschrijvingen of tekst uit privé-bronnen."
