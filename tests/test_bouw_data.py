@@ -127,15 +127,24 @@ check("onleesbare PR's blokkeren de publicatie", code not in (0, None) and not u
 # Publieke werkvoorraad: geen beveiligings-, back-up-, sleutel-, account-, outreach- of adresdetails (Astra R5).
 import re as _re
 # OB-0952: taken mogen publiek; exploiteerbare details en geheimen niet.
-GEVOELIG = _re.compile(r"wachtwoord|password|\broot\b|\bssh\b|\b\d{1,3}(\.\d{1,3}){3}\b|gelekt|lekte|onversleuteld|open_basedir|vhost|api[_-]?key|ghp_|sk-[A-Za-z0-9]|AIza|heinmaas|sheheryar|BEEHIIV_API_KEY|GRANOLA_API_KEY", _re.I)
+GEVOELIG = _re.compile(r"wachtwoord|password|\broot\b|\bssh\b|\b\d{1,3}(\.\d{1,3}){3}\b|gelekt|lekte|onversleuteld|open_basedir|vhost|api[_-]?key|ghp_|sk-[A-Za-z0-9]|AIza|heinmaas|sheheryar|jasper|BEEHIIV_API_KEY|GRANOLA_API_KEY|KANARIE-SYSTEEMACCOUNT", _re.I)
 cfg = json.loads((PAD.parent.parent / "config.json").read_text(encoding="utf-8"))
-teksten = [w.get(k, "") or "" for w in cfg.get("werkvoorraad", []) for k in ("titel", "volgende", "klaar_als")]
+def alle_tekst(x):
+    if isinstance(x, str): return [x]
+    if isinstance(x, dict): return [s for v in x.values() for s in alle_tekst(v)]
+    if isinstance(x, list): return [s for v in x for s in alle_tekst(v)]
+    return []
+# Alle statische publieke velden, behalve het besluit zelf (dat noemt de regel), plus de gegenereerde data.json.
+teksten = alle_tekst({k: v for k, v in cfg.items() if k != "publieke_velden_besluit"})
+teksten += [tekst]
 ct = cfg.get("content", {})
-teksten += [x.get(k, "") or "" for kol in ("input", "output") for x in ct.get(kol, []) for k in ("naam", "wat", "waar", "volgende")]
-teksten += ct.get("ideeen", [])
 teksten += [open(PAD.parent.parent / "stack.html", encoding="utf-8").read()]
 fout_titels = [x[:80] for x in teksten if GEVOELIG.search(x) and "alleen in het privé-register" not in x and "details privé" not in x and "details alleen in het privé-register" not in x]
 check("publieke tekst bevat geen geheimen of exploiteerbare details", not fout_titels, str(fout_titels))
+_proef = dict(cfg, wacht_op_richard=cfg.get("wacht_op_richard", []) + [{"wat": "inlog heinmaas_x", "wanneer": "-", "duur": "-"}])
+check("proef: een systeemaccount in wacht_op_richard wordt gevangen", any(GEVOELIG.search(x) for x in alle_tekst(_proef)))
+check("open afgekeurde PR zonder geldige nul is geen eindstand (UI-contract eind=false)",
+      all(not o["eind"] for o in d_rood_lopend["orders"] if o["order"].startswith("BURNIN-")))
 
 print("\nALLE PROEVEN GROEN" if not FOUT else "\nER ZIJN FOUTEN")
 sys.exit(FOUT)

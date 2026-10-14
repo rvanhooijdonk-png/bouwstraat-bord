@@ -922,13 +922,13 @@
       "klaar_als": "updates gedaan, inlogbeleid en 2FA op orde"
     },
     {
-      "titel": "Oude toegangssleutels zonder vervaldatum opruimen",
+      "titel": "Toegangsbeheer: sleutels periodiek vernieuwen",
       "spoor": "Beveiliging en back-up",
       "status": "gepland",
       "wie": "jij + stack",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister",
-      "volgende": "lijst doornemen (alleen namen)",
-      "klaar_als": "alleen sleutels met vervaldatum over"
+      "volgende": "lijst doornemen",
+      "klaar_als": "alle sleutels met vervaldatum"
     },
     {
       "titel": "Back-ups buiten huis + versleuteling + herstelproef",
@@ -967,13 +967,13 @@
       "klaar_als": "wekelijks beveiligingsrapport"
     },
     {
-      "titel": "JevMedia uitfaseren (oude beheerders en plugins)",
+      "titel": "Beheer weblog: oude externe toegang opruimen",
       "spoor": "Beveiliging en back-up",
       "status": "wacht op jou",
       "wie": "jij",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister",
       "volgende": "jouw besluit",
-      "klaar_als": "alleen bekende beheerders over"
+      "klaar_als": "alleen bekende beheerders"
     },
     {
       "titel": "Telefoonmelding bij storing",
@@ -1030,7 +1030,7 @@
       "klaar_als": "eerste notities als input, met toestemming"
     }
   ],
-  "publieke_velden_besluit": "OB-0952 (Richard, 14-10): alle taken staan op het publieke bord, ook beveiliging, back-up en outreach. Nooit: geheimen, sleutels, wachtwoorden, IP-adressen, accountnamen of exploiteerbare details van een zwakke plek. Uit privé-bronnen: alleen vaste statusteksten, PR-nummers, tijden, accounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties.",
+  "publieke_velden_besluit": "OB-0952 (Richard, 14-10): alle taken staan op het publieke bord, ook beveiliging, back-up en outreach. Nooit: geheimen, sleutels, wachtwoorden, IP-adressen, inlog- of beheeraccounts van systemen (WordPress, server, externe diensten) of exploiteerbare details van een zwakke plek. Wel toegestaan: de rolnamen van de bouwaccounts van de stack (codex1–4, claude3/4), omdat Richard die in de meter wil zien (14-10: 'ik zie geen meetresultaten/accounts'). Uit privé-bronnen: alleen vaste statusteksten, PR-nummers, tijden, bouwaccounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties.",
   "werkvoorraad_toelating": "planning (handmatig bijgehouden), geen meting",
   "content": {
     "input": [

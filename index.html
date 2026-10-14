@@ -216,11 +216,11 @@ function teken(d){
   eis(ing==null?null:ing===0,"Nul ingrepen na de start",ing==null?"onbewezen":String(ing));
   const mb=bi.mac_offline_bewijs;eis(mb&&mb.bron&&typeof mb.uren==="number"?mb.uren>=4:null,"Mac minstens 4 uur offline (verklaring Richard)",mb&&mb.bron?`${mb.uren} u · ${mb.bron}`:"onbewezen");
   eis((bi.verstreken_uur||0)>=24?true:null,"24 uur aaneengesloten",`${Math.max(0,24-(bi.verstreken_uur||0)).toFixed(1)} u te gaan`);
-  const lop=(d.orders||[]).filter(o=>!o.uitkomst);const L=document.getElementById("lopend");L.replaceChildren();
+  const lop=(d.orders||[]).filter(o=>!o.eind);const L=document.getElementById("lopend");L.replaceChildren();
   if(!lop.length)L.textContent="Niets in uitvoering. Een lege wachtrij is geen stilstand.";
-  for(const o of lop){const p=el("div");p.append(el("b",null,o.order)," ",`${o.fase} · bouwer ${o.bouwer} · sinds ${hhmm(o.geopend)}`);L.append(p)}
+  for(const o of lop){const p=el("div");p.append(el("b",null,o.order)," ",`${o.fase}${o.uitkomst?" · voorlopig: "+o.uitkomst+" (nog geen eindstand)":""} · bouwer ${o.bouwer} · sinds ${hhmm(o.geopend)}`);L.append(p)}
 
-  const tb=document.getElementById("orders");tb.replaceChildren();const af=(d.orders||[]).filter(o=>o.uitkomst&&o.uitkomst!=="onbekend");
+  const tb=document.getElementById("orders");tb.replaceChildren();const af=(d.orders||[]).filter(o=>o.eind);
   document.getElementById("af-kop").textContent=`Opdrachten (${af.length} met uitkomst)`;
   for(const o of af){const tr=el("tr");const a=el("a",null,"#"+o.pr);a.href=REPO+o.pr;a.target="_blank";a.rel="noopener";const td=el("td","data");td.append(a);
     const k=o.uitkomst==="samengevoegd"?"goed":o.uitkomst==="zonder uitkomst"?"uit":"fout";const u=el("td");u.append(el("span","pil "+k,o.uitkomst));
