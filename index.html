@@ -58,6 +58,9 @@ h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--zach
 .cl-nr{font:12px var(--f-data);color:var(--zacht);min-width:42px;flex:none}
 .cl-naam{flex:1;min-width:0}
 .cl-st{font:12px var(--f-data);color:var(--zacht);white-space:nowrap;flex:none}
+.cl-repo{display:block;font:12px var(--f-data);color:var(--zacht);margin-top:1px}
+.cl-repo a{color:var(--accent);text-decoration:none}
+.cl-repo a:hover{text-decoration:underline}
 .cl-noot{font-size:12px;color:var(--zacht)}
 .meter{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .acc{border:1px solid var(--lijn);border-radius:5px;padding:10px 12px;display:grid;gap:4px;background:var(--vlak)}
@@ -108,7 +111,7 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
       <div class="balk"><i id="bi-balk" style="width:0"></i></div><ul class="eisen" id="bi-eisen"></ul>
       <h2 style="margin-top:6px">Lopend</h2><div id="lopend" class="klein"></div></section>
   </div>
-  <section class="blok"><div class="blokkop"><h2>Projecten</h2><span class="klein">per cluster · <a id="reg" href="#">volledig register (privé)</a></span></div><div class="clusters" id="clusters"></div></section>
+  <section class="blok"><div class="blokkop"><h2>Projecten</h2><span class="klein">per cluster · repo’s zijn privé (alleen jij) · <b>?</b> = koppeling nog niet bevestigd · <a id="reg" href="#">volledig register</a></span></div><div class="clusters" id="clusters"></div></section>
   <section class="blok"><details><summary id="af-kop">Opdrachten</summary><div class="tabel" style="margin-top:10px"><table><thead><tr><th>PR</th><th>Opdracht</th><th>Bouwer</th><th>Uitkomst</th><th>Tijd</th></tr></thead><tbody id="orders"></tbody></table></div></details></section>
   <p class="bron" id="bronnen"></p>
 </main>
@@ -153,7 +156,9 @@ function teken(d){
   const cg=document.getElementById("clusters");cg.replaceChildren();
   if(d.register_url){document.getElementById("reg").href=d.register_url}
   for(const c of d.clusters||[]){const k=el("div","cl"+(c.prio?" cl-prio":""));const kop=el("div","cl-kop");kop.append(el("h3",null,c.naam));if(c.prio)kop.append(el("span","cl-label","prioriteit"));k.append(kop);
-    const ul=el("ul","cl-lijst");for(const [nr,naam,st] of c.items){const li=el("li");li.append(el("span","cl-nr","#"+nr),el("span","cl-naam",naam),el("span","cl-st",st));ul.append(li)}k.append(ul);
+    const ul=el("ul","cl-lijst");for(const [nr,naam,st,repos] of c.items){const li=el("li");const nm=el("span","cl-naam",naam);
+      const rp=el("span","cl-repo");if(!repos||!repos.length){rp.textContent="geen repo"}else{repos.forEach((r,i)=>{const twijfel=r.endsWith("?");const n=r.replace("?","");const a=el("a",null,n+(twijfel?" ?":""));a.href="https://github.com/rvanhooijdonk-png/"+n;a.target="_blank";a.rel="noopener";if(twijfel)a.title="koppeling nog niet bevestigd";if(i)rp.append(" · ");rp.append(a)})}
+      nm.append(rp);li.append(el("span","cl-nr","#"+nr),nm,el("span","cl-st",st));ul.append(li)}k.append(ul);
     if(c.noot)k.append(el("span","cl-noot",c.noot));cg.append(k)}
   const m=document.getElementById("meter");m.replaceChildren();let actief=0,bezig=0;
   for(const a of d.accounts||[]){

@@ -200,47 +200,73 @@
         [
           "62",
           "Finfluencer",
-          "onderzoeken"
+          "onderzoeken",
+          [
+            "venture-radar"
+          ]
         ],
         [
           "63",
           "Businessmodel-engine (+71)",
-          "onderzoeken"
+          "onderzoeken",
+          [
+            "venture-radar"
+          ]
         ],
         [
           "64",
           "AI Transformation Tool",
-          "uitwerken"
+          "uitwerken",
+          [
+            "venture-radar"
+          ]
         ],
         [
           "65",
           "AI Prediction Tracker",
-          "belangrijk"
+          "belangrijk",
+          [
+            "venture-radar"
+          ]
         ],
         [
           "66",
           "Collector Car Auction",
-          "onderzoeken"
+          "onderzoeken",
+          [
+            "venture-radar"
+          ]
         ],
         [
           "67",
           "Used Machinery Auction",
-          "—"
+          "—",
+          [
+            "venture-radar"
+          ]
         ],
         [
           "70",
           "Venture-radar",
-          "uitwerken"
+          "uitwerken",
+          [
+            "venture-radar"
+          ]
         ],
         [
           "73",
           "Human Consensus Radar",
-          "hold"
+          "hold",
+          [
+            "nq-human-consensus-radar",
+            "nq-research"
+          ]
         ],
         [
           "74",
           "Open-data AI-applicaties",
-          "bespreken 19-10"
+          "bespreken 19-10",
+          []
         ]
       ],
       "noot": "details in het privé-register"
@@ -252,37 +278,59 @@
         [
           "7",
           "Trechter",
-          "elke keer leeg (P11)"
+          "elke keer leeg (P11)",
+          [
+            "stack-trechter"
+          ]
         ],
         [
           "P1",
           "PIPELINE-INPUT",
-          "bij jou (P5)"
+          "bij jou (P5)",
+          [
+            "trend-pipeline?"
+          ]
         ],
         [
           "P2",
           "PIPELINE-OUTPUT",
-          "overleg (P6)"
+          "overleg (P6)",
+          [
+            "content-intelligence?",
+            "content-desk-frontend?"
+          ]
         ],
         [
           "27",
           "Mail-agent → PIPELINE-INPUT",
-          "P12"
+          "P12",
+          [
+            "mail_agent"
+          ]
         ],
         [
           "16",
           "Presentaties-archief",
-          "P9"
+          "P9",
+          [
+            "keynote-archief"
+          ]
         ],
         [
           "17",
           "Keynote-creator",
-          "blijft leren (P10)"
+          "blijft leren (P10)",
+          [
+            "keynote-creator"
+          ]
         ],
         [
           "18",
           "Faceless-video",
-          "—"
+          "—",
+          [
+            "faceless-video"
+          ]
         ]
       ]
     },
@@ -293,22 +341,33 @@
         [
           "13",
           "richardvanhooijdonk.com",
-          "onderhoud (P3)"
+          "onderhoud (P3)",
+          [
+            "richardvanhooijdonk.com"
+          ]
         ],
         [
           "14",
           "Weblog",
-          "onderhoud (P3)"
+          "onderhoud (P3)",
+          [
+            "weblog-onderhoud",
+            "blog-voorstellen"
+          ]
         ],
         [
           "W1",
           "futurezone.ai",
-          "hold"
+          "hold",
+          []
         ],
         [
           "19",
           "Site-agents",
-          "brainstorm"
+          "brainstorm",
+          [
+            "site-agents"
+          ]
         ]
       ]
     },
@@ -319,12 +378,23 @@
         [
           "29",
           "Takenhub",
-          "reset (P4)"
+          "reset (P4)",
+          [
+            "takenhub",
+            "taskos",
+            "takenhub-gedeeld",
+            "takenhub-ontwerp"
+          ]
         ],
         [
           "39",
           "Office / backoffice",
-          "onderhoud"
+          "onderhoud",
+          [
+            "office",
+            "office-reconcile",
+            "office-db-backup"
+          ]
         ]
       ]
     },
@@ -335,17 +405,24 @@
         [
           "37",
           "Adressenbestand",
-          "stack (P7)"
+          "stack (P7)",
+          [
+            "crm-intelligence-control"
+          ]
         ],
         [
           "38",
           "Scraper",
-          "voeding"
+          "voeding",
+          [
+            "scraper"
+          ]
         ],
         [
           "O1",
           "Cold-email-stack",
-          "overleg (P8)"
+          "overleg (P8)",
+          []
         ]
       ]
     },
@@ -356,17 +433,25 @@
         [
           "S1",
           "Beveiligingsring",
-          "stack (P1)"
+          "stack (P1)",
+          []
         ],
         [
           "S2",
           "Control-center",
-          "stack (P2)"
+          "stack (P2)",
+          [
+            "COA?",
+            "bouwstraat-bord"
+          ]
         ],
         [
           "S3",
           "Bouwstraat (route 2)",
-          "burn-in run 1"
+          "burn-in run 1",
+          [
+            "stack-director-route2"
+          ]
         ]
       ]
     },
@@ -377,22 +462,38 @@
         [
           "43",
           "algo-trading",
-          "vraag aan jou"
+          "vraag aan jou",
+          [
+            "algo-trading"
+          ]
         ],
         [
           "44–45",
           "NQ-onderzoek en -radar",
-          "hold (zie 73)"
+          "hold (zie 73)",
+          [
+            "nq-research",
+            "nq-human-consensus-radar"
+          ]
         ],
         [
           "46–49",
           "momo, memecoin, coach, TradingView",
-          "vraag aan jou"
+          "vraag aan jou",
+          [
+            "momo",
+            "memecoin",
+            "trading-coach",
+            "tradingview-mcp-jackson"
+          ]
         ],
         [
           "50",
           "research-intelligence",
-          "samenvoegen?"
+          "samenvoegen?",
+          [
+            "research-intelligence"
+          ]
         ]
       ]
     },
@@ -403,17 +504,29 @@
         [
           "68",
           "Command Inbox",
-          "niet"
+          "niet",
+          []
         ],
         [
           "72",
           "Gezondheidsplatform",
-          "niet"
+          "niet",
+          [
+            "health?"
+          ]
         ],
         [
           "56–61",
           "oude borden, proeven",
-          "archief"
+          "archief",
+          [
+            "dashboard",
+            "stack-dashboard-agent-slice",
+            "p0-capture-foundation",
+            "kimi-pilot",
+            "debounce-mcp",
+            "poortproef-wegwerp"
+          ]
         ]
       ]
     }
