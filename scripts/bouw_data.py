@@ -82,6 +82,24 @@ def aanvoer_commits():
     return api(f"repos/{REPO}/commits?sha=integratie&path=aanvoer&per_page=20")
 
 
+def prioriteiten():
+    """Titels uit config; status, labels en reacties uit de privé-issues als het token daar mag lezen."""
+    repo = CONFIG.get("prioriteiten_repo")
+    lijst = [dict(p, url=f"https://github.com/{repo}/issues/{p['nr']}", status=None, reacties=None,
+                  bijgewerkt=None, open=True) for p in CONFIG.get("prioriteiten", [])]
+    issues = lees("prioriteiten", lambda: api(f"repos/{repo}/issues?state=all&per_page=100")) if repo else None
+    if issues:
+        per_nr = {i["number"]: i for i in issues if "pull_request" not in i}
+        for p in lijst:
+            i = per_nr.get(p["nr"])
+            if not i:
+                continue
+            labels = [l["name"] for l in i.get("labels", [])]
+            p["wie"] = next((l for l in ("bij-jou", "overleg", "bezig", "stack", "klaar") if l in labels), p["wie"])
+            p.update(reacties=i.get("comments"), bijgewerkt=i.get("updated_at"), open=i.get("state") == "open")
+    return lijst
+
+
 def main():
     alle = lees("pull_requests", prs) or []
     stand = lees("telling", telling)
@@ -178,7 +196,7 @@ def main():
             a["onbekend"] = True
     json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": stand, "orders": orders,
                "accounts": accounts, "ticker": ticker[:150], "burnin": burnin,
-               "projecten": CONFIG["projecten"], "wacht_op_richard": CONFIG["wacht_op_richard"]},
+               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "wacht_op_richard": CONFIG["wacht_op_richard"]},
               sys.stdout, ensure_ascii=False, indent=1)
 
 

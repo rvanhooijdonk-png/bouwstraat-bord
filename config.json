@@ -2,19 +2,67 @@
   "route2_repo": "rvanhooijdonk-png/stack-director-route2",
   "standaard_beoordelaar": "codex2",
   "accounts": [
-    {"naam": "codex1", "rol": "bouwer", "aangesloten": true},
-    {"naam": "codex2", "rol": "beoordelaar", "aangesloten": true},
-    {"naam": "codex3", "rol": "bouwer", "aangesloten": true},
-    {"naam": "codex4", "rol": "Astra (koerscontrole)", "aangesloten": true},
-    {"naam": "claude3", "rol": "bouwer", "aangesloten": false, "noot": "sleutel nodig"},
-    {"naam": "claude4", "rol": "bouwer", "aangesloten": false, "noot": "sleutel nodig"},
-    {"naam": "claude1", "rol": "—", "aangesloten": false, "noot": "vervalt zondag"},
-    {"naam": "claude2", "rol": "—", "aangesloten": false, "noot": "vervalt zondag"}
+    {
+      "naam": "codex1",
+      "rol": "bouwer",
+      "aangesloten": true
+    },
+    {
+      "naam": "codex2",
+      "rol": "beoordelaar",
+      "aangesloten": true
+    },
+    {
+      "naam": "codex3",
+      "rol": "bouwer",
+      "aangesloten": true
+    },
+    {
+      "naam": "codex4",
+      "rol": "Astra (koerscontrole)",
+      "aangesloten": true
+    },
+    {
+      "naam": "claude3",
+      "rol": "bouwer",
+      "aangesloten": false,
+      "noot": "sleutel nodig"
+    },
+    {
+      "naam": "claude4",
+      "rol": "bouwer",
+      "aangesloten": false,
+      "noot": "sleutel nodig"
+    },
+    {
+      "naam": "claude1",
+      "rol": "—",
+      "aangesloten": false,
+      "noot": "vervalt zondag"
+    },
+    {
+      "naam": "claude2",
+      "rol": "—",
+      "aangesloten": false,
+      "noot": "vervalt zondag"
+    }
   ],
   "projecten": [
-    {"id": "route2", "naam": "route 2", "aangesloten": true},
-    {"id": "trend-pipeline", "naam": "trend-pipeline", "aangesloten": false},
-    {"id": "futurezone", "naam": "futurezone", "aangesloten": false}
+    {
+      "id": "route2",
+      "naam": "route 2",
+      "aangesloten": true
+    },
+    {
+      "id": "trend-pipeline",
+      "naam": "trend-pipeline",
+      "aangesloten": false
+    },
+    {
+      "id": "futurezone",
+      "naam": "futurezone",
+      "aangesloten": false
+    }
   ],
   "burnin": {
     "naam": "Burn-in run 1",
@@ -23,11 +71,99 @@
     "start_pr": 55,
     "orders_prefix": "BURNIN-",
     "orders_aantal": 10,
-    "vooraf_ingrepen": [53, 55, 56, 57],
+    "vooraf_ingrepen": [
+      53,
+      55,
+      56,
+      57
+    ],
     "mac_offline": "OB-0948: MacBook 07:30–12:55 zonder internet"
   },
   "wacht_op_richard": [
-    {"wat": "Sleutels voor claude3 en claude4 zetten", "wanneer": "na het einde van run 1", "duur": "±1 minuut per account"},
-    {"wat": "Kiezen welk project als eerste aansluit", "wanneer": "na de vrijgave", "duur": "voorstel: trend-pipeline"}
+    {
+      "wat": "Sleutels voor claude3 en claude4 zetten",
+      "wanneer": "na het einde van run 1",
+      "duur": "±1 minuut per account"
+    },
+    {
+      "wat": "Kiezen welk project als eerste aansluit",
+      "wanneer": "na de vrijgave",
+      "duur": "voorstel: trend-pipeline"
+    }
+  ],
+  "prioriteiten_repo": "rvanhooijdonk-png/projectenregister",
+  "prioriteiten": [
+    {
+      "nr": 1,
+      "code": "P1",
+      "titel": "Beveiligingsring rond de hele stack",
+      "wie": "stack"
+    },
+    {
+      "nr": 2,
+      "code": "P2",
+      "titel": "Control-center: praten met je stack",
+      "wie": "stack"
+    },
+    {
+      "nr": 3,
+      "code": "P3",
+      "titel": "Websites + technisch onderhoud",
+      "wie": "stack"
+    },
+    {
+      "nr": 4,
+      "code": "P4",
+      "titel": "Takenhub resetten",
+      "wie": "bij-jou"
+    },
+    {
+      "nr": 5,
+      "code": "P5",
+      "titel": "PIPELINE-INPUT: doornemen en leeftijdscontrole",
+      "wie": "bij-jou"
+    },
+    {
+      "nr": 6,
+      "code": "P6",
+      "titel": "PIPELINE-OUTPUT: productie-unit ontwerpen",
+      "wie": "overleg"
+    },
+    {
+      "nr": 7,
+      "code": "P7",
+      "titel": "Outreach: adressenbestand beheren",
+      "wie": "stack"
+    },
+    {
+      "nr": 8,
+      "code": "P8",
+      "titel": "Cold-email-stack",
+      "wie": "overleg"
+    },
+    {
+      "nr": 9,
+      "code": "P9",
+      "titel": "Presentaties: archief",
+      "wie": "stack"
+    },
+    {
+      "nr": 10,
+      "code": "P10",
+      "titel": "Keynote-creator blijft leren",
+      "wie": "stack"
+    },
+    {
+      "nr": 11,
+      "code": "P11",
+      "titel": "Trechter elke keer leeg",
+      "wie": "stack"
+    },
+    {
+      "nr": 12,
+      "code": "P12",
+      "titel": "Mail-agent opgaan in PIPELINE-INPUT",
+      "wie": "overleg"
+    }
   ]
 }
