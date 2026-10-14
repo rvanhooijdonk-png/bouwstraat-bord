@@ -31,7 +31,7 @@ jobs:
           ROUTE2_LEES_TOKEN: ${{ secrets.ROUTE2_LEES_TOKEN }}
         run: |
           mkdir -p site
-          cp index.html voorstel.html site/
+          cp index.html voorstel.html stack.html site/
           python scripts/bouw_data.py > site/data.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

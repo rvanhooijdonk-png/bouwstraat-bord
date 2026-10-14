@@ -46,6 +46,12 @@ h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--zach
 .knop{font:500 13px var(--f-tekst);text-decoration:none;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:3px 10px;white-space:nowrap}
 .knop:hover,.knop:focus-visible{background:var(--accent);color:var(--vlak)}
 @media (max-width:600px){.prio{grid-template-columns:40px 1fr}.prio .reacties{grid-column:2}.prio .knop{grid-column:2;justify-self:start}}
+.ct-kolommen{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media(max-width:760px){.ct-kolommen{grid-template-columns:1fr}}
+.ct-kop{font-size:13px;letter-spacing:.06em;margin:0 0 6px}.ct-rij{display:grid;grid-template-columns:1fr auto;gap:2px 8px;padding:6px 0;border-top:1px solid var(--lijn,#e5e5e5);font-size:14px}.ct-rij small{opacity:.72}
+.ct-st{font-size:12px;padding:1px 8px;border-radius:999px;border:1px solid currentColor;align-self:start;white-space:nowrap}.ct-st.bestaat{color:#1a7f37}.ct-st.deels{color:#9a6700}.ct-st.gepland{color:#5b4bd6}.ct-st.idee{color:#6e7781}
+.ct-ideeen{margin-top:12px;font-size:14px}.ct-ideeen li{margin:3px 0}.wv-meer{grid-column:1/-1;font-size:13px;opacity:.8}
+.wv-filters{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.wv-filters button{font:inherit;font-size:13px;padding:3px 10px;border-radius:999px;border:1px solid var(--lijn,#ccc);background:transparent;color:inherit;cursor:pointer}.wv-filters button[aria-pressed="true"]{background:var(--tekst,#222);color:var(--grond,#fff)}
+.wv-groep{margin:0 0 12px}.wv-groep h3{font-size:14px;margin:0 0 6px}.wv-rij{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:6px 0;border-top:1px solid var(--lijn,#e5e5e5);font-size:14px}.wv-rij small{opacity:.7}.wv-st{font-size:12px;white-space:nowrap;padding:1px 8px;border-radius:999px;border:1px solid currentColor;align-self:start}.wv-st.urgent{color:#b3261e}.wv-st.wacht{color:#9a6700}.wv-st.astra{color:#5b4bd6}.wv-st.klaar{color:#1a7f37}
 .clusters{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
 .cl{border:1px solid var(--lijn);border-radius:5px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--vlak)}
 .cl.cl-prio{border-top:4px solid var(--accent)}
@@ -111,7 +117,12 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
       <div class="balk"><i id="bi-balk" style="width:0"></i></div><ul class="eisen" id="bi-eisen"></ul>
       <h2 style="margin-top:6px">Lopend</h2><div id="lopend" class="klein"></div></section>
   </div>
-  <section class="blok"><div class="blokkop"><h2>Projecten</h2><span class="klein">per cluster · repo’s zijn privé (alleen jij) · <b>?</b> = koppeling nog niet bevestigd · <a id="reg" href="#">volledig register</a></span></div><div class="clusters" id="clusters"></div></section>
+  <section class="blok" id="content-blok"><div class="blokkop"><h2>Content: input → output</h2><span class="klein" id="ct-noot"></span></div>
+    <div class="ct-kolommen"><div><h3 class="ct-kop">CONTENT-INPUT <span class="klein">waar onderwerpen vandaan komen</span></h3><div id="ct-input"></div></div>
+    <div><h3 class="ct-kop">CONTENT-OUTPUT <span class="klein">wat we maken en publiceren</span></h3><div id="ct-output"></div></div></div>
+    <details class="ct-ideeen"><summary>Ideeën (nog niet besloten)</summary><ul id="ct-ideeen"></ul></details></section>
+  <section class="blok" id="werkvoorraad-blok"><div class="blokkop"><h2>Werkvoorraad</h2><span class="klein"><span id="wv-tel"></span> · planning, geen meting · details in het privé-register</span></div><div class="wv-filters" id="wv-filters"></div><div id="werkvoorraad"></div></section>
+  <section class="blok"><div class="blokkop"><h2>Projecten</h2><span class="klein">per cluster · repo’s zijn privé (alleen jij) · <b>?</b> = koppeling nog niet bevestigd · <a id="reg" href="#">volledig register</a> · <a href="stack.html">hele stack in één beeld</a></span></div><div class="clusters" id="clusters"></div></section>
   <section class="blok"><details><summary id="af-kop">Opdrachten</summary><div class="tabel" style="margin-top:10px"><table><thead><tr><th>PR</th><th>Opdracht</th><th>Bouwer</th><th>Uitkomst</th><th>Tijd</th></tr></thead><tbody id="orders"></tbody></table></div></details></section>
   <p class="bron" id="bronnen"></p>
 </main>
@@ -153,6 +164,27 @@ function teken(d){
     const links=el("span");links.append(ti," ",pil);r.append(el("span","code",p.code),links,re,a);pr.append(r)}
   const pb=(d.bronnen||{}).prioriteiten;const pnoot=pb&&pb.status!=="GEMETEN"?" · status en reacties nog niet leesbaar (leessleutel mist toegang tot projectenregister)":"";
   document.getElementById("prio-sam").textContent=`${(d.prioriteiten||[]).length} prioriteiten · ${bijJou} bij jou of in overleg · reageren via het privé-issue (alleen jij)${pnoot}`;
+  // Content: input en output naast elkaar, met stand en volgende stap.
+  const ct=d.content||{};document.getElementById("ct-noot").textContent=ct.noot||"";
+  const rijCt=(x)=>{const r=el("div","ct-rij");const l=el("div");l.append(el("b",null,x.naam),el("br"),el("small",null,x.wat),el("br"),el("small",null,`waar: ${x.waar} · volgende: ${x.volgende}`));r.append(l,el("span","ct-st "+x.stand,x.stand));return r};
+  for(const [id,lijst] of [["ct-input",ct.input||[]],["ct-output",ct.output||[]]]){const b=document.getElementById(id);b.replaceChildren();for(const x of lijst)b.append(rijCt(x))}
+  const ul=document.getElementById("ct-ideeen");ul.replaceChildren();for(const i of ct.ideeen||[])ul.append(el("li",null,i));
+  // Werkvoorraad: alles wat loopt, af is, bij Astra ligt, op jou wacht of gepland staat.
+  const VOLGORDE=["urgent","wacht op jou","bij Astra","loopt","gepland","later","afgeleverd"];
+  const KLASSE={"urgent":"urgent","wacht op jou":"wacht","bij Astra":"astra","afgeleverd":"klaar"};
+  const wv=d.werkvoorraad||[];const wvBox=document.getElementById("werkvoorraad");const wvF=document.getElementById("wv-filters");
+  const wvTel={};for(const w of wv)wvTel[w.status]=(wvTel[w.status]||0)+1;
+  document.getElementById("wv-tel").textContent=`${wv.length} taken · `+VOLGORDE.filter(s=>wvTel[s]).map(s=>`${wvTel[s]} ${s}`).join(" · ");
+  let wvFilter=null;
+  const tekenWv=()=>{wvBox.replaceChildren();for(const st of VOLGORDE){const rij=wv.filter(w=>w.status===st&&(!wvFilter||w.spoor===wvFilter));if(!rij.length)continue;
+    const g=el("div","wv-groep");g.append(el("h3",null,`${st} (${rij.length})`));
+    for(const w of rij){const r=el("div","wv-rij");const links=el("div");
+      if(w.link){const a=el("a",null,w.titel);a.href=w.link;a.target="_blank";a.rel="noopener";links.append(a)}else links.append(el("span",null,w.titel));
+      links.append(el("br"),el("small",null,`${w.spoor} · ${w.wie}`));r.append(links,el("span","wv-st "+(KLASSE[w.status]||""),w.status));if(w.volgende||w.klaar_als)r.append(el("div","wv-meer",`Volgende stap: ${w.volgende||"—"} · Klaar als: ${w.klaar_als||"—"}`));g.append(r)}
+    wvBox.append(g)}};
+  wvF.replaceChildren();const sporen=[...new Set(wv.map(w=>w.spoor))];
+  for(const s of [null,...sporen]){const b=el("button",null,s||"alles");b.setAttribute("aria-pressed",String(s===wvFilter));b.onclick=()=>{wvFilter=s;for(const x of wvF.children)x.setAttribute("aria-pressed",String(x===b));tekenWv()};wvF.append(b)}
+  tekenWv();
   const cg=document.getElementById("clusters");cg.replaceChildren();
   if(d.register_url){document.getElementById("reg").href=d.register_url}
   for(const c of d.clusters||[]){const k=el("div","cl"+(c.prio?" cl-prio":""));const kop=el("div","cl-kop");kop.append(el("h3",null,c.naam));if(c.prio)kop.append(el("span","cl-label","prioriteit"));k.append(kop);
@@ -182,7 +214,7 @@ function teken(d){
   const eis=(ok,wat,stand)=>{const li=el("li");li.append(el("span","t "+(ok===true?"ja":ok===false?"nee":"open"),ok===true?"✓":ok===false?"✗":"…"),el("span",null,wat),el("small",null,stand));e.append(li)};
   eis(bi.uitkomsten>=bi.orders_aantal?true:null,"Tien echte uitkomsten",`${bi.uitkomsten}/${bi.orders_aantal}`);
   eis(ing==null?null:ing===0,"Nul ingrepen na de start",ing==null?"onbewezen":String(ing));
-  const mb=bi.mac_offline_bewijs;eis(mb&&mb.bron&&typeof mb.uren==="number"?mb.uren>=4:null,"Mac minstens 4 uur offline",mb&&mb.bron?`${mb.uren} u · ${mb.bron}`:"onbewezen");
+  const mb=bi.mac_offline_bewijs;eis(mb&&mb.bron&&typeof mb.uren==="number"?mb.uren>=4:null,"Mac minstens 4 uur offline (verklaring Richard)",mb&&mb.bron?`${mb.uren} u · ${mb.bron}`:"onbewezen");
   eis((bi.verstreken_uur||0)>=24?true:null,"24 uur aaneengesloten",`${Math.max(0,24-(bi.verstreken_uur||0)).toFixed(1)} u te gaan`);
   const lop=(d.orders||[]).filter(o=>!o.uitkomst);const L=document.getElementById("lopend");L.replaceChildren();
   if(!lop.length)L.textContent="Niets in uitvoering. Een lege wachtrij is geen stilstand.";

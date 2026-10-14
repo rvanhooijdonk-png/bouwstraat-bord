@@ -136,7 +136,16 @@ def main():
     # Een afkeuring of rode test is pas een eindstand als de telling van route 2 aantoonbaar 0 lopende workflows meldt
     # (route 2 sluit een NO_GO-PR niet; de workflow eindigt wel). Zonder leesbare telling telt een open PR nooit mee.
     u = stand.get("uitkomsten") if isinstance(stand, dict) and isinstance(stand.get("uitkomsten"), dict) else {}
-    niets_lopend = (u.get("bron", {}).get("status") == "GEMETEN" and isinstance(u.get("lopend"), int)
+    # De nul telt alleen uit een volledige, verse telling (≤ 30 min) waarvan het venster de burn-in-start omvat (Astra R5).
+    tel_tijd = tijd(stand.get("gemeten_om")) if isinstance(stand, dict) and isinstance(stand.get("gemeten_om"), str) else None
+    venster = stand.get("venster") if isinstance(stand, dict) and isinstance(stand.get("venster"), dict) else {}
+    venster_van = tijd(venster.get("van")) if isinstance(venster.get("van"), str) else None
+    venster_tot = tijd(venster.get("tot")) if isinstance(venster.get("tot"), str) else None
+    telling_geldig = (isinstance(stand, dict) and stand.get("volledig") is True and tel_tijd is not None
+                      and timedelta(0) <= NU - tel_tijd <= timedelta(minutes=30)
+                      and venster_van is not None and venster_tot is not None
+                      and venster_van <= t0 <= venster_tot and venster_van <= venster_tot)
+    niets_lopend = (telling_geldig and u.get("bron", {}).get("status") == "GEMETEN" and isinstance(u.get("lopend"), int)
                     and not isinstance(u.get("lopend"), bool) and u.get("lopend") == 0)
     orders, ticker = [], []
     for pr in alle:
@@ -180,12 +189,12 @@ def main():
         elif review.get("state") == "pending" or tests.get("state") == "success":
             fase, uitkomst = "beoordeling", None
         elif not recent:
-            fase, uitkomst = "onbekend", "onbekend"
+            fase, uitkomst = "open, stand onbekend (ouder dan 3 dagen)", None  # blijft zichtbaar bij Lopend (Astra R6)
         else:
             fase, uitkomst = "bouw", None
         if uitkomst is None and geopend < NU - timedelta(minutes=90):
             # Een open PR zonder statussen na anderhalf uur is verlaten (bijvoorbeeld een geblokkeerde run).
-            fase, uitkomst = "zonder uitkomst", "zonder uitkomst"
+            fase, uitkomst = "zonder voortgang", None  # blijft zichtbaar bij Lopend; geen eindstand (Astra R5)
         eind = bool(merged) or bool(gesloten) or (uitkomst in ("afgekeurd", "tests rood") and niets_lopend)
         orders.append({"pr": pr["number"], "order": order_id, "bouwer": bouwer, "eind": eind,
                        "beoordelaar": beoordelaar, "fase": fase, "uitkomst": uitkomst,
@@ -219,7 +228,7 @@ def main():
         uniek[o["order"]] = o
     burnin = {**bi, "uitkomsten": sum(1 for o in uniek.values() if o["eind"] and o["uitkomst"] in ECHTE_UITKOMST),
               "samengevoegd": sum(1 for o in uniek.values() if o["uitkomst"] == "samengevoegd"),
-              "afgekeurd": sum(1 for o in uniek.values() if o["uitkomst"] in ("afgekeurd", "tests rood")),
+              "afgekeurd": sum(1 for o in uniek.values() if o["eind"] and o["uitkomst"] in ("afgekeurd", "tests rood")),
               "verstreken_uur": round(max(0.0, (min(NU, tijd(bi["einde"])) - tijd(bi["t0"])).total_seconds()) / 3600, 1)}
     if stand:
         ing = stand.get("ingrepen", {})
@@ -244,7 +253,7 @@ def main():
                                           if isinstance(u.get(k), int) and not isinstance(u.get(k), bool)}}
     json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": telling_publiek, "orders": orders,
                "accounts": accounts, "ticker": ticker[:150], "burnin": burnin,
-               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"]},
+               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"], "werkvoorraad": CONFIG.get("werkvoorraad", []), "content": CONFIG.get("content", {})},
               sys.stdout, ensure_ascii=False, indent=1)
 
 

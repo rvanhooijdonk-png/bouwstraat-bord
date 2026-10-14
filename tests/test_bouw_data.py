@@ -24,19 +24,32 @@ def laad():
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
 
-def nep_api(m, prs_ok=True):
+def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, onvolledig=False, venster_tot_voor_t0=False, toekomst=False):
+    from datetime import timedelta as _td2
     t0 = m.CONFIG["burnin"]["t0"]
     na = m.NU.isoformat().replace("+00:00", "Z")
     prs = []
-    for i in range(10):  # tien verlaten opdrachten na t0, zonder statussen
+    for i in range(10):  # tien burn-in-opdrachten na t0
         prs.append({"number": 100 + i, "title": f"[ROUTE2 codex1] BURNIN-{i:02d}", "created_at": t0, "merged_at": None,
-                    "closed_at": None, "head": {"sha": f"s{i}"}})
+                    "closed_at": None, "head": {"sha": f"s{i}" if scenario != "rood" else f"rood{i}"}})
     prs.append({"number": 200, "title": "[ROUTE2 codex1] KLANT-ACME-OFFERTE", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "k"}})
     prs.append({"number": 201, "title": "[ROUTE2 geheimaccount] PROEF-A1", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "g"}})
-    telling = {"gemeten_om": na, "volledig": True, "stilstand": {"order_zonder_voortgang_45_minuten": False, "notitie": KANARIE},
-               "vrij_veld": KANARIE, "ingrepen": {"pr_nummers": [55, "57; " + KANARIE, 999], "bron": {"status": "GEMETEN"}}}
+    oud = (m.NU - _td2(days=10)).isoformat().replace("+00:00", "Z")
+    prs.append({"number": 203, "title": "[ROUTE2 codex1] BURNIN-99", "created_at": oud, "merged_at": None,
+                "closed_at": None, "head": {"sha": "oud"}})
+    prs.append({"number": 202, "title": "[ROUTE2 codex1] PROEF-ACME", "created_at": na, "merged_at": None,
+                "closed_at": None, "head": {"sha": "a"}})
+    from datetime import timedelta as _td
+    gem = (m.NU - _td(hours=2)).isoformat().replace("+00:00", "Z") if telling_oud else (
+        (m.NU + _td(minutes=10)).isoformat().replace("+00:00", "Z") if toekomst else na)
+    van = (m.tijd(t0) - _td(hours=1)).isoformat().replace("+00:00", "Z")
+    tot = (m.tijd(t0) - _td(minutes=30)).isoformat().replace("+00:00", "Z") if venster_tot_voor_t0 else na
+    telling = {"gemeten_om": gem, "volledig": not onvolledig, "venster": {"van": van, "tot": tot}, "stilstand": {"order_zonder_voortgang_45_minuten": False, "notitie": KANARIE},
+               "vrij_veld": KANARIE, "ingrepen": {"pr_nummers": [55, "57; " + KANARIE, 999], "bron": {"status": "GEMETEN"}},
+               "uitkomsten": {"merged": 0, "no_go": 10, "lopend": lopend, "pogingen_totaal": 10, "notitie": KANARIE,
+                              "bron": {"status": "GEMETEN"}}}
     def api(pad):
         if "/pulls" in pad:
             if not prs_ok:
@@ -45,6 +58,9 @@ def nep_api(m, prs_ok=True):
         if "/contents/telling" in pad:
             return {"content": base64.b64encode(json.dumps(telling).encode()).decode()}
         if "/statuses" in pad:
+            if "/rood" in pad:  # open PR met rode tests en afwijzende beoordeling
+                return [{"context": "route2/review", "state": "failure", "description": KANARIE, "created_at": na},
+                        {"context": "route2/tests", "state": "failure", "description": KANARIE, "created_at": na}]
             return [{"context": "route2/tests", "state": "success", "description": KANARIE, "created_at": na}]
         if "/commits" in pad:
             return [{"commit": {"committer": {"date": na}, "message": KANARIE}}]
@@ -67,7 +83,36 @@ check("klantnaam uit PR-titel geneutraliseerd", "KLANT-ACME" not in tekst and an
 check("onbekend account wordt 'onbekend'", "geheimaccount" not in tekst)
 check("tien verlaten opdrachten tellen niet als uitkomst", d["burnin"]["uitkomsten"] == 0, str(d["burnin"]["uitkomsten"]))
 check("ingrepen alleen gehele PR-nummers", d["burnin"]["ingrepen_prs"] == [999], str(d["burnin"].get("ingrepen_prs")))
-check("telling alleen gekozen velden", set(d["telling"]) == {"gemeten_om", "volledig", "stilstand"})
+check("telling alleen gekozen velden", set(d["telling"]) == {"gemeten_om", "volledig", "stilstand", "uitkomsten"})
+
+check("korte privé-ordernaam PROEF-ACME geneutraliseerd", "ACME" not in tekst)
+
+
+def draai(scenario, lopend, **kw):
+    mm = laad(); nep_api(mm, scenario=scenario, lopend=lopend, **kw)
+    o = io.StringIO()
+    with contextlib.redirect_stdout(o):
+        mm.main()
+    return json.loads(o.getvalue())
+
+
+d_rood_lopend = draai("rood", 1)
+check("tien open rode PR's terwijl er nog workflows lopen: geen uitkomst", d_rood_lopend["burnin"]["uitkomsten"] == 0,
+      str(d_rood_lopend["burnin"]["uitkomsten"]))
+d_rood_klaar = draai("rood", 0)
+check("tien afgekeurde PR's en telling meldt 0 lopend: tien eindstanden", d_rood_klaar["burnin"]["uitkomsten"] == 10,
+      str(d_rood_klaar["burnin"]["uitkomsten"]))
+check("oude telling (2 uur) met 0 lopend maakt open afgekeurde PR's geen eindstand",
+      draai("rood", 0, telling_oud=True)["burnin"]["uitkomsten"] == 0)
+check("onvolledige telling met 0 lopend maakt open afgekeurde PR's geen eindstand",
+      draai("rood", 0, onvolledig=True)["burnin"]["uitkomsten"] == 0)
+check("venster dat vóór de burn-in-start eindigt telt niet",
+      draai("rood", 0, venster_tot_voor_t0=True)["burnin"]["uitkomsten"] == 0)
+check("meettijd in de toekomst telt niet", draai("rood", 0, toekomst=True)["burnin"]["uitkomsten"] == 0)
+check("open PR ouder dan 3 dagen blijft zichtbaar als lopend", any(o["pr"] == 203 and o["uitkomst"] is None for o in d["orders"]))
+d_verl = draai("verlaten", 1)
+check("verlaten opdrachten blijven zichtbaar als lopend (geen uitkomst)", all(o["uitkomst"] is None for o in d_verl["orders"] if o["order"].startswith("BURNIN-")))
+check("telling-uitkomsten alleen gehele getallen, geen notitie", d_rood_klaar["telling"]["uitkomsten"] == {"merged": 0, "no_go": 10, "lopend": 0, "pogingen_totaal": 10})
 
 m2 = laad(); nep_api(m2, prs_ok=False)
 uit2 = io.StringIO()
@@ -78,6 +123,18 @@ try:
 except SystemExit as e:
     code = e.code
 check("onleesbare PR's blokkeren de publicatie", code not in (0, None) and not uit2.getvalue().strip(), f"code={code}")
+
+# Publieke werkvoorraad: geen beveiligings-, back-up-, sleutel-, account-, outreach- of adresdetails (Astra R5).
+import re as _re
+GEVOELIG = _re.compile(r"back-?up|beveilig|token|sleutel|wachtwoord|formulier|2FA|server|outreach|adres|provider|contacten|accounts|betaal|veiligheid|drift|kwetsba|lek", _re.I)
+cfg = json.loads((PAD.parent.parent / "config.json").read_text(encoding="utf-8"))
+teksten = [w.get(k, "") or "" for w in cfg.get("werkvoorraad", []) for k in ("titel", "volgende", "klaar_als")]
+ct = cfg.get("content", {})
+teksten += [x.get(k, "") or "" for kol in ("input", "output") for x in ct.get(kol, []) for k in ("naam", "wat", "waar", "volgende")]
+teksten += ct.get("ideeen", [])
+teksten += [open(PAD.parent.parent / "stack.html", encoding="utf-8").read()]
+fout_titels = [x[:80] for x in teksten if GEVOELIG.search(x) and "alleen in het privé-register" not in x and "details privé" not in x and "details alleen in het privé-register" not in x]
+check("publieke werkvoorraad bevat geen gevoelige details", not fout_titels, str(fout_titels))
 
 print("\nALLE PROEVEN GROEN" if not FOUT else "\nER ZIJN FOUTEN")
 sys.exit(FOUT)
