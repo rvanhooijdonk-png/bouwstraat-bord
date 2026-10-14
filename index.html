@@ -113,7 +113,7 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
       <div class="balk"><i id="bi-balk" style="width:0"></i></div><ul class="eisen" id="bi-eisen"></ul>
       <h2 style="margin-top:6px">Lopend</h2><div id="lopend" class="klein"></div></section>
   </div>
-  <section class="blok" id="werkvoorraad-blok"><div class="blokkop"><h2>Werkvoorraad</h2><span class="klein" id="wv-tel"></span></div><div class="wv-filters" id="wv-filters"></div><div id="werkvoorraad"></div></section>
+  <section class="blok" id="werkvoorraad-blok"><div class="blokkop"><h2>Werkvoorraad</h2><span class="klein"><span id="wv-tel"></span> · planning, geen meting · details in het privé-register</span></div><div class="wv-filters" id="wv-filters"></div><div id="werkvoorraad"></div></section>
   <section class="blok"><div class="blokkop"><h2>Projecten</h2><span class="klein">per cluster · repo’s zijn privé (alleen jij) · <b>?</b> = koppeling nog niet bevestigd · <a id="reg" href="#">volledig register</a></span></div><div class="clusters" id="clusters"></div></section>
   <section class="blok"><details><summary id="af-kop">Opdrachten</summary><div class="tabel" style="margin-top:10px"><table><thead><tr><th>PR</th><th>Opdracht</th><th>Bouwer</th><th>Uitkomst</th><th>Tijd</th></tr></thead><tbody id="orders"></tbody></table></div></details></section>
   <p class="bron" id="bronnen"></p>
@@ -201,7 +201,7 @@ function teken(d){
   const eis=(ok,wat,stand)=>{const li=el("li");li.append(el("span","t "+(ok===true?"ja":ok===false?"nee":"open"),ok===true?"✓":ok===false?"✗":"…"),el("span",null,wat),el("small",null,stand));e.append(li)};
   eis(bi.uitkomsten>=bi.orders_aantal?true:null,"Tien echte uitkomsten",`${bi.uitkomsten}/${bi.orders_aantal}`);
   eis(ing==null?null:ing===0,"Nul ingrepen na de start",ing==null?"onbewezen":String(ing));
-  const mb=bi.mac_offline_bewijs;eis(mb&&mb.bron&&typeof mb.uren==="number"?mb.uren>=4:null,"Mac minstens 4 uur offline",mb&&mb.bron?`${mb.uren} u · ${mb.bron}`:"onbewezen");
+  const mb=bi.mac_offline_bewijs;eis(mb&&mb.bron&&typeof mb.uren==="number"?mb.uren>=4:null,"Mac minstens 4 uur offline (verklaring Richard)",mb&&mb.bron?`${mb.uren} u · ${mb.bron}`:"onbewezen");
   eis((bi.verstreken_uur||0)>=24?true:null,"24 uur aaneengesloten",`${Math.max(0,24-(bi.verstreken_uur||0)).toFixed(1)} u te gaan`);
   const lop=(d.orders||[]).filter(o=>!o.uitkomst);const L=document.getElementById("lopend");L.replaceChildren();
   if(!lop.length)L.textContent="Niets in uitvoering. Een lege wachtrij is geen stilstand.";

@@ -472,16 +472,9 @@
   ],
   "werkvoorraad": [
     {
-      "titel": "Burn-in route 2, run 1 (24 uur, 10 echte uitkomsten, 0 ingrepen)",
+      "titel": "Burn-in route 2, run 1",
       "spoor": "Bouwstraat",
       "status": "loopt",
-      "wie": "stack",
-      "link": null
-    },
-    {
-      "titel": "Eindmeting burn-in, sleutels claude3/4, run 2 met zes accounts, vrijgave",
-      "spoor": "Bouwstraat",
-      "status": "gepland",
       "wie": "stack",
       "link": null
     },
@@ -503,13 +496,6 @@
       "titel": "Modellenvloot: Opus 5.5, Sonnet 5.5, Haiku 5.5 (nog zonder rol)",
       "spoor": "Modellenvloot",
       "status": "afgeleverd",
-      "wie": "stack",
-      "link": null
-    },
-    {
-      "titel": "Modellenvloot als stuurmiddel: consumenten lezen uit de vloot, drift gemeld",
-      "spoor": "Modellenvloot",
-      "status": "gepland",
       "wie": "stack",
       "link": null
     },
@@ -556,13 +542,6 @@
       "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md"
     },
     {
-      "titel": "Nieuwsbrief: bestaande contacten alleen met aantoonbare toestemming",
-      "spoor": "Nieuwsbrief",
-      "status": "later",
-      "wie": "stack + jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md"
-    },
-    {
       "titel": "P0: eerste long-read + nieuwsbrief via het publishing board",
       "spoor": "Long-read",
       "status": "gepland",
@@ -570,7 +549,7 @@
       "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md"
     },
     {
-      "titel": "Schrijfstijl-training (1965 blogs, 116 nieuwsbrieven, gouden set, blinde toets)",
+      "titel": "Schrijfstijl-training (blogs en nieuwsbrieven, gouden set, blinde toets)",
       "spoor": "Long-read",
       "status": "bij Astra",
       "wie": "stack + jij",
@@ -619,13 +598,6 @@
       "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/kennis/social-onderzoek-2026-10.md"
     },
     {
-      "titel": "Social: platforms (X, Instagram, TikTok, LinkedIn + ?) en 5–10 voorbeeldaccounts",
-      "spoor": "Social",
-      "status": "wacht op jou",
-      "wie": "jij",
-      "link": null
-    },
-    {
       "titel": "Social: extern corpus futuristen, patronenboek, winnaarstoets",
       "spoor": "Social",
       "status": "gepland",
@@ -645,13 +617,6 @@
       "status": "bij Astra",
       "wie": "stack",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-seo-geo/plannen/ONDERHOUDSPLAN_WEBLOG_V1.md"
-    },
-    {
-      "titel": "Weblog spoor 1: veiligheid en server (onderhoudsvenster, 2FA, back-up)",
-      "spoor": "Weblog",
-      "status": "wacht op jou",
-      "wie": "jij",
-      "link": null
     },
     {
       "titel": "Weblog spoor 2: cookiebanner, één GA4, nulmeting, Search Console-API",
@@ -705,55 +670,13 @@
     {
       "titel": "Repo's doorzoeken op taken die nog niet in het register staan",
       "spoor": "Overzicht",
-      "status": "loopt",
+      "status": "afgeleverd",
       "wie": "stack",
       "link": null
     },
     {
-      "titel": "Blogadres en taal (NL+EN) bevestigen",
-      "spoor": "Overzicht",
-      "status": "wacht op jou",
-      "wie": "jij",
-      "link": null
-    },
-    {
-      "titel": "Back-up office-database: open melding sinds 10-08 nalopen",
-      "spoor": "Beveiliging en back-up",
-      "status": "urgent",
-      "wie": "stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
-    },
-    {
-      "titel": "PIPELINE-INPUT-scans: open melding 'falen sinds 17-07' nalopen",
+      "titel": "PIPELINE-INPUT-scans: open melding nalopen",
       "spoor": "Content-keten",
-      "status": "urgent",
-      "wie": "stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
-    },
-    {
-      "titel": "Website: beveiligingsmelding bij formulieren nalopen",
-      "spoor": "Websites",
-      "status": "urgent",
-      "wie": "stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
-    },
-    {
-      "titel": "Oude tokens zonder vervaldatum intrekken of vervangen",
-      "spoor": "Beveiliging en back-up",
-      "status": "gepland",
-      "wie": "jij + stack",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
-    },
-    {
-      "titel": "Herstelproef back-ups (nooit bewezen)",
-      "spoor": "Beveiliging en back-up",
-      "status": "gepland",
-      "wie": "stack + jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
-    },
-    {
-      "titel": "Driftmeldingen stack-control afhandelen",
-      "spoor": "Beveiliging en back-up",
       "status": "gepland",
       "wie": "stack",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
@@ -787,13 +710,6 @@
       "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
     },
     {
-      "titel": "Office: betaalkoppelingen uit mail-agent (met akkoord)",
-      "spoor": "Office",
-      "status": "gepland",
-      "wie": "stack + jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
-    },
-    {
       "titel": "Takenhub: audit- en verbeterprogramma (roadmap, audits, review)",
       "spoor": "Office",
       "status": "gepland",
@@ -805,13 +721,6 @@
       "spoor": "Websites",
       "status": "wacht op jou",
       "wie": "jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
-    },
-    {
-      "titel": "Outreach-data: sprints 2–6, provider-tests, adresverificatie",
-      "spoor": "Outreach",
-      "status": "gepland",
-      "wie": "stack + jij",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
     },
     {
@@ -836,12 +745,20 @@
       "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
     },
     {
-      "titel": "Granola-koppeling uitwerken (sleutel staat klaar)",
+      "titel": "Granola-koppeling uitwerken",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "stack",
       "link": null
+    },
+    {
+      "titel": "14 taken met beveiligings-, back-up- of outreachdetails (alleen in het privé-register)",
+      "spoor": "Overzicht",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister"
     }
   ],
-  "publieke_velden_besluit": "14-10 (TOEZICHT, ter bevestiging door Richard): uit privé-bronnen alleen vaste statusteksten, PR-nummers, tijden, accounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties. Nooit titels, beschrijvingen of tekst uit privé-bronnen."
+  "publieke_velden_besluit": "14-10 (TOEZICHT, ter bevestiging door Richard): uit privé-bronnen alleen vaste statusteksten, PR-nummers, tijden, accounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties. Nooit titels, beschrijvingen of tekst uit privé-bronnen. Werkvoorraad: alleen titels zonder beveiligings-, back-up-, sleutel-, account-, outreach- of adresdetails en zonder interne aantallen; statussen zijn planning, geen meting. Ter bevestiging door Richard.",
+  "werkvoorraad_toelating": "planning (handmatig bijgehouden), geen meting"
 }

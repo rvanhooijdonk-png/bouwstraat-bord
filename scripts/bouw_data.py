@@ -136,7 +136,13 @@ def main():
     # Een afkeuring of rode test is pas een eindstand als de telling van route 2 aantoonbaar 0 lopende workflows meldt
     # (route 2 sluit een NO_GO-PR niet; de workflow eindigt wel). Zonder leesbare telling telt een open PR nooit mee.
     u = stand.get("uitkomsten") if isinstance(stand, dict) and isinstance(stand.get("uitkomsten"), dict) else {}
-    niets_lopend = (u.get("bron", {}).get("status") == "GEMETEN" and isinstance(u.get("lopend"), int)
+    # De nul telt alleen uit een volledige, verse telling (≤ 30 min) waarvan het venster de burn-in-start omvat (Astra R5).
+    tel_tijd = tijd(stand.get("gemeten_om")) if isinstance(stand, dict) and isinstance(stand.get("gemeten_om"), str) else None
+    venster = stand.get("venster") if isinstance(stand, dict) and isinstance(stand.get("venster"), dict) else {}
+    venster_van = tijd(venster.get("van")) if isinstance(venster.get("van"), str) else None
+    telling_geldig = (isinstance(stand, dict) and stand.get("volledig") is True and tel_tijd is not None
+                      and NU - tel_tijd <= timedelta(minutes=30) and venster_van is not None and venster_van <= t0)
+    niets_lopend = (telling_geldig and u.get("bron", {}).get("status") == "GEMETEN" and isinstance(u.get("lopend"), int)
                     and not isinstance(u.get("lopend"), bool) and u.get("lopend") == 0)
     orders, ticker = [], []
     for pr in alle:
@@ -185,7 +191,7 @@ def main():
             fase, uitkomst = "bouw", None
         if uitkomst is None and geopend < NU - timedelta(minutes=90):
             # Een open PR zonder statussen na anderhalf uur is verlaten (bijvoorbeeld een geblokkeerde run).
-            fase, uitkomst = "zonder uitkomst", "zonder uitkomst"
+            fase, uitkomst = "zonder voortgang", None  # blijft zichtbaar bij Lopend; geen eindstand (Astra R5)
         eind = bool(merged) or bool(gesloten) or (uitkomst in ("afgekeurd", "tests rood") and niets_lopend)
         orders.append({"pr": pr["number"], "order": order_id, "bouwer": bouwer, "eind": eind,
                        "beoordelaar": beoordelaar, "fase": fase, "uitkomst": uitkomst,
