@@ -294,16 +294,29 @@
           "PIPELINE-INPUT",
           "bij jou (P5)",
           [
-            "trend-pipeline?"
+            "trend-pipeline"
+          ]
+        ],
+        [
+          "50",
+          "└ controle + verdieping (research-intelligence)",
+          "bouw fase 4 · na vrijgave",
+          [
+            "research-intelligence"
           ]
         ],
         [
           "P2",
           "PIPELINE-OUTPUT",
           "overleg (P6)",
+          []
+        ],
+        [
+          "LR",
+          "└ long-read-lijn (contentpijplijn)",
+          "herstel-PR #165 open",
           [
-            "content-intelligence?",
-            "content-desk-frontend?"
+            "trend-pipeline"
           ]
         ],
         [
@@ -332,8 +345,8 @@
         ],
         [
           "18",
-          "Faceless-video",
-          "—",
+          "└ videolijn (faceless video)",
+          "laatste werk 26-08",
           [
             "faceless-video"
           ]
@@ -508,14 +521,6 @@
             "memecoin",
             "trading-coach",
             "tradingview-mcp-jackson"
-          ]
-        ],
-        [
-          "50",
-          "research-intelligence",
-          "samenvoegen?",
-          [
-            "research-intelligence"
           ]
         ]
       ]
