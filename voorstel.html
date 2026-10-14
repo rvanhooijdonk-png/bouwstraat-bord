@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Stackbord-voorstel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Leesdocument: smalle tekstkolom, met brede blokken voor schermschetsen en tabellen. */
+:root{
+  --bg:#f3f4f2;--vlak:#fff;--vlak2:#e9ebe7;--lijn:#d3d7d0;--tekst:#1c211d;--zacht:#5b645d;
+  --accent:#1f5f8b;--accent-zacht:#dce8f1;--goed:#2f7a46;--goed-zacht:#dff0e4;--let:#a3650b;--let-zacht:#f8ecd6;--fout:#b23a2f;--fout-zacht:#f6e0dd;
+  --bouw:#1f5f8b;--onderhoud:#6b4fa0;--data:#2f7a6e;
+  --f-kop:"IBM Plex Sans Condensed","Arial Narrow",sans-serif;--f-tekst:"IBM Plex Sans",system-ui,sans-serif;--f-data:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141816;--vlak:#1c211e;--vlak2:#252b27;--lijn:#343c36;--tekst:#e6eae6;--zacht:#9aa49c;--accent:#6aa9d6;--accent-zacht:#1d3444;
+  --goed:#62b57c;--goed-zacht:#1d3424;--let:#e0a447;--let-zacht:#3a2d16;--fout:#e5786d;--fout-zacht:#3d1f1c;--bouw:#6aa9d6;--onderhoud:#b39ae0;--data:#5fc0b0;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141816;--vlak:#1c211e;--vlak2:#252b27;--lijn:#343c36;--tekst:#e6eae6;--zacht:#9aa49c;--accent:#6aa9d6;--accent-zacht:#1d3444;
+  --goed:#62b57c;--goed-zacht:#1d3424;--let:#e0a447;--let-zacht:#3a2d16;--fout:#e5786d;--fout-zacht:#3d1f1c;--bouw:#6aa9d6;--onderhoud:#b39ae0;--data:#5fc0b0;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--tekst);font:16px/1.6 var(--f-tekst);margin:0}
+.doc{max-width:980px;margin:0 auto;padding-block:28px 64px;padding-inline:16px;display:grid;gap:28px}
+.tekst{max-width:68ch}
+h1,h2,h3{font-family:var(--f-kop);margin:0;text-wrap:balance}
+h1{font-size:clamp(30px,5vw,44px);line-height:1.08}
+h2{font-size:24px;margin-bottom:8px}
+h3{font-size:17px}
+p{margin:0 0 10px}
+.kicker{font:600 13px var(--f-kop);text-transform:uppercase;letter-spacing:.1em;color:var(--accent)}
+.lead{font-size:18px;color:var(--zacht)}
+section{display:grid;gap:12px}
+ul,ol{margin:0;padding-left:22px;display:grid;gap:4px}
+.kaart{background:var(--vlak);border:1px solid var(--lijn);border-radius:6px;padding:16px 18px}
+.drie{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.stroom{border-top:5px solid var(--bouw)}.stroom.o{border-top-color:var(--onderhoud)}.stroom.d{border-top-color:var(--data)}
+.stroom h3{display:flex;gap:8px;align-items:baseline}
+.label{font:500 12px var(--f-data);color:var(--zacht)}
+.waarom{background:var(--let-zacht);border-radius:6px;padding:14px 18px}
+.waarom ol{gap:6px}
+.principes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px}
+.principes .kaart b{display:block;font-family:var(--f-kop);font-size:16px;margin-bottom:2px}
+.schets{background:var(--vlak);border:1px solid var(--lijn);border-radius:6px;overflow:hidden}
+.schets .balk{background:var(--vlak2);padding:6px 12px;font:12px var(--f-data);color:var(--zacht);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.schets .inhoud{padding:14px;display:grid;gap:10px}
+.rij{display:grid;gap:8px}
+.r2{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.vak{border:1px dashed var(--lijn);border-radius:4px;padding:8px 10px;font-size:14px}
+.vak b{font-family:var(--f-kop)}
+.vak.groen{border-style:solid;border-left:4px solid var(--goed)}.vak.oranje{border-style:solid;border-left:4px solid var(--let)}.vak.rood{border-style:solid;border-left:4px solid var(--fout)}
+.lampjes{display:flex;gap:6px;margin-top:4px}
+.lamp{font:11px var(--f-data);padding:1px 6px;border-radius:99px;color:var(--vlak)}
+.lamp.b{background:var(--bouw)}.lamp.o{background:var(--onderhoud)}.lamp.d{background:var(--data)}.lamp.x{background:var(--let)}
+.tabel{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font:600 12px var(--f-kop);text-transform:uppercase;letter-spacing:.06em;color:var(--zacht);padding:6px 8px;border-bottom:1px solid var(--lijn)}
+td{padding:8px;border-bottom:1px solid var(--lijn);vertical-align:top}
+.tag{font:500 12px var(--f-data);padding:1px 7px;border-radius:99px;background:var(--vlak2)}
+.tag.ja{background:var(--goed-zacht);color:var(--goed)}
+.fase{display:grid;grid-template-columns:110px 1fr;gap:6px 16px;padding-block:12px;border-top:1px solid var(--lijn)}
+.fase:first-of-type{border-top:0}
+.fase .wie{font:600 15px var(--f-kop);color:var(--accent)}
+.fase small{color:var(--zacht);font:12px var(--f-data);display:block}
+.vraag{background:var(--accent-zacht);border-radius:6px;padding:16px 18px}
+.vraag ol{gap:8px}
+code{font:14px var(--f-data);background:var(--vlak2);padding:0 4px;border-radius:3px}
+@media (max-width:560px){.fase{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<main class="doc">
+  <header class="tekst" style="display:grid;gap:10px">
+    <span class="kicker">Voorstel · 14 oktober 2026</span>
+    <h1>Eén bord voor de hele stack, per project</h1>
+    <p class="lead">Straks lopen er veel projecten, elk met ontwerp en bouw, onderhoud en dataverwerking zoals scans en analyses. Dit voorstel beschrijft een bord waarop je in tien seconden ziet of alles goed gaat, wat er van jou nodig is, en waarop je met één handeling een opdracht geeft die je daarna live ziet lopen.</p>
+  </header>
+
+  <section class="waarom">
+    <h2>Waarom de vorige borden mislukten</h2>
+    <ol>
+      <li><b>Met de hand bijgewerkt.</b> Een sessie moest het bord bijhouden. Viel die stil, dan liep het bord achter zonder dat je het zag.</li>
+      <li><b>Geen leeftijd bij de getallen.</b> Een oud groen getal zag er hetzelfde uit als een vers groen getal.</li>
+      <li><b>Te veel tegelijk.</b> Lanes, poorten, receipts: de informatie van de machine, niet de vragen van de eigenaar.</li>
+      <li><b>Geen ingang.</b> Kijken en besturen liepen via verschillende kanalen. Wat je vroeg, zag je niet terug.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Zes principes</h2>
+    <div class="principes">
+      <div class="kaart"><b>1. Eén bron van waarheid</b>Alles wat er gebeurt, wordt een gebeurtenis in één logboek, geschreven door de cloud zelf. Het bord leest alleen. Niemand houdt het bij.</div>
+      <div class="kaart"><b>2. Elk getal draagt zijn leeftijd</b>Bij elk blok staat hoe vers het is. Ouder dan de grens wordt oranje. Is een bron niet te lezen, dan staat er <i>onbewezen</i> en geen nul.</div>
+      <div class="kaart"><b>3. Jij eerst</b>Bovenaan staat wat van jou nodig is en wat er af is sinds je laatst keek. Detail staat lager en is uitklapbaar.</div>
+      <div class="kaart"><b>4. Kijken en vragen op één plek</b>Een opdracht geef je op het bord. Hij staat er meteen, en je volgt hem stap voor stap tot de uitkomst.</div>
+      <div class="kaart"><b>5. Drie stromen, één taal</b>Bouw, onderhoud en data hebben elk hun eigen levenscyclus, maar dezelfde kleuren, stations en waarschuwingen.</div>
+      <div class="kaart"><b>6. Alarm alleen als het ertoe doet</b>Een melding op je telefoon alleen bij: iets wacht op jou, iets staat stil, data niet vers, onderhoud rood of budget op. Verder één ochtendoverzicht.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Hoe het werk is opgebouwd</h2>
+    <p class="tekst">Portfolio → project → stroom → opdracht of taak → stap. Elk project registreer je één keer in een projectregister: de repo, welke stromen er gelden, welke accounts mogen bouwen en beoordelen, welke tests "goed" betekenen, welke scans en analyses er lopen, en welke onderhoudscontroles er gelden.</p>
+    <div class="drie">
+      <div class="kaart stroom"><h3>Ontwerp &amp; bouw <span class="label">project-werk</span></h3>
+        <p>idee → ontwerp → bouw → tests → beoordeling → samengevoegd → uitgerold → effect gemeten</p>
+        <ul><li>Doorlooptijd en wachttijd per station</li><li>Goed in één keer (GO zonder herhaling)</li><li>Redenen van afkeuring</li><li>Mijlpalen en voortgang per project</li></ul></div>
+      <div class="kaart stroom o"><h3>Onderhoud <span class="label">blijft het werken?</span></h3>
+        <p>Vaste controles die zelf draaien en zelf opdrachten aanmaken als iets rood wordt.</p>
+        <ul><li>Tests op de hoofdtak, elke nacht</li><li>Afhankelijkheden en beveiligingsmeldingen</li><li>Uitrolstatus, beschikbaarheid, foutpercentage</li><li>Kosten per project</li></ul></div>
+      <div class="kaart stroom d"><h3>Dataverwerking <span class="label">scans en analyses</span></h3>
+        <p>Geplande taken op Temporal, met invoer, uitvoer en een rapport als resultaat.</p>
+        <ul><li>Is de data van vandaag binnen? (versheid per dataset)</li><li>Runs: geslaagd, mislukt, duur, volume</li><li>Rapporten en resultaten met link</li><li>Afwijkingen ten opzichte van gisteren</li></ul></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Zes schermen</h2>
+
+    <div class="schets"><div class="balk"><span>A · Vandaag (startscherm)</span><span>voor: jij, elke ochtend en tussendoor</span></div>
+      <div class="inhoud">
+        <div class="vak groen"><b>Alles loopt.</b> 7 projecten · 23 opdrachten vandaag af · 2 wachten op jou · gemeten 2 min geleden</div>
+        <div class="rij r2">
+          <div class="vak oranje"><b>Wacht op jou (2)</b><br>Kies tussen ontwerp A en B voor futurezone<br>Sleutel claude3 verloopt over 3 dagen</div>
+          <div class="vak"><b>Sinds je laatst keek</b><br>trend-pipeline: scan gisteren 4.812 items, 3 nieuwe trends<br>route 2: 5 opdrachten samengevoegd, 1 afgekeurd</div>
+          <div class="vak rood"><b>Aandacht</b><br>futurezone: nachtelijke tests rood sinds 03:10; onderhoudsopdracht loopt</div>
+        </div>
+      </div></div>
+
+    <div class="schets"><div class="balk"><span>B · Portfolio</span><span>één tegel per project, drie lampjes</span></div>
+      <div class="inhoud"><div class="rij r2">
+        <div class="vak groen"><b>trend-pipeline</b><div class="lampjes"><span class="lamp b">bouw 2</span><span class="lamp o">onderhoud ok</span><span class="lamp d">data vers</span></div>mijlpaal: v2-dashboard 60%</div>
+        <div class="vak rood"><b>futurezone</b><div class="lampjes"><span class="lamp b">bouw 1</span><span class="lamp x">onderhoud rood</span><span class="lamp d">data vers</span></div>mijlpaal: lancering 85%</div>
+        <div class="vak groen"><b>route 2</b><div class="lampjes"><span class="lamp b">bouw 4</span><span class="lamp o">onderhoud ok</span></div>mijlpaal: zes accounts 70%</div>
+      </div></div></div>
+
+    <div class="schets"><div class="balk"><span>C · Projectpagina</span><span>alles over één project</span></div>
+      <div class="inhoud">
+        <div class="rij r2"><div class="vak"><b>Bouw</b><br>open opdrachten met stationspoor, mijlpalen</div><div class="vak"><b>Onderhoud</b><br>controles met laatste uitslag en trend</div><div class="vak"><b>Data</b><br>scans en analyses: versheid, laatste run, rapport</div></div>
+        <div class="vak"><b>Tijdlijn</b>: alles wat er in dit project gebeurde, per dag · <b>Besluiten</b> die gelden (OB-nummers) · <b>Kosten</b> deze maand</div>
+      </div></div>
+
+    <div class="schets"><div class="balk"><span>D · Straat (meter + ticker)</span><span>de machine zelf</span></div>
+      <div class="inhoud"><div class="rij r2">
+        <div class="vak"><b>Meter</b><br>per account: bezig, vrij, uit · quota · laatst actief · werk per uur</div>
+        <div class="vak"><b>Ticker</b><br>elke stap als regel: 14:02 futurezone FZ-114 tests groen (codex3)</div>
+        <div class="vak"><b>Doorvoer</b><br>opdrachten per uur, wachtrij, stilstand, capaciteit tegenover vraag</div>
+      </div></div></div>
+
+    <div class="schets"><div class="balk"><span>E · Opdracht</span><span>één opdracht van begin tot eind</span></div>
+      <div class="inhoud"><div class="vak">Jouw tekst · wie bouwt en wie beoordeelt · elke stap met tijd · testuitslag · bevindingen van de beoordelaar in gewone taal · link naar de wijziging · wat het kostte · knop <i>vraag stellen</i> en <i>opnieuw met aanwijzing</i></div></div></div>
+
+    <div class="schets"><div class="balk"><span>F · Kwaliteit en leren</span><span>wekelijks</span></div>
+      <div class="inhoud"><div class="vak">De top 10 van redenen voor afkeuring · fouten die terugkomen · per account: goed in één keer · welke projecten de meeste herhaling vragen · advies voor betere opdrachten</div></div></div>
+  </section>
+
+  <section>
+    <h2>Een opdracht geven, en hem zien lopen</h2>
+    <p class="tekst">Op het bord staat een knop <b>Nieuwe opdracht</b>: kies het project en de stroom (bouw, onderhoud of data), schrijf wat er moet gebeuren en wanneer het goed is, en geef een prioriteit. De opdracht verschijnt meteen als <i>ingediend</i>. Daarna zie je hem doorlopen: opgepakt, bouw, tests, beoordeling, uitkomst. Heeft de straat een vraag, dan komt die bij <i>Wacht op jou</i>. Je antwoordt op dezelfde plek.</p>
+    <div class="tabel"><table>
+      <thead><tr><th>Ingang</th><th>Voordeel</th><th>Nadeel</th><th>Advies</th></tr></thead>
+      <tbody>
+        <tr><td><b>GitHub-issue</b> in een privé-repo <code>opdrachten</code>, via een formulier</td><td>Werkt op je telefoon (GitHub-app), met login, geschiedenis, meldingen en vragen in hetzelfde gesprek. De status volgt het issue met labels.</td><td>Er zit GitHub tussen.</td><td><span class="tag ja">aanbevolen om te starten</span></td></tr>
+        <tr><td><b>Formulier op het bord zelf</b></td><td>Alles op één scherm.</td><td>Vraagt een afgeschermde site met login. Een openbare pagina kan geen opdrachten aannemen.</td><td>fase 3</td></tr>
+        <tr><td><b>Chat</b> (Telegram, WhatsApp)</td><td>Snel, overal.</td><td>Minder overzicht, extra koppeling, vragen raken zoek.</td><td>later, als aanvulling</td></tr>
+      </tbody></table></div>
+  </section>
+
+  <section>
+    <h2>Openbaar of privé</h2>
+    <p class="tekst">Het huidige bord staat openbaar op GitHub Pages. Voor één bouwstraat kan dat. Met veel projecten komen er klantnamen, analyses en kosten op. <b>Advies:</b> verhuis het bord bij het eerste echte project naar een afgeschermde plek, met login op je eigen e-mail (bijvoorbeeld Cloudflare Pages met Access, gratis voor kleine teams). De Action die het bord ververst, blijft gelijk.</p>
+  </section>
+
+  <section>
+    <h2>Hoe het technisch hangt</h2>
+    <ul class="tekst">
+      <li><b>Gebeurtenislogboek:</b> elke workflow op Temporal schrijft bij elke stap één gebeurtenis, zoals <code>opdracht.ingediend</code>, <code>stap.begonnen</code>, <code>stap.klaar</code>, <code>scan.run</code> en <code>controle.uitslag</code>, met project, stroom, account en tijd. Het logboek kan alleen aangevuld worden.</li>
+      <li><b>Telling per project:</b> de bestaande telling wordt per project en per stroom, en publiceert één momentopname voor het bord.</li>
+      <li><b>Projectregister:</b> één bestand per project. Aansluiten is één proefopdracht.</li>
+      <li><b>Bord:</b> statische pagina die elke minuut de momentopname leest. Geen eigen opslag, dus niets om bij te houden.</li>
+      <li><b>Meldingen:</b> dezelfde momentopname stuurt pushberichten bij de vijf alarmen, en elke ochtend om 07:00 een overzicht.</li>
+    </ul>
+  </section>
+
+  <section class="kaart">
+    <h2>Stappenplan</h2>
+    <div class="fase"><span class="wie">Fase 1</span><div><b>Fundament, als opdrachten in run 2.</b> Gebeurtenislogboek, projectregister, telling per project, opdrachten via GitHub-issues, en schermen A, B, D en E. Eerste project: trend-pipeline.<small>±25 opdrachten · meteen werk voor de burn-in · 2–3 dagen</small></div></div>
+    <div class="fase"><span class="wie">Fase 2</span><div><b>Data en onderhoud.</b> Scans en analyses als geplande taken met versheid en rapporten; nachtelijke controles die zelf onderhoudsopdrachten aanmaken; scherm C.<small>±20 opdrachten · een week</small></div></div>
+    <div class="fase"><span class="wie">Fase 3</span><div><b>Afscherming, meldingen en leren.</b> Privé-hosting met login, pushmeldingen, ochtendoverzicht, kosten per project, scherm F, en een formulier op het bord zelf.<small>±15 opdrachten</small></div></div>
+  </section>
+
+  <section class="vraag">
+    <h2>Wat ik van jou nodig heb</h2>
+    <ol>
+      <li><b>Je projecten</b>, met de belangrijkste bovenaan. Zet per project kort wat onder bouw, onderhoud en data valt, bijvoorbeeld: "trend-pipeline: dagelijkse scan van X, wekelijks analyserapport, bouw aan dashboard".</li>
+      <li><b>Akkoord op GitHub-issues als ingang</b> om mee te beginnen.</li>
+      <li><b>Privé of openbaar</b> zodra het eerste echte project erop staat. Mijn advies is privé.</li>
+      <li>Als je een <b>bord dat je goed vindt</b> kent, al is het van een heel ander vakgebied, stuur dan een schermafdruk. Dat helpt meer dan een beschrijving.</li>
+    </ol>
+  </section>
+</main>
+</body>
+</html>
