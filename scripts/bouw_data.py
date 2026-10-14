@@ -2,8 +2,8 @@
 
 Bronnen: PR's van route 2 met hun statussen, de telling op de tak route2/telling, de aanvoercommits, en
 de prioriteiten-issues van het privé-projectenregister (alleen status en aantal reacties, geen tekst).
-Statusbeschrijvingen gaan alleen naar de publieke JSON als ze op de vaste lijst VEILIGE_STATUS passen;
-anders komt er een vaste tekst die uit de status volgt (Astra NO_GO 14-10: geen ruwe privétekst publiceren).
+Statusbeschrijvingen gaan nooit naar de publieke JSON: alleen een vaste tekst uit context en status (VASTE_TEKST),
+Astra NO_GO 14-10.
 Een bron die niet te lezen is, komt in `bronnen` als ONBEWEZEN; er wordt dan geen nul verzonnen.
 Gebruik: ROUTE2_LEES_TOKEN=... python scripts/bouw_data.py > site/data.json
 """
@@ -26,36 +26,20 @@ bronnen = {}
 
 
 
-# Alleen deze vormen van statusbeschrijving mogen naar de publieke site (gemeten 14-10: dit zijn alle vormen die voorkomen).
-VEILIGE_STATUS = re.compile(
-    r"^(route2: \d+ tests; (green|red)|route2: tests (green|red)|\d+ passed \([A-Za-z0-9 ,.\-]+\)"
-    r"|Codex: (GO|NO_GO)|(GO|NO_GO) door codex\d( \(bouwer codex\d(, herstel codex\d)?\))?|CODEX_NIET_BESCHIKBAAR)$")
+# Statusbeschrijvingen gaan NOOIT naar de publieke site (Astra 14-10): alleen een vaste tekst uit context en status.
+VASTE_TEKST = {
+    ("route2/tests", "success"): "tests groen", ("route2/tests", "failure"): "tests rood",
+    ("route2/tests", "error"): "tests fout", ("route2/tests", "pending"): "tests bezig",
+    ("route2/review", "success"): "beoordeling GO", ("route2/review", "failure"): "beoordeling NO_GO",
+    ("route2/review", "error"): "beoordeling fout", ("route2/review", "pending"): "beoordeling bezig",
+}
 
 
 def veilige_status(s):
-    """Geeft de beschrijving alleen terug als die op de vaste lijst past; anders een vaste tekst uit de status."""
+    """Vaste tekst uit (context, status); de vrije beschrijving van de status wordt nooit gebruikt."""
     if not s:
         return None
-    d = (s.get("description") or "").strip()
-    if VEILIGE_STATUS.match(d):
-        return d
-    return {"success": "groen", "failure": "rood", "error": "fout", "pending": "bezig"}.get(s.get("state"), "onbekend")
-
-def api(pad):
-    req = urllib.request.Request("https://api.github.com/" + pad, headers={
-        "Authorization": "Bearer " + TOKEN, "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "bouwstraat-bord"})
-    for poging in range(3):
-        try:
-            with urllib.request.urlopen(req, timeout=30) as resp:
-                return json.load(resp)
-        except urllib.error.HTTPError as exc:
-            if exc.code < 500 or poging == 2:
-                raise
-        except urllib.error.URLError:
-            if poging == 2:
-                raise
-    return None
+    return VASTE_TEKST.get((s.get("context"), s.get("state")), "onbekend")
 
 
 def lees(naam, functie):
