@@ -23,11 +23,6 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Vorm van de sleutel (alleen lengte en soort, geen waarde)
-        env:
-          T: ${{ secrets.ROUTE2_LEES_TOKEN }}
-        run: |
-          python3 -c "import os;t=os.environ.get('T','');print('lengte',len(t),'fine-grained',t.startswith('github_pat_'),'classic',t.startswith('ghp_'),'spaties_of_regeleinde',t!=t.strip())"
       - name: Gegevens ophalen (alleen lezen)
         env:
           ROUTE2_LEES_TOKEN: ${{ secrets.ROUTE2_LEES_TOKEN }}
