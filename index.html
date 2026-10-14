@@ -46,15 +46,19 @@ h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--zach
 .knop{font:500 13px var(--f-tekst);text-decoration:none;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:3px 10px;white-space:nowrap}
 .knop:hover,.knop:focus-visible{background:var(--accent);color:var(--vlak)}
 @media (max-width:600px){.prio{grid-template-columns:40px 1fr}.prio .reacties{grid-column:2}.prio .knop{grid-column:2;justify-self:start}}
-.clusters{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
-.cl{border:1px solid var(--lijn);border-radius:5px;padding:10px 12px;display:grid;gap:6px;align-content:start}
-.cl.prio{border-top:4px solid var(--accent)}
-.cl h3{font-size:16px;display:flex;justify-content:space-between;gap:6px}
-.cl ul{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:14px}
-.cl li{display:grid;grid-template-columns:44px 1fr auto;gap:6px;align-items:baseline}
-.cl .nr{font:12px var(--f-data);color:var(--zacht)}
-.cl .st{font:12px var(--f-data);color:var(--zacht);text-align:right}
-.cl .noot{font-size:12px;color:var(--zacht)}
+.clusters{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.cl{border:1px solid var(--lijn);border-radius:5px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;background:var(--vlak)}
+.cl.cl-prio{border-top:4px solid var(--accent)}
+.cl-kop{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.cl-kop h3{font-size:16px;margin:0}
+.cl-label{font:500 11px var(--f-data);color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.cl-lijst{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.cl-lijst li{display:flex;align-items:baseline;gap:10px;padding:5px 0;border-top:1px solid var(--lijn);font-size:14px}
+.cl-lijst li:first-child{border-top:0}
+.cl-nr{font:12px var(--f-data);color:var(--zacht);min-width:42px;flex:none}
+.cl-naam{flex:1;min-width:0}
+.cl-st{font:12px var(--f-data);color:var(--zacht);white-space:nowrap;flex:none}
+.cl-noot{font-size:12px;color:var(--zacht)}
 .meter{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .acc{border:1px solid var(--lijn);border-radius:5px;padding:10px 12px;display:grid;gap:4px;background:var(--vlak)}
 .acc.bezig{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
@@ -97,7 +101,6 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
   <section class="oordeel" id="oordeel"><h1 id="oordeel-kop">Gegevens laden…</h1><p id="oordeel-tekst"></p><span class="vers"><span class="stip" id="stip"></span><span id="vers">—</span></span></section>
   <section class="jij"><h2>Wacht op jou</h2><ol id="jij"></ol></section>
   <section class="blok"><div class="blokkop"><h2>Prioriteiten</h2><span class="klein" id="prio-sam">reageren gaat via het privé-issue (alleen jij)</span></div><div class="prios" id="prios"></div></section>
-  <section class="blok"><div class="blokkop"><h2>Projecten</h2><span class="klein">per cluster · <a id="reg" href="#">volledig register (privé)</a></span></div><div class="clusters" id="clusters"></div></section>
   <section class="blok"><div class="blokkop"><h2>Meter · accounts</h2><span class="klein" id="meter-sam"></span></div><div class="meter" id="meter"></div></section>
   <div class="duo">
     <section class="blok"><div class="blokkop"><h2>Ticker · wat er gebeurt</h2><span class="klein">nieuwste boven · ververst elke minuut</span></div><ul class="ticker" id="ticker"></ul></section>
@@ -105,6 +108,7 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
       <div class="balk"><i id="bi-balk" style="width:0"></i></div><ul class="eisen" id="bi-eisen"></ul>
       <h2 style="margin-top:6px">Lopend</h2><div id="lopend" class="klein"></div></section>
   </div>
+  <section class="blok"><div class="blokkop"><h2>Projecten</h2><span class="klein">per cluster · <a id="reg" href="#">volledig register (privé)</a></span></div><div class="clusters" id="clusters"></div></section>
   <section class="blok"><details><summary id="af-kop">Opdrachten</summary><div class="tabel" style="margin-top:10px"><table><thead><tr><th>PR</th><th>Opdracht</th><th>Bouwer</th><th>Uitkomst</th><th>Tijd</th></tr></thead><tbody id="orders"></tbody></table></div></details></section>
   <p class="bron" id="bronnen"></p>
 </main>
@@ -148,9 +152,9 @@ function teken(d){
   document.getElementById("prio-sam").textContent=`${(d.prioriteiten||[]).length} prioriteiten · ${bijJou} bij jou of in overleg · reageren via het privé-issue (alleen jij)${pnoot}`;
   const cg=document.getElementById("clusters");cg.replaceChildren();
   if(d.register_url){document.getElementById("reg").href=d.register_url}
-  for(const c of d.clusters||[]){const k=el("div","cl"+(c.prio?" prio":""));const h=el("h3",null,c.naam);if(c.prio)h.append(el("span","pil let","prioriteit"));k.append(h);
-    const ul=el("ul");for(const [nr,naam,st] of c.items){const li=el("li");li.append(el("span","nr","#"+nr),el("span",null,naam),el("span","st",st));ul.append(li)}k.append(ul);
-    if(c.noot)k.append(el("span","noot",c.noot));cg.append(k)}
+  for(const c of d.clusters||[]){const k=el("div","cl"+(c.prio?" cl-prio":""));const kop=el("div","cl-kop");kop.append(el("h3",null,c.naam));if(c.prio)kop.append(el("span","cl-label","prioriteit"));k.append(kop);
+    const ul=el("ul","cl-lijst");for(const [nr,naam,st] of c.items){const li=el("li");li.append(el("span","cl-nr","#"+nr),el("span","cl-naam",naam),el("span","cl-st",st));ul.append(li)}k.append(ul);
+    if(c.noot)k.append(el("span","cl-noot",c.noot));cg.append(k)}
   const m=document.getElementById("meter");m.replaceChildren();let actief=0,bezig=0;
   for(const a of d.accounts||[]){
     const k=el("div","acc"+(a.bezig?" bezig":""));const n=el("div","naam");n.append(el("span",null,a.naam));
