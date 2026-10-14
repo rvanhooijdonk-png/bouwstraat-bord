@@ -81,14 +81,39 @@
   },
   "wacht_op_richard": [
     {
-      "wat": "Sleutels voor claude3 en claude4 zetten",
+      "wat": "PIPELINE-INPUT: de laatste versie doornemen (P5)",
+      "wanneer": "nu",
+      "duur": "blokkeert de leeftijdscontrole"
+    },
+    {
+      "wat": "Takenhub: één A4 'zo moet het voelen' (P4)",
+      "wanneer": "nu",
+      "duur": "daarna reset via de bouwstraat"
+    },
+    {
+      "wat": "PIPELINE-OUTPUT: overleg over de productie-unit (P6)",
+      "wanneer": "komende week",
+      "duur": "samen ontwerpen"
+    },
+    {
+      "wat": "Volgend gesprek: top 10 uit de frameworks-scan",
+      "wanneer": "volgend gesprek",
+      "duur": "issue #14"
+    },
+    {
+      "wat": "Open-data AI-applicaties (#74): vervolgsessie",
+      "wanneer": "week van 19-10",
+      "duur": "bespreken, niet uitvoeren"
+    },
+    {
+      "wat": "Sleutels voor claude3 en claude4",
       "wanneer": "na het einde van run 1",
       "duur": "±1 minuut per account"
     },
     {
-      "wat": "Kiezen welk project als eerste aansluit",
-      "wanneer": "na de vrijgave",
-      "duur": "voorstel: trend-pipeline"
+      "wat": "algo-trading en de tradingrepo's (#43, #46–49): wat leeft nog?",
+      "wanneer": "wanneer het uitkomt",
+      "duur": "kort antwoord"
     }
   ],
   "prioriteiten_repo": "rvanhooijdonk-png/projectenregister",
@@ -164,6 +189,233 @@
       "code": "P12",
       "titel": "Mail-agent opgaan in PIPELINE-INPUT",
       "wie": "overleg"
+    }
+  ],
+  "register_url": "https://github.com/rvanhooijdonk-png/projectenregister",
+  "clusters": [
+    {
+      "naam": "Ventures",
+      "prio": true,
+      "items": [
+        [
+          "62",
+          "Finfluencer",
+          "onderzoeken"
+        ],
+        [
+          "63",
+          "Businessmodel-engine (+71)",
+          "onderzoeken"
+        ],
+        [
+          "64",
+          "AI Transformation Tool",
+          "uitwerken"
+        ],
+        [
+          "65",
+          "AI Prediction Tracker",
+          "belangrijk"
+        ],
+        [
+          "66",
+          "Collector Car Auction",
+          "onderzoeken"
+        ],
+        [
+          "67",
+          "Used Machinery Auction",
+          "—"
+        ],
+        [
+          "70",
+          "Venture-radar",
+          "uitwerken"
+        ],
+        [
+          "73",
+          "Human Consensus Radar",
+          "hold"
+        ],
+        [
+          "74",
+          "Open-data AI-applicaties",
+          "bespreken 19-10"
+        ]
+      ],
+      "noot": "details in het privé-register"
+    },
+    {
+      "naam": "Content-keten",
+      "prio": true,
+      "items": [
+        [
+          "7",
+          "Trechter",
+          "elke keer leeg (P11)"
+        ],
+        [
+          "P1",
+          "PIPELINE-INPUT",
+          "bij jou (P5)"
+        ],
+        [
+          "P2",
+          "PIPELINE-OUTPUT",
+          "overleg (P6)"
+        ],
+        [
+          "27",
+          "Mail-agent → PIPELINE-INPUT",
+          "P12"
+        ],
+        [
+          "16",
+          "Presentaties-archief",
+          "P9"
+        ],
+        [
+          "17",
+          "Keynote-creator",
+          "blijft leren (P10)"
+        ],
+        [
+          "18",
+          "Faceless-video",
+          "—"
+        ]
+      ]
+    },
+    {
+      "naam": "Websites en onderhoud",
+      "prio": true,
+      "items": [
+        [
+          "13",
+          "richardvanhooijdonk.com",
+          "onderhoud (P3)"
+        ],
+        [
+          "14",
+          "Weblog",
+          "onderhoud (P3)"
+        ],
+        [
+          "W1",
+          "futurezone.ai",
+          "hold"
+        ],
+        [
+          "19",
+          "Site-agents",
+          "brainstorm"
+        ]
+      ]
+    },
+    {
+      "naam": "Office",
+      "prio": true,
+      "items": [
+        [
+          "29",
+          "Takenhub",
+          "reset (P4)"
+        ],
+        [
+          "39",
+          "Office / backoffice",
+          "onderhoud"
+        ]
+      ]
+    },
+    {
+      "naam": "Outreach",
+      "prio": true,
+      "items": [
+        [
+          "37",
+          "Adressenbestand",
+          "stack (P7)"
+        ],
+        [
+          "38",
+          "Scraper",
+          "voeding"
+        ],
+        [
+          "O1",
+          "Cold-email-stack",
+          "overleg (P8)"
+        ]
+      ]
+    },
+    {
+      "naam": "Stackbreed",
+      "prio": true,
+      "items": [
+        [
+          "S1",
+          "Beveiligingsring",
+          "stack (P1)"
+        ],
+        [
+          "S2",
+          "Control-center",
+          "stack (P2)"
+        ],
+        [
+          "S3",
+          "Bouwstraat (route 2)",
+          "burn-in run 1"
+        ]
+      ]
+    },
+    {
+      "naam": "Markten en onderzoek",
+      "prio": false,
+      "items": [
+        [
+          "43",
+          "algo-trading",
+          "vraag aan jou"
+        ],
+        [
+          "44–45",
+          "NQ-onderzoek en -radar",
+          "hold (zie 73)"
+        ],
+        [
+          "46–49",
+          "momo, memecoin, coach, TradingView",
+          "vraag aan jou"
+        ],
+        [
+          "50",
+          "research-intelligence",
+          "samenvoegen?"
+        ]
+      ]
+    },
+    {
+      "naam": "Niet doen of archief",
+      "prio": false,
+      "items": [
+        [
+          "68",
+          "Command Inbox",
+          "niet"
+        ],
+        [
+          "72",
+          "Gezondheidsplatform",
+          "niet"
+        ],
+        [
+          "56–61",
+          "oude borden, proeven",
+          "archief"
+        ]
+      ]
     }
   ]
 }

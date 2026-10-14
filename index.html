@@ -46,6 +46,15 @@ h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--zach
 .knop{font:500 13px var(--f-tekst);text-decoration:none;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:3px 10px;white-space:nowrap}
 .knop:hover,.knop:focus-visible{background:var(--accent);color:var(--vlak)}
 @media (max-width:600px){.prio{grid-template-columns:40px 1fr}.prio .reacties{grid-column:2}.prio .knop{grid-column:2;justify-self:start}}
+.clusters{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.cl{border:1px solid var(--lijn);border-radius:5px;padding:10px 12px;display:grid;gap:6px;align-content:start}
+.cl.prio{border-top:4px solid var(--accent)}
+.cl h3{font-size:16px;display:flex;justify-content:space-between;gap:6px}
+.cl ul{list-style:none;margin:0;padding:0;display:grid;gap:3px;font-size:14px}
+.cl li{display:grid;grid-template-columns:44px 1fr auto;gap:6px;align-items:baseline}
+.cl .nr{font:12px var(--f-data);color:var(--zacht)}
+.cl .st{font:12px var(--f-data);color:var(--zacht);text-align:right}
+.cl .noot{font-size:12px;color:var(--zacht)}
 .meter{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .acc{border:1px solid var(--lijn);border-radius:5px;padding:10px 12px;display:grid;gap:4px;background:var(--vlak)}
 .acc.bezig{border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
@@ -88,6 +97,7 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
   <section class="oordeel" id="oordeel"><h1 id="oordeel-kop">Gegevens laden…</h1><p id="oordeel-tekst"></p><span class="vers"><span class="stip" id="stip"></span><span id="vers">—</span></span></section>
   <section class="jij"><h2>Wacht op jou</h2><ol id="jij"></ol></section>
   <section class="blok"><div class="blokkop"><h2>Prioriteiten</h2><span class="klein" id="prio-sam">reageren gaat via het privé-issue (alleen jij)</span></div><div class="prios" id="prios"></div></section>
+  <section class="blok"><div class="blokkop"><h2>Projecten</h2><span class="klein">per cluster · <a id="reg" href="#">volledig register (privé)</a></span></div><div class="clusters" id="clusters"></div></section>
   <section class="blok"><div class="blokkop"><h2>Meter · accounts</h2><span class="klein" id="meter-sam"></span></div><div class="meter" id="meter"></div></section>
   <div class="duo">
     <section class="blok"><div class="blokkop"><h2>Ticker · wat er gebeurt</h2><span class="klein">nieuwste boven · ververst elke minuut</span></div><ul class="ticker" id="ticker"></ul></section>
@@ -136,6 +146,11 @@ function teken(d){
     const links=el("span");links.append(ti," ",pil);r.append(el("span","code",p.code),links,re,a);pr.append(r)}
   const pb=(d.bronnen||{}).prioriteiten;const pnoot=pb&&pb.status!=="GEMETEN"?" · status en reacties nog niet leesbaar (leessleutel mist toegang tot projectenregister)":"";
   document.getElementById("prio-sam").textContent=`${(d.prioriteiten||[]).length} prioriteiten · ${bijJou} bij jou of in overleg · reageren via het privé-issue (alleen jij)${pnoot}`;
+  const cg=document.getElementById("clusters");cg.replaceChildren();
+  if(d.register_url){document.getElementById("reg").href=d.register_url}
+  for(const c of d.clusters||[]){const k=el("div","cl"+(c.prio?" prio":""));const h=el("h3",null,c.naam);if(c.prio)h.append(el("span","pil let","prioriteit"));k.append(h);
+    const ul=el("ul");for(const [nr,naam,st] of c.items){const li=el("li");li.append(el("span","nr","#"+nr),el("span",null,naam),el("span","st",st));ul.append(li)}k.append(ul);
+    if(c.noot)k.append(el("span","noot",c.noot));cg.append(k)}
   const m=document.getElementById("meter");m.replaceChildren();let actief=0,bezig=0;
   for(const a of d.accounts||[]){
     const k=el("div","acc"+(a.bezig?" bezig":""));const n=el("div","naam");n.append(el("span",null,a.naam));

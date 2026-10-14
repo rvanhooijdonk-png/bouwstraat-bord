@@ -11,10 +11,11 @@ permissions:
   id-token: write
 concurrency:
   group: bord
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   ververs:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.uitrol.outputs.page_url }}

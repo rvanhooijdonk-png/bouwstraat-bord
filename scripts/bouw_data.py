@@ -196,7 +196,7 @@ def main():
             a["onbekend"] = True
     json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": stand, "orders": orders,
                "accounts": accounts, "ticker": ticker[:150], "burnin": burnin,
-               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "wacht_op_richard": CONFIG["wacht_op_richard"]},
+               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"]},
               sys.stdout, ensure_ascii=False, indent=1)
 
 
