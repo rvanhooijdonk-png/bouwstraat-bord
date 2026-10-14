@@ -22,6 +22,10 @@ REPO = CONFIG["route2_repo"]
 TOKEN = os.environ.get("ROUTE2_LEES_TOKEN", "")
 TITEL = re.compile(r"^\[ROUTE2 ([a-z0-9]+)\] ([A-Z0-9][A-Z0-9-]{1,60})$")
 NU = datetime.now(timezone.utc)
+BEKENDE_ACCOUNTS = {a["naam"] for a in CONFIG["accounts"]}
+PUBLIEKE_ORDER = re.compile(r"^(BURNIN|PROEF|ROUTE2)-[A-Z0-9]{1,4}$")
+# Alleen deze eindtoestanden zijn een echte burn-in-uitkomst; gesloten, onbekend en zonder uitkomst niet.
+ECHTE_UITKOMST = {"samengevoegd", "afgekeurd", "tests rood"}
 bronnen = {}
 
 
@@ -40,6 +44,23 @@ def veilige_status(s):
     if not s:
         return None
     return VASTE_TEKST.get((s.get("context"), s.get("state")), "onbekend")
+
+
+def api(pad):
+    req = urllib.request.Request("https://api.github.com/" + pad, headers={
+        "Authorization": "Bearer " + TOKEN, "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "bouwstraat-bord"})
+    for poging in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.load(resp)
+        except urllib.error.HTTPError as exc:
+            if exc.code < 500 or poging == 2:
+                raise
+        except urllib.error.URLError:
+            if poging == 2:
+                raise
+    return None
 
 
 def lees(naam, functie):
@@ -89,7 +110,7 @@ def prioriteiten():
     """Titels uit config; status, labels en reacties uit de privé-issues als het token daar mag lezen."""
     repo = CONFIG.get("prioriteiten_repo")
     lijst = [dict(p, url=f"https://github.com/{repo}/issues/{p['nr']}", status=None, reacties=None,
-                  bijgewerkt=None, open=True) for p in CONFIG.get("prioriteiten", [])]
+                  open=True) for p in CONFIG.get("prioriteiten", [])]
     issues = lees("prioriteiten", lambda: api(f"repos/{repo}/issues?state=all&per_page=100")) if repo else None
     if issues:
         per_nr = {i["number"]: i for i in issues if "pull_request" not in i}
@@ -99,7 +120,8 @@ def prioriteiten():
                 continue
             labels = [l["name"] for l in i.get("labels", [])]
             p["wie"] = next((l for l in ("bij-jou", "overleg", "bezig", "stack", "klaar") if l in labels), p["wie"])
-            p.update(reacties=i.get("comments"), bijgewerkt=i.get("updated_at"), open=i.get("state") == "open")
+            # Besluit (14-10): publiek alleen wie, open/dicht en het aantal reacties; geen tekst en geen bijwerktijd.
+            p.update(reacties=i.get("comments") if isinstance(i.get("comments"), int) else None, open=i.get("state") == "open")
     return lijst
 
 
@@ -117,6 +139,11 @@ def main():
         if not m:
             continue
         bouwer, order_id = m.group(1), m.group(2)
+        # Publieke ID's (Astra R3): bouwer alleen uit de bekende accounts, ordernaam alleen in een vaste vorm.
+        if bouwer not in BEKENDE_ACCOUNTS:
+            bouwer = "onbekend"
+        if not PUBLIEKE_ORDER.match(order_id):
+            order_id = f"OPDRACHT-{pr['number']}"
         geopend, merged, gesloten = tijd(pr["created_at"]), tijd(pr.get("merged_at")), tijd(pr.get("closed_at"))
         recent = geopend >= NU - timedelta(days=3)
         st = (lees(f"statussen_pr_{pr['number']}", lambda: statussen(pr["head"]["sha"])) or []) if recent else []
@@ -184,20 +211,30 @@ def main():
     uniek = {}
     for o in sorted(bi_orders, key=lambda o: o["geopend"]):
         uniek[o["order"]] = o
-    burnin = {**bi, "uitkomsten": sum(1 for o in uniek.values() if o["uitkomst"]),
+    burnin = {**bi, "uitkomsten": sum(1 for o in uniek.values() if o["uitkomst"] in ECHTE_UITKOMST),
               "samengevoegd": sum(1 for o in uniek.values() if o["uitkomst"] == "samengevoegd"),
               "afgekeurd": sum(1 for o in uniek.values() if o["uitkomst"] in ("afgekeurd", "tests rood")),
               "verstreken_uur": round(max(0.0, (min(NU, tijd(bi["einde"])) - tijd(bi["t0"])).total_seconds()) / 3600, 1)}
     if stand:
         ing = stand.get("ingrepen", {})
-        na = [n for n in (ing.get("pr_nummers") or []) if n not in bi["vooraf_ingrepen"]]
+        na = [n for n in (ing.get("pr_nummers") or []) if isinstance(n, int) and not isinstance(n, bool) and n not in bi["vooraf_ingrepen"]]
         burnin["ingrepen_na_t0"] = None if ing.get("bron", {}).get("status") == "ONBEWEZEN" else len(na)
         burnin["ingrepen_prs"] = na
 
     if bronnen.get("pull_requests", {}).get("status") != "GEMETEN":
         for a in accounts:
             a["onbekend"] = True
-    json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": stand, "orders": orders,
+    if bronnen.get("pull_requests", {}).get("status") != "GEMETEN":
+        # Zonder leesbare PR's geen nieuwe publicatie: het oude bord blijft staan en toont "loopt achter".
+        print("AFGEBROKEN: pull_requests niet gemeten; geen nieuwe data.json", file=sys.stderr)
+        sys.exit(3)
+    telling_publiek = None
+    if isinstance(stand, dict):
+        stil = stand.get("stilstand") if isinstance(stand.get("stilstand"), dict) else {}
+        telling_publiek = {"gemeten_om": stand.get("gemeten_om") if isinstance(stand.get("gemeten_om"), str) else None,
+                           "volledig": stand.get("volledig") if isinstance(stand.get("volledig"), bool) else None,
+                           "stilstand": {"order_zonder_voortgang_45_minuten": stil.get("order_zonder_voortgang_45_minuten") is True}}
+    json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": telling_publiek, "orders": orders,
                "accounts": accounts, "ticker": ticker[:150], "burnin": burnin,
                "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"]},
               sys.stdout, ensure_ascii=False, indent=1)
