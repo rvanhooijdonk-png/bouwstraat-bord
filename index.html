@@ -135,7 +135,7 @@ function teken(d){
   else if(ing>0){niveau="fout";kop="Er is ingegrepen tijdens de burn-in.";tekst="PR "+bi.ingrepen_prs.join(", ")+" telt als ingreep na de start."}
   else if(onb.length&&onb.length===bron.length){niveau="fout";kop="Het bord kan route 2 niet lezen.";tekst="Geen enkele bron was te lezen ("+[...new Set(onb.map(b=>b.fout))].join(", ")+"). Controleer de leessleutel ROUTE2_LEES_TOKEN. Er wordt geen nul verzonnen."}
   else if(onb.length||ing==null){niveau="let";kop="Bijna alles gemeten.";tekst="Niet alle bronnen waren te lezen: "+(onb.length?onb.length+" onbewezen":"ingrepen onbewezen")+". Er wordt geen nul verzonnen."}
-  else{kop=`Alles loopt. ${bi.naam||"Burn-in"}: ${bi.verstreken_uur} van 24 uur, zonder ingreep.`;tekst=`${bi.uitkomsten}/${bi.orders_aantal} opdrachten afgerond: ${bi.samengevoegd} samengevoegd, ${bi.afgekeurd} afgekeurd. Niets staat vast.`}
+  else{const mb0=bi.mac_offline_bewijs;const eisen=[bi.uitkomsten>=bi.orders_aantal,ing===0,!!(mb0&&mb0.bron&&mb0.uren>=4),(bi.verstreken_uur||0)>=24];const gehaald=eisen.filter(Boolean).length;kop=gehaald===4?`${bi.naam||"Burn-in"}: alle 4 eisen gehaald.`:`Loopt zonder ingreep. ${bi.naam||"Burn-in"}: ${gehaald} van 4 eisen gehaald, ${bi.verstreken_uur} van 24 uur.`;tekst=`${bi.uitkomsten}/${bi.orders_aantal} opdrachten afgerond: ${bi.samengevoegd} samengevoegd, ${bi.afgekeurd} afgekeurd. Niets staat vast.`}
   document.getElementById("oordeel").className="oordeel "+(niveau==="goed"?"":niveau);
   document.getElementById("oordeel-kop").textContent=kop;document.getElementById("oordeel-tekst").textContent=tekst;
   document.getElementById("stip").className="stip "+(niveau==="goed"?"":niveau);
@@ -182,7 +182,7 @@ function teken(d){
   const eis=(ok,wat,stand)=>{const li=el("li");li.append(el("span","t "+(ok===true?"ja":ok===false?"nee":"open"),ok===true?"✓":ok===false?"✗":"…"),el("span",null,wat),el("small",null,stand));e.append(li)};
   eis(bi.uitkomsten>=bi.orders_aantal?true:null,"Tien echte uitkomsten",`${bi.uitkomsten}/${bi.orders_aantal}`);
   eis(ing==null?null:ing===0,"Nul ingrepen na de start",ing==null?"onbewezen":String(ing));
-  eis(true,"Mac minstens 4 uur offline",bi.mac_offline?bi.mac_offline.split(":")[0]:"");
+  const mb=bi.mac_offline_bewijs;eis(mb&&mb.bron&&typeof mb.uren==="number"?mb.uren>=4:null,"Mac minstens 4 uur offline",mb&&mb.bron?`${mb.uren} u · ${mb.bron}`:"onbewezen");
   eis((bi.verstreken_uur||0)>=24?true:null,"24 uur aaneengesloten",`${Math.max(0,24-(bi.verstreken_uur||0)).toFixed(1)} u te gaan`);
   const lop=(d.orders||[]).filter(o=>!o.uitkomst);const L=document.getElementById("lopend");L.replaceChildren();
   if(!lop.length)L.textContent="Niets in uitvoering. Een lege wachtrij is geen stilstand.";

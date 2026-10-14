@@ -77,7 +77,12 @@
       56,
       57
     ],
-    "mac_offline": "OB-0948: MacBook 07:30–12:55 zonder internet"
+    "mac_offline_bewijs": {
+      "bron": "OB-0948 (verklaring Richard)",
+      "uren": 5.4,
+      "van": "07:30",
+      "tot": "12:55"
+    }
   },
   "wacht_op_richard": [
     {
@@ -118,6 +123,12 @@
   ],
   "prioriteiten_repo": "rvanhooijdonk-png/projectenregister",
   "prioriteiten": [
+    {
+      "nr": 16,
+      "code": "P0",
+      "titel": "Long-read + nieuwsbrief + blog, marketing eerst (hoogste prioriteit na de burn-in)",
+      "wie": "stack + jij"
+    },
     {
       "nr": 1,
       "code": "P1",
@@ -199,84 +210,6 @@
   ],
   "register_url": "https://github.com/rvanhooijdonk-png/projectenregister",
   "clusters": [
-    {
-      "naam": "Ventures",
-      "prio": true,
-      "items": [
-        [
-          "62",
-          "Finfluencer",
-          "onderzoeken",
-          [
-            "venture-radar"
-          ]
-        ],
-        [
-          "63",
-          "Businessmodel-engine (+71)",
-          "onderzoeken",
-          [
-            "venture-radar"
-          ]
-        ],
-        [
-          "64",
-          "AI Transformation Tool",
-          "uitwerken",
-          [
-            "venture-radar"
-          ]
-        ],
-        [
-          "65",
-          "AI Prediction Tracker",
-          "belangrijk",
-          [
-            "venture-radar"
-          ]
-        ],
-        [
-          "66",
-          "Collector Car Auction",
-          "onderzoeken",
-          [
-            "venture-radar"
-          ]
-        ],
-        [
-          "67",
-          "Used Machinery Auction",
-          "—",
-          [
-            "venture-radar"
-          ]
-        ],
-        [
-          "70",
-          "Venture-radar",
-          "uitwerken",
-          [
-            "venture-radar"
-          ]
-        ],
-        [
-          "73",
-          "Human Consensus Radar",
-          "hold",
-          [
-            "nq-human-consensus-radar",
-            "nq-research"
-          ]
-        ],
-        [
-          "74",
-          "Open-data AI-applicaties",
-          "bespreken 19-10",
-          []
-        ]
-      ],
-      "noot": "details in het privé-register"
-    },
     {
       "naam": "Content-keten",
       "prio": true,
@@ -414,27 +347,6 @@
             "office-reconcile",
             "office-db-backup"
           ]
-        ]
-      ]
-    },
-    {
-      "naam": "Outreach",
-      "prio": true,
-      "items": [
-        [
-          "37+38",
-          "Outreach-data (adressenbestand + scraper)",
-          "stack (P7)",
-          [
-            "crm-intelligence-control",
-            "scraper"
-          ]
-        ],
-        [
-          "O1",
-          "Cold-email-stack (bouwt op Outreach-data)",
-          "overleg (P8)",
-          []
         ]
       ]
     },

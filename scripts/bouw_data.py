@@ -1,6 +1,9 @@
-"""Bouwt data.json voor het bouwstraat-bord uit GitHub. Leest route 2 alleen; schrijft niets naar route 2.
+"""Bouwt data.json voor het bouwstraat-bord uit GitHub. Leest alleen; schrijft niets naar route 2 of het register.
 
-Bronnen: PR's van route 2 met hun statussen, de telling op de tak route2/telling, de aanvoercommits.
+Bronnen: PR's van route 2 met hun statussen, de telling op de tak route2/telling, de aanvoercommits, en
+de prioriteiten-issues van het privé-projectenregister (alleen status en aantal reacties, geen tekst).
+Statusbeschrijvingen gaan alleen naar de publieke JSON als ze op de vaste lijst VEILIGE_STATUS passen;
+anders komt er een vaste tekst die uit de status volgt (Astra NO_GO 14-10: geen ruwe privétekst publiceren).
 Een bron die niet te lezen is, komt in `bronnen` als ONBEWEZEN; er wordt dan geen nul verzonnen.
 Gebruik: ROUTE2_LEES_TOKEN=... python scripts/bouw_data.py > site/data.json
 """
@@ -21,6 +24,22 @@ TITEL = re.compile(r"^\[ROUTE2 ([a-z0-9]+)\] ([A-Z0-9][A-Z0-9-]{1,60})$")
 NU = datetime.now(timezone.utc)
 bronnen = {}
 
+
+
+# Alleen deze vormen van statusbeschrijving mogen naar de publieke site (gemeten 14-10: dit zijn alle vormen die voorkomen).
+VEILIGE_STATUS = re.compile(
+    r"^(route2: \d+ tests; (green|red)|route2: tests (green|red)|\d+ passed \([A-Za-z0-9 ,.\-]+\)"
+    r"|Codex: (GO|NO_GO)|(GO|NO_GO) door codex\d( \(bouwer codex\d(, herstel codex\d)?\))?|CODEX_NIET_BESCHIKBAAR)$")
+
+
+def veilige_status(s):
+    """Geeft de beschrijving alleen terug als die op de vaste lijst past; anders een vaste tekst uit de status."""
+    if not s:
+        return None
+    d = (s.get("description") or "").strip()
+    if VEILIGE_STATUS.match(d):
+        return d
+    return {"success": "groen", "failure": "rood", "error": "fout", "pending": "bezig"}.get(s.get("state"), "onbekend")
 
 def api(pad):
     req = urllib.request.Request("https://api.github.com/" + pad, headers={
@@ -123,7 +142,7 @@ def main():
             if s["context"] in ("route2/tests", "route2/review") and s["state"] != "pending":
                 acc = bouwer if s["context"] == "route2/tests" else beoordelaar
                 ticker.append({"t": s["created_at"], "soort": "goed" if s["state"] == "success" else "fout",
-                               "tekst": f"{order_id}: {s.get('description') or s['state']}", "account": acc,
+                               "tekst": f"{order_id}: {veilige_status(s)}", "account": acc,
                                "pr": pr["number"]})
             elif s["context"] == "route2/review" and s["state"] == "pending":
                 ticker.append({"t": s["created_at"], "soort": "bezig", "tekst": f"{order_id}: beoordeling gestart",
@@ -155,7 +174,7 @@ def main():
                        "beoordelaar": beoordelaar, "fase": fase, "uitkomst": uitkomst,
                        "geopend": pr["created_at"], "afgerond": pr.get("merged_at") or (
                            (review.get("created_at") or tests.get("created_at")) if uitkomst else None),
-                       "tests": tests.get("description"), "review": review.get("description"),
+                       "tests": veilige_status(tests), "review": veilige_status(review),
                        "na_t0": geopend >= t0})
 
     for c in tcommits:
