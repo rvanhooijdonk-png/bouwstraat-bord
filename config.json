@@ -26,13 +26,13 @@
       "naam": "claude3",
       "rol": "bouwer",
       "aangesloten": false,
-      "noot": "sleutel nodig"
+      "noot": "nog niet aangesloten"
     },
     {
       "naam": "claude4",
       "rol": "bouwer",
       "aangesloten": false,
-      "noot": "sleutel nodig"
+      "noot": "nog niet aangesloten"
     },
     {
       "naam": "claude1",
@@ -111,7 +111,7 @@
       "duur": "bespreken, niet uitvoeren"
     },
     {
-      "wat": "Sleutels voor claude3 en claude4",
+      "wat": "Twee nieuwe bouwrollen aansluiten (jij, na de burn-in)",
       "wanneer": "na het einde van run 1",
       "duur": "±1 minuut per account"
     },
@@ -940,7 +940,7 @@
       "klaar_als": "herstel aantoonbaar gelukt"
     },
     {
-      "titel": "Herstelproef van alle back-ups (nooit bewezen)",
+      "titel": "Herstelproef van alle back-ups",
       "spoor": "Beveiliging en back-up",
       "status": "gepland",
       "wie": "stack + jij",
@@ -1021,7 +1021,7 @@
       "klaar_als": "pas na apart besluit"
     },
     {
-      "titel": "Granola-koppeling uitwerken (sleutel staat klaar)",
+      "titel": "Granola-koppeling uitwerken",
       "spoor": "Content-keten",
       "status": "gepland",
       "wie": "stack",

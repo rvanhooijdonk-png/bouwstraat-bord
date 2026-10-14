@@ -124,25 +124,50 @@ except SystemExit as e:
     code = e.code
 check("onleesbare PR's blokkeren de publicatie", code not in (0, None) and not uit2.getvalue().strip(), f"code={code}")
 
-# Publieke werkvoorraad: geen beveiligings-, back-up-, sleutel-, account-, outreach- of adresdetails (Astra R5).
+# Privacygrens publieke site (OB-0952, Astra R8): scan alle gepubliceerde tekst, zonder vrijstellingen.
 import re as _re
-# OB-0952: taken mogen publiek; exploiteerbare details en geheimen niet.
-GEVOELIG = _re.compile(r"wachtwoord|password|\broot\b|\bssh\b|\b\d{1,3}(\.\d{1,3}){3}\b|gelekt|lekte|onversleuteld|open_basedir|vhost|api[_-]?key|ghp_|sk-[A-Za-z0-9]|AIza|heinmaas|sheheryar|jasper|BEEHIIV_API_KEY|GRANOLA_API_KEY|KANARIE-SYSTEEMACCOUNT", _re.I)
-cfg = json.loads((PAD.parent.parent / "config.json").read_text(encoding="utf-8"))
+GEVOELIG = _re.compile(r"wachtwoord|password|\broot\b|\bssh\b|\b\d{1,3}(\.\d{1,3}){3}\b|gelekt|lekte|onversleuteld|open_basedir|vhost"
+                       r"|api[_-]?key|ghp_|sk-[A-Za-z0-9]|AIza|heinmaas|sheheryar|jasper|BEEHIIV_API_KEY|GRANOLA_API_KEY"
+                       r"|\b[a-z]+_[a-z0-9]+_[a-z0-9_]+\b|\bwp_[a-z0-9_]+\b", _re.I)
+
+
 def alle_tekst(x):
     if isinstance(x, str): return [x]
-    if isinstance(x, dict): return [s for v in x.values() for s in alle_tekst(v)]
+    if isinstance(x, dict): return [s for v in x.values() for s in alle_tekst(v)]  # alleen waarden, geen sleutels
     if isinstance(x, list): return [s for v in x for s in alle_tekst(v)]
     return []
-# Alle statische publieke velden, behalve het besluit zelf (dat noemt de regel), plus de gegenereerde data.json.
-teksten = alle_tekst({k: v for k, v in cfg.items() if k != "publieke_velden_besluit"})
-teksten += [tekst]
-ct = cfg.get("content", {})
-teksten += [open(PAD.parent.parent / "stack.html", encoding="utf-8").read()]
-fout_titels = [x[:80] for x in teksten if GEVOELIG.search(x) and "alleen in het privé-register" not in x and "details privé" not in x and "details alleen in het privé-register" not in x]
-check("publieke tekst bevat geen geheimen of exploiteerbare details", not fout_titels, str(fout_titels))
-_proef = dict(cfg, wacht_op_richard=cfg.get("wacht_op_richard", []) + [{"wat": "inlog heinmaas_x", "wanneer": "-", "duur": "-"}])
-check("proef: een systeemaccount in wacht_op_richard wordt gevangen", any(GEVOELIG.search(x) for x in alle_tekst(_proef)))
+
+
+def zichtbare_html(html):
+    html = _re.sub(r"<script[\s\S]*?</script>|<style[\s\S]*?</style>", " ", html)
+    return _re.sub(r"<[^>]+>", " ", html)
+
+
+def stack_data(html):
+    m = _re.search(r"<script>([\s\S]*?)</script>", html)
+    return _re.findall(r'"([^"\n]{2,})"', m.group(1)) if m else []
+
+
+def privacyscan(cfg, htmls, data_json):
+    teksten = alle_tekst({k: v for k, v in cfg.items() if k != "publieke_velden_besluit"})
+    teksten += alle_tekst(json.loads(data_json))
+    for naam, html in htmls.items():
+        teksten.append(zichtbare_html(html))
+        if naam == "stack.html":
+            teksten += stack_data(html)
+    teksten = [_re.sub(r"https?://\S+", " ", x) for x in teksten]  # links naar het register zijn geen login
+    return [x[:80] for x in teksten if GEVOELIG.search(x)]
+
+
+ROOT = PAD.parent.parent
+cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
+htmls = {n: (ROOT / n).read_text(encoding="utf-8") for n in ("index.html", "voorstel.html", "stack.html")}
+fouten = privacyscan(cfg, htmls, tekst)
+check("publieke site bevat geen geheimen, systeemlogins of exploiteerbare details", not fouten, str(fouten[:5]))
+_cfg2 = dict(cfg, wacht_op_richard=cfg.get("wacht_op_richard", []) + [{"wat": "login wp_beheerder_42 aanpassen", "wanneer": "-", "duur": "-"}])
+check("proef: verzonnen systeemlogin in wacht_op_richard maakt de volledige scan rood", bool(privacyscan(_cfg2, htmls, tekst)))
+_htmls2 = dict(htmls, **{"stack.html": htmls["stack.html"].replace('["Back-ups en herstelproef","deels"]', '["Back-ups en herstelproef wp_beheerder_42","deels"]')})
+check("proef: verzonnen systeemlogin in stack.html maakt de volledige scan rood", bool(privacyscan(cfg, _htmls2, tekst)))
 check("open afgekeurde PR zonder geldige nul is geen eindstand (UI-contract eind=false)",
       all(not o["eind"] for o in d_rood_lopend["orders"] if o["order"].startswith("BURNIN-")))
 
