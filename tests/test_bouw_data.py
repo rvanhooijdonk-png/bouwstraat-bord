@@ -24,19 +24,23 @@ def laad():
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
 
-def nep_api(m, prs_ok=True):
+def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1):
     t0 = m.CONFIG["burnin"]["t0"]
     na = m.NU.isoformat().replace("+00:00", "Z")
     prs = []
-    for i in range(10):  # tien verlaten opdrachten na t0, zonder statussen
+    for i in range(10):  # tien burn-in-opdrachten na t0
         prs.append({"number": 100 + i, "title": f"[ROUTE2 codex1] BURNIN-{i:02d}", "created_at": t0, "merged_at": None,
-                    "closed_at": None, "head": {"sha": f"s{i}"}})
+                    "closed_at": None, "head": {"sha": f"s{i}" if scenario != "rood" else f"rood{i}"}})
     prs.append({"number": 200, "title": "[ROUTE2 codex1] KLANT-ACME-OFFERTE", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "k"}})
     prs.append({"number": 201, "title": "[ROUTE2 geheimaccount] PROEF-A1", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "g"}})
+    prs.append({"number": 202, "title": "[ROUTE2 codex1] PROEF-ACME", "created_at": na, "merged_at": None,
+                "closed_at": None, "head": {"sha": "a"}})
     telling = {"gemeten_om": na, "volledig": True, "stilstand": {"order_zonder_voortgang_45_minuten": False, "notitie": KANARIE},
-               "vrij_veld": KANARIE, "ingrepen": {"pr_nummers": [55, "57; " + KANARIE, 999], "bron": {"status": "GEMETEN"}}}
+               "vrij_veld": KANARIE, "ingrepen": {"pr_nummers": [55, "57; " + KANARIE, 999], "bron": {"status": "GEMETEN"}},
+               "uitkomsten": {"merged": 0, "no_go": 10, "lopend": lopend, "pogingen_totaal": 10, "notitie": KANARIE,
+                              "bron": {"status": "GEMETEN"}}}
     def api(pad):
         if "/pulls" in pad:
             if not prs_ok:
@@ -45,6 +49,9 @@ def nep_api(m, prs_ok=True):
         if "/contents/telling" in pad:
             return {"content": base64.b64encode(json.dumps(telling).encode()).decode()}
         if "/statuses" in pad:
+            if "/rood" in pad:  # open PR met rode tests en afwijzende beoordeling
+                return [{"context": "route2/review", "state": "failure", "description": KANARIE, "created_at": na},
+                        {"context": "route2/tests", "state": "failure", "description": KANARIE, "created_at": na}]
             return [{"context": "route2/tests", "state": "success", "description": KANARIE, "created_at": na}]
         if "/commits" in pad:
             return [{"commit": {"committer": {"date": na}, "message": KANARIE}}]
@@ -67,7 +74,26 @@ check("klantnaam uit PR-titel geneutraliseerd", "KLANT-ACME" not in tekst and an
 check("onbekend account wordt 'onbekend'", "geheimaccount" not in tekst)
 check("tien verlaten opdrachten tellen niet als uitkomst", d["burnin"]["uitkomsten"] == 0, str(d["burnin"]["uitkomsten"]))
 check("ingrepen alleen gehele PR-nummers", d["burnin"]["ingrepen_prs"] == [999], str(d["burnin"].get("ingrepen_prs")))
-check("telling alleen gekozen velden", set(d["telling"]) == {"gemeten_om", "volledig", "stilstand"})
+check("telling alleen gekozen velden", set(d["telling"]) == {"gemeten_om", "volledig", "stilstand", "uitkomsten"})
+
+check("korte privé-ordernaam PROEF-ACME geneutraliseerd", "ACME" not in tekst)
+
+
+def draai(scenario, lopend):
+    mm = laad(); nep_api(mm, scenario=scenario, lopend=lopend)
+    o = io.StringIO()
+    with contextlib.redirect_stdout(o):
+        mm.main()
+    return json.loads(o.getvalue())
+
+
+d_rood_lopend = draai("rood", 1)
+check("tien open rode PR's terwijl er nog workflows lopen: geen uitkomst", d_rood_lopend["burnin"]["uitkomsten"] == 0,
+      str(d_rood_lopend["burnin"]["uitkomsten"]))
+d_rood_klaar = draai("rood", 0)
+check("tien afgekeurde PR's en telling meldt 0 lopend: tien eindstanden", d_rood_klaar["burnin"]["uitkomsten"] == 10,
+      str(d_rood_klaar["burnin"]["uitkomsten"]))
+check("telling-uitkomsten alleen gehele getallen, geen notitie", d_rood_klaar["telling"]["uitkomsten"] == {"merged": 0, "no_go": 10, "lopend": 0, "pogingen_totaal": 10})
 
 m2 = laad(); nep_api(m2, prs_ok=False)
 uit2 = io.StringIO()

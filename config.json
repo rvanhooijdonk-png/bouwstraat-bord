@@ -469,5 +469,372 @@
         ]
       ]
     }
-  ]
+  ],
+  "werkvoorraad": [
+    {
+      "titel": "Burn-in route 2, run 1 (24 uur, 10 echte uitkomsten, 0 ingrepen)",
+      "spoor": "Bouwstraat",
+      "status": "loopt",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Eindmeting burn-in, sleutels claude3/4, run 2 met zes accounts, vrijgave",
+      "spoor": "Bouwstraat",
+      "status": "gepland",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Bouwstraat-bord: publieke velden dicht, uitkomsten alleen eindstanden",
+      "spoor": "Bouwstraat",
+      "status": "bij Astra",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Modellenradar per bron + wekelijkse controle (maandag)",
+      "spoor": "Modellenvloot",
+      "status": "afgeleverd",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Modellenvloot: Opus 5.5, Sonnet 5.5, Haiku 5.5 (nog zonder rol)",
+      "spoor": "Modellenvloot",
+      "status": "afgeleverd",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Modellenvloot als stuurmiddel: consumenten lezen uit de vloot, drift gemeld",
+      "spoor": "Modellenvloot",
+      "status": "gepland",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Radar: open punten Astra (Markdown escapen, melding herhaalbaar)",
+      "spoor": "Modellenvloot",
+      "status": "gepland",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Gemini-reviews werken weer",
+      "spoor": "Stackbreed",
+      "status": "afgeleverd",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Gemini-script fail-closed (COA #82)",
+      "spoor": "Stackbreed",
+      "status": "bij Astra",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Controlevolgorde: zelf → Astra → Gemini (OB-0950)",
+      "spoor": "Stackbreed",
+      "status": "afgeleverd",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Beehiiv-API aangesloten (alleen lezen)",
+      "spoor": "Nieuwsbrief",
+      "status": "afgeleverd",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Proef: één Beehiiv-concept aanmaken (niet versturen)",
+      "spoor": "Nieuwsbrief",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md"
+    },
+    {
+      "titel": "Nieuwsbrief: bestaande contacten alleen met aantoonbare toestemming",
+      "spoor": "Nieuwsbrief",
+      "status": "later",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md"
+    },
+    {
+      "titel": "P0: eerste long-read + nieuwsbrief via het publishing board",
+      "spoor": "Long-read",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/main/plannen/P0-longread-nieuwsbrief-blog-marketing.md"
+    },
+    {
+      "titel": "Schrijfstijl-training (1965 blogs, 116 nieuwsbrieven, gouden set, blinde toets)",
+      "spoor": "Long-read",
+      "status": "bij Astra",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-schrijfstijl/plannen/VOORSTEL_SCHRIJFSTIJL_TRAINING_V1.md"
+    },
+    {
+      "titel": "Artikelscript: nieuw artikel als WordPress-concept (weblog #1)",
+      "spoor": "Long-read",
+      "status": "bij Astra",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Publishing board (PIPELINE-OUTPUT): ontwerp",
+      "spoor": "Publishing board",
+      "status": "bij Astra",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/ontwerp-publishing-board/plannen/ONTWERP_PUBLISHING_BOARD_V1.md"
+    },
+    {
+      "titel": "Publishing board bouwen (opdracht, productie, voorstellen, feedback, publiceren, kalender)",
+      "spoor": "Publishing board",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": null
+    },
+    {
+      "titel": "Kopbeelden per artikel met Gemini (huisstijl site)",
+      "spoor": "Publishing board",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": null
+    },
+    {
+      "titel": "Social: alleen winnende posts, extern leren, tagging",
+      "spoor": "Social",
+      "status": "bij Astra",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/plannen/VOORSTEL_SOCIAL_WINNERS_V1.md"
+    },
+    {
+      "titel": "Social: keuze publicatie- en meettool (maandkosten)",
+      "spoor": "Social",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/kennis/social-onderzoek-2026-10.md"
+    },
+    {
+      "titel": "Social: platforms (X, Instagram, TikTok, LinkedIn + ?) en 5–10 voorbeeldaccounts",
+      "spoor": "Social",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": null
+    },
+    {
+      "titel": "Social: extern corpus futuristen, patronenboek, winnaarstoets",
+      "spoor": "Social",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": null
+    },
+    {
+      "titel": "SEO/GEO per artikel + groeiplan content",
+      "spoor": "Weblog",
+      "status": "bij Astra",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-seo-geo/plannen/VOORSTEL_SEO_GEO_PER_ARTIKEL_V1.md"
+    },
+    {
+      "titel": "Groot onderhoudsplan weblog (9 sporen)",
+      "spoor": "Weblog",
+      "status": "bij Astra",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-seo-geo/plannen/ONDERHOUDSPLAN_WEBLOG_V1.md"
+    },
+    {
+      "titel": "Weblog spoor 1: veiligheid en server (onderhoudsvenster, 2FA, back-up)",
+      "spoor": "Weblog",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": null
+    },
+    {
+      "titel": "Weblog spoor 2: cookiebanner, één GA4, nulmeting, Search Console-API",
+      "spoor": "Weblog",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": null
+    },
+    {
+      "titel": "Weblog spoor 3: artikelonderhoud (titels, alt-teksten, dunne en vertaalde artikelen)",
+      "spoor": "Weblog",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": null
+    },
+    {
+      "titel": "Weblog spoor 4–6: SEO-techniek, interne links en hubs, GEO-meting",
+      "spoor": "Weblog",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": null
+    },
+    {
+      "titel": "Weblog spoor 7–8: nieuwe content, hoofdsite, reputatie, campagnes",
+      "spoor": "Weblog",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": null
+    },
+    {
+      "titel": "research-intelligence fase 4 (bewijscontrole) in PIPELINE-INPUT",
+      "spoor": "Content-keten",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": null
+    },
+    {
+      "titel": "Series: YouTube en podcasts volgen + futuristen-video's automatisch analyseren",
+      "spoor": "Content-keten",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": null
+    },
+    {
+      "titel": "Projectenregister en bord geordend",
+      "spoor": "Overzicht",
+      "status": "afgeleverd",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Repo's doorzoeken op taken die nog niet in het register staan",
+      "spoor": "Overzicht",
+      "status": "loopt",
+      "wie": "stack",
+      "link": null
+    },
+    {
+      "titel": "Blogadres en taal (NL+EN) bevestigen",
+      "spoor": "Overzicht",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": null
+    },
+    {
+      "titel": "Back-up office-database: open melding sinds 10-08 nalopen",
+      "spoor": "Beveiliging en back-up",
+      "status": "urgent",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "PIPELINE-INPUT-scans: open melding 'falen sinds 17-07' nalopen",
+      "spoor": "Content-keten",
+      "status": "urgent",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Website: beveiligingsmelding bij formulieren nalopen",
+      "spoor": "Websites",
+      "status": "urgent",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Oude tokens zonder vervaldatum intrekken of vervangen",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "jij + stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Herstelproef back-ups (nooit bewezen)",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Driftmeldingen stack-control afhandelen",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "COA: taken in gewone taal, testharnas, betrouwbaarheid, open PR's",
+      "spoor": "Assistent",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "PIPELINE-INPUT: bronnen uit YouTube, TikTok en Reddit, periodieke bron-audit",
+      "spoor": "Content-keten",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Mail-agent: follow-up-concepten, afzender-mapping, opruiming",
+      "spoor": "Content-keten",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Keynotes: collectie ordenen, slides-analyse, ontdubbeling archief",
+      "spoor": "Presentaties",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Office: betaalkoppelingen uit mail-agent (met akkoord)",
+      "spoor": "Office",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Takenhub: audit- en verbeterprogramma (roadmap, audits, review)",
+      "spoor": "Office",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Site-agents: eerste ronde uit het bestaande plan, na de burn-in",
+      "spoor": "Websites",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Outreach-data: sprints 2–6, provider-tests, adresverificatie",
+      "spoor": "Outreach",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Markten en onderzoek: algo-trading-order, NQ-programma (wacht op data)",
+      "spoor": "Markten en onderzoek",
+      "status": "later",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Modelpool: goedkope builder en handover (command-canon)",
+      "spoor": "Modellenvloot",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    },
+    {
+      "titel": "Series: bestaande media-hub als basis gebruiken",
+      "spoor": "Content-keten",
+      "status": "gepland",
+      "wie": "autocoding",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10"
+    }
+  ],
+  "publieke_velden_besluit": "14-10 (TOEZICHT, ter bevestiging door Richard): uit privé-bronnen alleen vaste statusteksten, PR-nummers, tijden, accounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties. Nooit titels, beschrijvingen of tekst uit privé-bronnen."
 }

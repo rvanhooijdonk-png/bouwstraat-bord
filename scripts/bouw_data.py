@@ -23,7 +23,7 @@ TOKEN = os.environ.get("ROUTE2_LEES_TOKEN", "")
 TITEL = re.compile(r"^\[ROUTE2 ([a-z0-9]+)\] ([A-Z0-9][A-Z0-9-]{1,60})$")
 NU = datetime.now(timezone.utc)
 BEKENDE_ACCOUNTS = {a["naam"] for a in CONFIG["accounts"]}
-PUBLIEKE_ORDER = re.compile(r"^(BURNIN|PROEF|ROUTE2)-[A-Z0-9]{1,4}$")
+PUBLIEKE_ORDER = re.compile(r"^BURNIN-\d{2}$")  # al het andere wordt OPDRACHT-<pr-nummer> (Astra R4)
 # Alleen deze eindtoestanden zijn een echte burn-in-uitkomst; gesloten, onbekend en zonder uitkomst niet.
 ECHTE_UITKOMST = {"samengevoegd", "afgekeurd", "tests rood"}
 bronnen = {}
@@ -133,6 +133,11 @@ def main():
     beoordelaar = CONFIG["standaard_beoordelaar"]
     t0 = tijd(CONFIG["burnin"]["t0"])
 
+    # Een afkeuring of rode test is pas een eindstand als de telling van route 2 aantoonbaar 0 lopende workflows meldt
+    # (route 2 sluit een NO_GO-PR niet; de workflow eindigt wel). Zonder leesbare telling telt een open PR nooit mee.
+    u = stand.get("uitkomsten") if isinstance(stand, dict) and isinstance(stand.get("uitkomsten"), dict) else {}
+    niets_lopend = (u.get("bron", {}).get("status") == "GEMETEN" and isinstance(u.get("lopend"), int)
+                    and not isinstance(u.get("lopend"), bool) and u.get("lopend") == 0)
     orders, ticker = [], []
     for pr in alle:
         m = TITEL.match(pr["title"])
@@ -181,7 +186,8 @@ def main():
         if uitkomst is None and geopend < NU - timedelta(minutes=90):
             # Een open PR zonder statussen na anderhalf uur is verlaten (bijvoorbeeld een geblokkeerde run).
             fase, uitkomst = "zonder uitkomst", "zonder uitkomst"
-        orders.append({"pr": pr["number"], "order": order_id, "bouwer": bouwer,
+        eind = bool(merged) or bool(gesloten) or (uitkomst in ("afgekeurd", "tests rood") and niets_lopend)
+        orders.append({"pr": pr["number"], "order": order_id, "bouwer": bouwer, "eind": eind,
                        "beoordelaar": beoordelaar, "fase": fase, "uitkomst": uitkomst,
                        "geopend": pr["created_at"], "afgerond": pr.get("merged_at") or (
                            (review.get("created_at") or tests.get("created_at")) if uitkomst else None),
@@ -211,9 +217,9 @@ def main():
     uniek = {}
     for o in sorted(bi_orders, key=lambda o: o["geopend"]):
         uniek[o["order"]] = o
-    burnin = {**bi, "uitkomsten": sum(1 for o in uniek.values() if o["uitkomst"] in ECHTE_UITKOMST),
+    burnin = {**bi, "uitkomsten": sum(1 for o in uniek.values() if o["eind"] and o["uitkomst"] in ECHTE_UITKOMST),
               "samengevoegd": sum(1 for o in uniek.values() if o["uitkomst"] == "samengevoegd"),
-              "afgekeurd": sum(1 for o in uniek.values() if o["uitkomst"] in ("afgekeurd", "tests rood")),
+              "afgekeurd": sum(1 for o in uniek.values() if o["eind"] and o["uitkomst"] in ("afgekeurd", "tests rood")),
               "verstreken_uur": round(max(0.0, (min(NU, tijd(bi["einde"])) - tijd(bi["t0"])).total_seconds()) / 3600, 1)}
     if stand:
         ing = stand.get("ingrepen", {})
@@ -233,10 +239,12 @@ def main():
         stil = stand.get("stilstand") if isinstance(stand.get("stilstand"), dict) else {}
         telling_publiek = {"gemeten_om": stand.get("gemeten_om") if isinstance(stand.get("gemeten_om"), str) else None,
                            "volledig": stand.get("volledig") if isinstance(stand.get("volledig"), bool) else None,
-                           "stilstand": {"order_zonder_voortgang_45_minuten": stil.get("order_zonder_voortgang_45_minuten") is True}}
+                           "stilstand": {"order_zonder_voortgang_45_minuten": stil.get("order_zonder_voortgang_45_minuten") is True},
+                           "uitkomsten": {k: u.get(k) for k in ("merged", "no_go", "lopend", "pogingen_totaal")
+                                          if isinstance(u.get(k), int) and not isinstance(u.get(k), bool)}}
     json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": telling_publiek, "orders": orders,
                "accounts": accounts, "ticker": ticker[:150], "burnin": burnin,
-               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"]},
+               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"], "werkvoorraad": CONFIG.get("werkvoorraad", [])},
               sys.stdout, ensure_ascii=False, indent=1)
 
 
