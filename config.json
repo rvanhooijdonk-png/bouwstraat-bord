@@ -585,7 +585,7 @@
       "status": "bij Astra",
       "wie": "stack",
       "link": null,
-      "volgende": "extra WordPress-proef",
+      "volgende": "code klaar (Astra GO met voorwaarden); live herstelproef op het weblog met jouw akkoord",
       "klaar_als": "gemerged na Astra GO"
     },
     {
@@ -747,7 +747,7 @@
       "status": "gepland",
       "wie": "autocoding",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
-      "volgende": "na de vrijgave",
+      "volgende": "na de vrijgave (Gemini-script fail-closed is gemerged, 15-10)",
       "klaar_als": "Telegram werkt, taken in gewone taal"
     },
     {
@@ -1061,6 +1061,22 @@
       "wie": "Richard",
       "volgende": "wacht op tweede waarde",
       "klaar_als": "koppeling getest, alleen bonnen naar de inbox"
+    },
+    {
+      "titel": "Office: back-up verbeteren",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "claude2",
+      "volgende": "diagnose gemerged; volgende stap wacht op akkoord",
+      "klaar_als": "back-up en herstelproef aangetoond"
+    },
+    {
+      "titel": "Modellenradar: veilige melding",
+      "spoor": "Modellenvloot",
+      "status": "loopt",
+      "wie": "claude2",
+      "volgende": "fix gemerged (Astra GO R4); effect bij volgende melding controleren",
+      "klaar_als": "gemerged; wekelijkse melding zonder dubbelen"
     }
   ],
   "publieke_velden_besluit": "OB-0952 (Richard, 14-10): alle taken staan op het publieke bord, ook beveiliging, back-up en outreach. Nooit: geheimen, sleutels, wachtwoorden, IP-adressen, inlog- of beheeraccounts van systemen (WordPress, server, externe diensten) of exploiteerbare details van een zwakke plek. Wel toegestaan: de rolnamen van de bouwaccounts van de stack (codex1–4, claude3/4), omdat Richard die in de meter wil zien (14-10: 'ik zie geen meetresultaten/accounts'). Uit privé-bronnen: alleen vaste statusteksten, PR-nummers, tijden, bouwaccounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties.",
