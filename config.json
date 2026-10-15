@@ -65,7 +65,7 @@
     }
   ],
   "burnin": {
-    "naam": "Burn-in run 1",
+    "naam": "Burn-in run 1 (geslaagd)",
     "t0": "2026-10-13T23:17:41Z",
     "einde": "2026-10-14T23:17:41Z",
     "start_pr": 55,
@@ -472,13 +472,13 @@
   ],
   "werkvoorraad": [
     {
-      "titel": "Burn-in route 2, run 1",
+      "titel": "Burn-in route 2, run 1: geslaagd (Astra GO)",
       "spoor": "Bouwstraat",
-      "status": "loopt",
+      "status": "afgeleverd",
       "wie": "stack",
       "link": null,
-      "volgende": "Mac-eis: bewijs of jouw akkoord op je verklaring",
-      "klaar_als": "Astra GO op het eindverslag"
+      "volgende": "—",
+      "klaar_als": "24 uur, 10 uitkomsten, 0 ingrepen, Mac offline"
     },
     {
       "titel": "Bouwstraat-bord: publieke velden dicht, uitkomsten alleen eindstanden",
