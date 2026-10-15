@@ -625,13 +625,13 @@
       "klaar_als": "voorstel vrijgegeven"
     },
     {
-      "titel": "Social: keuze publicatie- en meettool (maandkosten)",
+      "titel": "Social: Metricool afsluiten (gekozen 15-10)",
       "spoor": "Social",
       "status": "wacht op jou",
       "wie": "jij",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/kennis/social-onderzoek-2026-10.md",
-      "volgende": "matrix per account met totaalprijs",
-      "klaar_als": "jouw keuze"
+      "volgende": "totaalprijs controleren (tweede merk), daarna sluit jij af",
+      "klaar_als": "accounts gekoppeld in Metricool"
     },
     {
       "titel": "Social: extern corpus futuristen, patronenboek, winnaarstoets",
