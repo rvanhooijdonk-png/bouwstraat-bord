@@ -1049,18 +1049,18 @@
     {
       "titel": "Run 2: Claude-bouwer in route 2 (deel A: isolatie en sleutels, deel B: bouwer)",
       "spoor": "Bouwstraat",
-      "status": "bij Astra",
+      "status": "loopt",
       "wie": "codex1, codex3 (bouw), codex2 (review)",
-      "volgende": "Astra ronde 2; daarna via aanvoer",
+      "volgende": "A1–A4 uitgerold; B1 faalt nog; B2 volgt na herstel",
       "klaar_als": "claude3/claude4 bouwen een echte order met artifact, zonder sleutellek"
     },
     {
       "titel": "Jortt-koppeling: facturen naar de Jortt-inbox",
       "spoor": "Dagregie",
-      "status": "wacht op jou",
+      "status": "afgeleverd",
       "wie": "Richard",
-      "volgende": "wacht op tweede waarde",
-      "klaar_als": "koppeling getest, alleen bonnen naar de inbox"
+      "volgende": "—",
+      "klaar_als": "koppeling getest (15-10)"
     },
     {
       "titel": "Office: back-up verbeteren",
@@ -1077,6 +1077,38 @@
       "wie": "claude2",
       "volgende": "fix gemerged (Astra GO R4); effect bij volgende melding controleren",
       "klaar_als": "gemerged; wekelijkse melding zonder dubbelen"
+    },
+    {
+      "titel": "Inkoopfacturen: boeken in Jortt, betaling klaarzetten in Revolut, akkoord door Richard",
+      "spoor": "Dagregie",
+      "status": "gepland",
+      "wie": "claude2",
+      "volgende": "plan uitschrijven, Astra-toets, apart besluit over grenzen",
+      "klaar_als": "proefconcept van €0,01 zichtbaar in de Revolut-app en afgewezen; de stack betaalt nooit zelf"
+    },
+    {
+      "titel": "Invoer via de Apple Watch Ultra (Actieknop)",
+      "spoor": "Dagregie",
+      "status": "gepland",
+      "wie": "claude2",
+      "volgende": "proef op de eigen watch: dicteren, versturen, antwoord tonen",
+      "klaar_als": "meldingen komen zonder verlies op het actiebord"
+    },
+    {
+      "titel": "Run 2: Claude-bouwer afmaken (B1, B2)",
+      "spoor": "Bouwstraat",
+      "status": "loopt",
+      "wie": "claude2, codex1, codex3, codex2",
+      "volgende": "A1–A4 uitgerold; B1 faalt nog (oorzaak zoeken); B2 volgt na herstel",
+      "klaar_als": "claude3/claude4 bouwen een echte order"
+    },
+    {
+      "titel": "Burn-in run 2: 24-uursproef met zes accounts",
+      "spoor": "Bouwstraat",
+      "status": "gepland",
+      "wie": "claude2",
+      "volgende": "start na B1/B2 en een groene live isolatieproef",
+      "klaar_als": "24 uur, alle uitkomsten geteld, 0 ingrepen"
     }
   ],
   "publieke_velden_besluit": "OB-0952 (Richard, 14-10): alle taken staan op het publieke bord, ook beveiliging, back-up en outreach. Nooit: geheimen, sleutels, wachtwoorden, IP-adressen, inlog- of beheeraccounts van systemen (WordPress, server, externe diensten) of exploiteerbare details van een zwakke plek. Wel toegestaan: de rolnamen van de bouwaccounts van de stack (codex1–4, claude3/4), omdat Richard die in de meter wil zien (14-10: 'ik zie geen meetresultaten/accounts'). Uit privé-bronnen: alleen vaste statusteksten, PR-nummers, tijden, bouwaccounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties.",
