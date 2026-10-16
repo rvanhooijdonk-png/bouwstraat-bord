@@ -119,7 +119,7 @@ _mf = laad(); _mf.CONFIG = dict(_mf.CONFIG, burnin={k: v for k, v in _mf.CONFIG[
 nep_api(_mf, scenario="rood", lopend=0); _of = io.StringIO()
 with contextlib.redirect_stdout(_of):
     _mf.main()
-check("zonder orderlijst telt het voorvoegsel (oude runs): 6 + 00 + 98 = 8", json.loads(_of.getvalue())["burnin"]["uitkomsten"] == 8)
+check("zonder orderlijst telt elk uniek nummer met het voorvoegsel (oude runs): 00..05 + 98 = 7", json.loads(_of.getvalue())["burnin"]["uitkomsten"] == 7)
 check("oude telling (2 uur) met 0 lopend maakt open afgekeurde PR's geen eindstand",
       draai("rood", 0, telling_oud=True)["burnin"]["uitkomsten"] == 0)
 check("onvolledige telling met 0 lopend maakt open afgekeurde PR's geen eindstand",
