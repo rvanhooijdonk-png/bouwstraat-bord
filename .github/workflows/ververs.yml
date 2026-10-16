@@ -26,12 +26,14 @@ jobs:
           python-version: "3.12"
       - name: Offline proef van de generator (geen privétekst naar de publieke site)
         run: python3 tests/test_bouw_data.py
+      - name: DOM-proef tegels andere borden
+        run: node tests/test_borden_dom.mjs
       - name: Gegevens ophalen (alleen lezen)
         env:
           ROUTE2_LEES_TOKEN: ${{ secrets.ROUTE2_LEES_TOKEN }}
         run: |
           mkdir -p site
-          cp index.html voorstel.html stack.html site/
+          cp index.html voorstel.html stack.html publishing.html site/
           python scripts/bouw_data.py > site/data.json
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

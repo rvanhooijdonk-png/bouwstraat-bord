@@ -6,10 +6,10 @@
 <title>De hele stack</title>
 <style>
 :root{--grond:#f4f3ef;--vlak:#ffffff;--tekst:#1d2126;--zacht:#5d6670;--lijn:#dcd9d1;--accent:#2f5d50;--accent2:#b0563a;
---bestaat:#1a7f37;--deels:#9a6700;--gepland:#5b4bd6;--idee:#6e7781;--hold:#8c959f;--pijl:#9aa3ad}
+--bestaat:#1a7f37;--deels:#9a6700;--uit:#b42318;--gepland:#5b4bd6;--idee:#6e7781;--hold:#8c959f;--pijl:#9aa3ad}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--grond:#15181b;--vlak:#1e2226;--tekst:#e8e6e1;--zacht:#a3abb3;--lijn:#30353b;--accent:#7fbfa9;--accent2:#e39a7f;
---bestaat:#4cc276;--deels:#e0b04a;--gepland:#a59cf2;--idee:#9aa3ad;--hold:#6e7781;--pijl:#5d6670}}
-:root[data-theme="dark"]{--grond:#15181b;--vlak:#1e2226;--tekst:#e8e6e1;--zacht:#a3abb3;--lijn:#30353b;--accent:#7fbfa9;--accent2:#e39a7f;
+--bestaat:#4cc276;--deels:#e0b04a;--uit:#f07a6a;--gepland:#a59cf2;--idee:#9aa3ad;--hold:#6e7781;--pijl:#5d6670}}
+:root[data-theme="dark"]{--uit:#f07a6a;--grond:#15181b;--vlak:#1e2226;--tekst:#e8e6e1;--zacht:#a3abb3;--lijn:#30353b;--accent:#7fbfa9;--accent2:#e39a7f;
 --bestaat:#4cc276;--deels:#e0b04a;--gepland:#a59cf2;--idee:#9aa3ad;--hold:#6e7781;--pijl:#5d6670}
 *{box-sizing:border-box}
 body{margin:0;background:var(--grond);color:var(--tekst);font:15px/1.45 ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;padding-inline:16px}
@@ -21,7 +21,7 @@ h1{font-size:30px;margin:10px 0 4px;text-wrap:balance;letter-spacing:-.01em}
 h2{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--zacht);margin:28px 0 10px}
 .legenda{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--zacht);margin:0 0 6px}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle}
-.d-bestaat{background:var(--bestaat)}.d-deels{background:var(--deels)}.d-gepland{background:var(--gepland)}.d-idee{background:var(--idee)}.d-hold{background:var(--hold)}
+.d-bestaat{background:var(--bestaat)}.d-uit{background:var(--uit)}.d-deels{background:var(--deels)}.d-gepland{background:var(--gepland)}.d-idee{background:var(--idee)}.d-hold{background:var(--hold)}
 /* stroom */
 .stroom{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:0;align-items:stretch}
 .fase{background:var(--vlak);border:1px solid var(--lijn);border-radius:10px;padding:12px;position:relative;margin-right:22px}
@@ -36,81 +36,83 @@ h2{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--zacht
 ul.onderdelen{list-style:none;margin:0;padding:0}
 ul.onderdelen li{font-size:13px;padding:2px 0;display:flex;gap:6px;align-items:baseline}
 ul.onderdelen li .dot{flex:none;transform:translateY(-1px)}
-ul.onderdelen li small{color:var(--zacht)}
+ul.onderdelen li small{color:var(--zacht);white-space:nowrap;margin-left:auto;padding-left:6px}
 /* lagen */
 .lagen{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
 .laag{background:var(--vlak);border:1px solid var(--lijn);border-radius:10px;padding:12px;border-top:4px solid var(--accent)}
 .laag h3{margin:0 0 2px;font-size:15px}.laag p{margin:0 0 8px;font-size:12px;color:var(--zacht)}
 .laag.fundament{border-top-color:var(--accent2)}
 .telling{font-variant-numeric:tabular-nums}
+.band{margin-top:30px}.band h2{margin:0 0 2px}.band .inleiding{margin:0 0 10px;font-size:14px}
+.laag .tab{font:600 11px ui-monospace,Menlo,monospace;letter-spacing:.04em;color:var(--zacht);background:var(--grond);border:1px solid var(--lijn);border-radius:5px;padding:1px 6px;vertical-align:2px}
 footer{margin-top:28px;font-size:12px;color:var(--zacht)}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 </style>
 </head>
 <body>
 <main>
-  <div class="boven"><a href="index.html">← terug naar het bord</a><span>Overzicht en planning, geen meting · stand 14-10-2026 · details alleen in het privé-register</span></div>
+  <div class="boven"><a href="index.html">← terug naar het bord</a><span>Overzicht en planning, geen meting · stand 16-10-2026</span></div>
   <h1>De hele stack in één beeld</h1>
-  <p class="inleiding">Van bron tot meting: hoe onderwerpen binnenkomen, hoe jij kiest, wat we maken, waar het verschijnt en wat we meten. Daaronder alle lagen die dat mogelijk maken: de bouwstraat, de modellen, de kennis, de websites, het kantoor en het fundament. Een stip geeft de stand.</p>
+  <p class="inleiding">Van bron tot meting: hoe onderwerpen binnenkomen, hoe jij kiest, wat we maken, waar het verschijnt en wat we meten. Daaronder in drie banden: jouw kanalen (je tabs in Wave), de backoffice die centraal bouwt, en het fundament. Een stip geeft de stand.</p>
   <div class="legenda" id="legenda"></div>
 
   <h2>De contentstroom</h2>
   <div class="stroom" id="stroom"></div>
 
-  <h2>Alle lagen</h2>
-  <div class="lagen" id="lagen"></div>
+  <div id="lagen"></div>
 
-  <footer>Gevoelige onderdelen (beveiliging, back-ups, outreach, ventures) staan hier alleen als hoofdlijn; de details staan in het privé-register. <span id="totaal"></span></footer>
+  <footer>Alle onderdelen staan hier (OB-0952); geheimen en details van zwakke plekken nooit. Venture-inhoud staat in het privé-register. <span id="totaal"></span></footer>
 </main>
 <script>
-const ST={bestaat:"bestaat",deels:"deels",gepland:"gepland",idee:"idee",hold:"on hold"};
+const ST={bestaat:"bestaat",deels:"deels",uit:"buiten werking",gepland:"gepland",idee:"idee",hold:"on hold"};
 const STROOM=[
  {naam:"1. Bronnen",sub:"waar onderwerpen vandaan komen",items:[
-  ["Scans met AI en websearch","deels"],["Trechter (bookmarks, Instapaper)","deels"],["Nieuwsbrieven van anderen","deels"],["Series: YouTube en podcasts","deels"],["Futuristen-video's","gepland"],["Granola (gesprekken)","gepland"],["Zoekvragen (SEO/GEO)","deels"],["Vragen uit de zaal","idee"],["Eigen archief (blogs, nieuwsbrieven)","bestaat"]]},
+  ["Scans met AI en websearch","uit"],["Trechter (X, Instapaper, bookmarks)","deels"],["Nieuwsbrieven in je mailbox","deels"],["Series: YouTube en podcasts","deels"],["Futuristen-video's","gepland"],["Granola (gesprekken)","gepland"],["Zoekvragen (SEO/GEO)","deels"],["Vragen uit de zaal","idee"],["Eigen archief (blogs, nieuwsbrieven)","bestaat"]]},
  {naam:"2. PIPELINE-INPUT",sub:"verzamelen, controleren, ordenen",items:[
-  ["trend-pipeline (scans, triage)","deels"],["stack-trechter","deels"],["mail_agent → triage","deels"],["media-hub (series)","bestaat"],["research-intelligence (verdiepen, bewijs)","deels"],["Leeftijdscontrole","gepland"]]},
- {naam:"3. Jij kiest",sub:"swipe, bundelen of een vrije opdracht",cls:"richard",items:[
-  ["Swipe: ster → media kiezen","bestaat"],["Bundelen tot één artikel","gepland"],["Vrije opdracht of 10 voorstellen","gepland"],["Mediavoorraad hergebruiken","gepland"]]},
- {naam:"4. PIPELINE-OUTPUT",sub:"publishing board: productie per middel",items:[
-  ["Long-read-lijn (contentpijplijn)","deels"],["Schrijfstijl-training","gepland"],["Feedback per middel","gepland"],["Kopbeelden (Gemini)","gepland"],["Faceless-video-lijn","deels"],["Keynote-creator","bestaat"]]},
+  ["Triage: swipe op kaarten","bestaat"],["Dagelijkse scans (trend-pipeline)","uit"],["Mailbox-nieuwsbrieven naar de triage","gepland"],["Series (media-hub)","bestaat"],["Verdiepen en bewijs checken (research-intelligence)","deels"],["Leeftijdscontrole: oud maar relevant?","gepland"],["Dossiers: alles uit de triage","deels"]]},
+ {naam:"3. Jij kiest",sub:"in de Input van het publishing board",cls:"richard",items:[
+  ["Swipe: ster, later, archief of weg","bestaat"],["Media kies je daarna in de rij","gepland"],["Bundelen tot één artikel","gepland"],["Vrije opdracht of 10 voorstellen","gepland"],["Mediavoorraad hergebruiken","gepland"]]},
+ {naam:"4. PIPELINE-OUTPUT",sub:"publishing board: maken en beoordelen",items:[
+  ["Publishing board (mockup staat)","deels"],["Long-read-lijn en Long-read Studio","deels"],["Uiting bekijken en feedback geven","gepland"],["Keynote-rij: verzamelen, één batch","gepland"],["Faceless-video-lijn","deels"],["Kopbeelden","gepland"],["Schrijfstijl leren van je feedback","gepland"]]},
  {naam:"5. Kanalen",sub:"altijd eerst als concept, live met jouw akkoord",items:[
-  ["Weblog NL/EN (WordPress)","deels"],["Nieuwsbrief NL/EN (Beehiiv)","bestaat"],["LinkedIn","deels"],["X · Instagram · TikTok","idee"],["YouTube (Shorts en lang)","idee"],["E-book, trendrapport, podcast","idee"],["Website-pagina's","deels"]]},
+  ["Weblog NL/EN (WordPress)","deels"],["Nieuwsbrief NL/EN (Beehiiv)","bestaat"],["LinkedIn en X (via Metricool)","deels"],["Instagram · TikTok","idee"],["YouTube (Shorts en lang)","idee"],["Keynotes (Keynote-bestand)","deels"],["E-book, trendrapport, podcast","idee"],["Website-pagina's","deels"]]},
  {naam:"6. Meten",sub:"wat werkt, en terug naar de keuze",items:[
-  ["Search Console","deels"],["GA4 (na cookiebanner)","gepland"],["Beehiiv-cijfers","bestaat"],["Social-analytics (tool te kiezen)","gepland"],["GEO-meting (AI-antwoorden)","deels"]]},
+  ["Groeibord: SEO, GEO en SEA","bestaat"],["Search Console","bestaat"],["GA4 (na cookiebanner)","gepland"],["Beehiiv-cijfers","bestaat"],["Social-cijfers (Metricool)","deels"],["GEO-meting (AI-antwoorden)","bestaat"]]},
 ];
-const LAGEN=[
- {naam:"Bouwstraat (autocoding)",uit:"bouwt alles via opdrachten, met tests en een onafhankelijke beoordelaar",items:[
-  ["Route 2: Temporal op Railway","bestaat"],["Burn-in run 1 (24 uur)","deels"],["Run 2 met zes accounts, daarna vrijgave","gepland"],["Accounts: codex1–4, claude3/4","bestaat"],["Aanvoer van opdrachten (elke 5 min)","bestaat"],["Telling (elke 15 min)","bestaat"]]},
- {naam:"Toezicht en controle",uit:"zelf → Astra → Gemini (OB-0950)",items:[
-  ["TOEZICHT (MacBook en mini)","bestaat"],["Astra: onafhankelijke toets (codex4)","bestaat"],["Gemini: tweede familie bij kritieke zaken","bestaat"],["Besluitregister (OB-nummers)","bestaat"],["Bouwstraat-bord + deze pagina","bestaat"]]},
- {naam:"Modellenvloot",uit:"welke modellen, wat ze mogen, wat ze kosten",items:[
-  ["Register vloot.v1.json (31 modellen)","bestaat"],["Wekelijkse radar (maandag)","bestaat"],["Abonnementen eerst: Claude Max, ChatGPT Pro","bestaat"],["Gratis modellen voor bulk en tweede mening","gepland"],["Consumenten lezen uit de vloot","gepland"],["Modelpool (command-canon)","gepland"]]},
- {naam:"Kennislaag",uit:"één geheugen voor alles",items:[
-  ["Vault (ongeveer 23.000 notities)","bestaat"],["Kennisbank en dossiers","deels"],["Frameworks-scan oktober 2026","bestaat"],["Venture-radar","deels"],["content-intelligence (alleen lezen)","deels"]]},
- {naam:"Websites",uit:"hoofdsite, weblog en helpers",items:[
-  ["richardvanhooijdonk.com (nieuwe site)","deels"],["Weblog: onderhoudsplan in 9 sporen","deels"],["SEO/GEO per artikel","gepland"],["Site-agents","gepland"],["futurezone.ai","hold"]]},
- {naam:"Presentaties",uit:"keynotes maken en bewaren",items:[
-  ["Keynote-creator (leert van goedgekeurde slides)","bestaat"],["Keynote-archief (ontdubbelen)","deels"],["Slides-analyse (~1000 decks)","deels"]]},
- {naam:"Assistent en control-center",uit:"praten met je stack",items:[
-  ["COA / CHIEF","deels"],["Telegram","gepland"],["Control-center","gepland"]]},
- {naam:"Office",uit:"taken en administratie",items:[
-  ["Takenhub (reset)","gepland"],["Office / backoffice","deels"],["Mail-agent","deels"]]},
- {naam:"Outreach",uit:"contact met opdrachtgevers (details privé)",items:[
-  ["Adressenbestand + scraper","deels"],["Cold-email-stack","idee"],["Nieuwsbrief-contacten (alleen met toestemming)","gepland"]]},
- {naam:"Ventures",uit:"13 ideeën in verkenning (details privé)",items:[
-  ["Bespreking week van 19-10","gepland"],["Businessmodel-engine","deels"]]},
- {naam:"Markten en onderzoek",uit:"handel en marktdata",items:[
-  ["algo-trading","hold"],["NQ-onderzoek en -radar","hold"]]},
- {naam:"Fundament",uit:"veiligheid, back-ups, machines",cls:"fundament",items:[
-  ["Beveiligingsring (P1)","gepland"],["Back-ups en herstelproef","deels"],["Bewaking (blog, bord)","bestaat"],["MacBook · Mac mini · Railway · GitHub","bestaat"]]},
+// Drie banden: wat jij per kanaal doet, wat centraal draait, en waar alles op rust.
+const BANDEN=[
+ {titel:"Jouw kanalen",uitleg:"Per project een eigen tab in Wave. Je praat en kiest per kanaal; het bouwen gebeurt centraal in de backoffice.",lagen:[
+  {naam:"Content en pipeline",tab:"PIPELINE · Content",uit:"de contentstroom hierboven",items:[["Contentstroom (6 stappen)","deels"],["Publishing board","deels"]]},
+  {naam:"Weblog",tab:"WEBLOG",uit:"de 2000 blogs onderhouden",items:[["Onderhoudsplan in 9 sporen","deels"],["SEO/GEO per artikel","gepland"]]},
+  {naam:"Website",tab:"WEBSITE",uit:"richardvanhooijdonk.com",items:[["Nieuwe site","deels"],["Site-agents","gepland"],["futurezone.ai","hold"]]},
+  {naam:"Vindbaarheid",tab:"SEO | GEO · SEA",uit:"gevonden worden in Google en AI",items:[["SEO en GEO","bestaat"],["SEA: campagnes en budget","deels"]]},
+  {naam:"Keynotes",tab:"CREATOR",uit:"keynotes maken en bewaren",items:[["Keynote-creator","deels"],["Echte tekst in de juiste fonts, geen tekst-PNG","gepland"],["Op de achtergrond bouwen, zonder klembord","gepland"],["Keynote-archief (ontdubbelen)","deels"],["Slides-analyse (~1000 decks)","deels"]]},
+  {naam:"Taken en kantoor",tab:"TAKENHUB · MAIL AGENT",uit:"taken, mail en administratie",items:[["Takenhub-bord (Taken, Notities, E-mail)","deels"],["Mail-agent","deels"],["Boeken in Jortt","bestaat"],["Betaling klaarzetten in Revolut (jij keurt goed)","gepland"],["Invoer via Apple Watch","gepland"]]},
+  {naam:"Ventures",tab:"VENTURE",uit:"nieuwe AI-toepassingen en ventures (details privé)",items:[["AI-Venture-Radar","deels"],["Businessmodel-engine","deels"],["Bespreking week van 19-10","gepland"]]},
+  {naam:"Trechter",tab:"TRECHTER",uit:"alles wat je tegenkomt, gesorteerd",items:[["Verzameling (3383 items, 31 onderwerpen)","deels"],["Dagelijkse sorteerder","gepland"]]},
+  {naam:"Markten",tab:"ALGO",uit:"tradingstrategieën toetsen en testen",items:[["algo-trading (testen op historische data)","deels"],["NQ-onderzoek en -radar","hold"]]},
+  {naam:"Outreach",uit:"contact met opdrachtgevers (details privé)",items:[["Adressenbestand + scraper","deels"],["Cold-email-stack","idee"],["Nieuwsbrief-contacten (alleen met toestemming)","gepland"]]},
+ ]},
+ {titel:"Backoffice (centraal)",uitleg:"Eén rij voor het bouwwerk van alle kanalen. Straks wordt het werk over de accounts verdeeld, zodat een vol account geen kanaal meer tegenhoudt.",lagen:[
+  {naam:"Bouwstraat (route 2)",uit:"bouwt via opdrachten, met tests en een onafhankelijke beoordelaar",items:[["Route 2: Temporal op Railway","bestaat"],["Burn-in run 1 (24 uur, geslaagd)","bestaat"],["Burn-in run 2 (Claude-bouwers)","deels"],["Bouwen in de repo's van alle kanalen","gepland"],["Opdrachten zonder handmatige stap","gepland"],["Zelf een vrij account kiezen","gepland"],["Terugmelding in de tab van het kanaal","gepland"]]},
+  {naam:"Toezicht en controle",uit:"zelf → Astra → Gemini (OB-0950)",items:[["TOEZICHT","bestaat"],["Astra: onafhankelijke toets","bestaat"],["Gemini: tweede familie bij kritieke zaken","deels"],["Besluitregister (OB-nummers)","bestaat"],["Bouwstraat-bord","bestaat"]]},
+  {naam:"Modellenvloot",uit:"welke modellen, wat ze mogen, wat ze kosten",items:[["Register (31 modellen)","bestaat"],["Abonnementen eerst: Claude Max, ChatGPT Pro","bestaat"],["Wekelijkse radar (maandag)","bestaat"],["Gratis modellen voor bulk en tweede mening","gepland"]]},
+  {naam:"Kennislaag",uit:"één geheugen voor alles",items:[["Vault (ongeveer 23.000 notities)","bestaat"],["Kennisbank en dossiers","deels"],["content-intelligence (alleen lezen)","deels"]]},
+  {naam:"Assistent",uit:"praten met je stack",items:[["COA / CHIEF","deels"],["Control-center","gepland"]]},
+ ]},
+ {titel:"Fundament",uitleg:"Waar alles op rust.",lagen:[
+  {naam:"Veiligheid en machines",cls:"fundament",uit:"beveiliging, back-ups, bewaking",items:[["Beveiliging","deels"],["Back-ups en herstelproef","deels"],["Bewaking (blog, bord)","bestaat"],["MacBook · Mac mini · Railway · GitHub","bestaat"]]},
+ ]},
 ];
 const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
-const lijst=(items)=>{const ul=el("ul","onderdelen");for(const [n,s] of items){const li=el("li");li.append(el("span","dot d-"+s));const t=el("span",null,n);li.append(t,el("small",null,"· "+ST[s]));ul.append(li)}return ul};
+const lijst=(items)=>{const ul=el("ul","onderdelen");for(const [n,s] of items){const li=el("li");li.append(el("span","dot d-"+s));const t=el("span",null,n);li.append(t,el("small",null,ST[s]));ul.append(li)}return ul};
 const leg=document.getElementById("legenda");for(const [k,v] of Object.entries(ST)){const s=el("span");s.append(el("span","dot d-"+k),document.createTextNode(v));leg.append(s)}
 const sr=document.getElementById("stroom");for(const f of STROOM){const b=el("section","fase"+(f.cls?" "+f.cls:""));b.append(el("h3",null,f.naam),el("p","sub",f.sub),lijst(f.items));sr.append(b)}
 sr.append(el("div","terug","↺ wat werkt, gaat terug naar de keuze en de voorkeuren van de selectie"));
-const lg=document.getElementById("lagen");for(const l of LAGEN){const b=el("section","laag"+(l.cls?" "+l.cls:""));b.append(el("h3",null,l.naam),el("p",null,l.uit),lijst(l.items));lg.append(b)}
-const alle=[...STROOM,...LAGEN].flatMap(x=>x.items);const tel={};for(const [,s] of alle)tel[s]=(tel[s]||0)+1;
+const lg=document.getElementById("lagen");
+for(const band of BANDEN){const kop=el("div","band");kop.append(el("h2",null,band.titel),el("p","inleiding",band.uitleg));lg.append(kop);const rij=el("div","lagen");
+  for(const l of band.lagen){const b=el("section","laag"+(l.cls?" "+l.cls:""));const h=el("h3",null,l.naam);if(l.tab)h.append(" ",el("span","tab",l.tab));b.append(h,el("p",null,l.uit),lijst(l.items));rij.append(b)}lg.append(rij)}
+const alle=[...STROOM,...BANDEN.flatMap(b=>b.lagen)].flatMap(x=>x.items);const tel={};for(const [,s] of alle)tel[s]=(tel[s]||0)+1;
 document.getElementById("totaal").textContent=`${alle.length} onderdelen: `+Object.entries(ST).filter(([k])=>tel[k]).map(([k,v])=>`${tel[k]} ${v}`).join(", ")+".";
 </script>
 </body>

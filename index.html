@@ -106,10 +106,11 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
 </head>
 <body>
 <main class="pagina">
-  <div class="top"><span>Bouwstraat · route 2 · bijgewerkt door GitHub Actions, alleen lezend · <a href="voorstel.html">voorstel: bord voor de hele stack</a></span><span id="bronregel">laden…</span></div>
+  <div class="top"><span>Bouwstraat · route 2 · bijgewerkt door GitHub Actions, alleen lezend · <a href="stack.html">de hele stack in één beeld</a></span><span id="bronregel">laden…</span></div>
   <section class="oordeel" id="oordeel"><h1 id="oordeel-kop">Gegevens laden…</h1><p id="oordeel-tekst"></p><span class="vers"><span class="stip" id="stip"></span><span id="vers">—</span></span></section>
   <section class="jij"><h2>Wacht op jou</h2><ol id="jij"></ol></section>
   <section class="blok"><div class="blokkop"><h2>Prioriteiten</h2><span class="klein" id="prio-sam">reageren gaat via het privé-issue (alleen jij)</span></div><div class="prios" id="prios"></div></section>
+  <section class="blok" id="borden-blok"><div class="blokkop"><h2>Andere borden</h2><span class="klein">alle pagina’s en borden · status alleen waar het bord die levert</span></div><div class="prios" id="borden"></div></section>
   <section class="blok"><div class="blokkop"><h2>Meter · accounts</h2><span class="klein" id="meter-sam"></span></div><div class="meter" id="meter"></div></section>
   <div class="duo">
     <section class="blok"><div class="blokkop"><h2>Ticker · wat er gebeurt</h2><span class="klein">nieuwste boven · ververst elke minuut</span></div><ul class="ticker" id="ticker"></ul></section>
@@ -133,6 +134,16 @@ const hhmm=s=>new Date(s).toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-d
 const dagtijd=s=>new Date(s).toLocaleString("nl-NL",{weekday:"short",hour:"2-digit",minute:"2-digit",timeZone:"Europe/Amsterdam"});
 const geleden=s=>{if(!s)return "nooit";const m=Math.round((Date.now()-new Date(s))/60000);return m<1?"zojuist":m<60?m+" min geleden":m<1440?Math.round(m/60)+" uur geleden":Math.round(m/1440)+" dagen geleden"};
 let gezien=new Set();
+// Andere borden: naam, eigenaar, bijgewerkt en ok/let op. Alles als tekst (textContent); link alleen https uit config.
+function tekenBorden(d){
+  const bo=document.getElementById("borden");bo.replaceChildren();
+  for(const t of d.borden||[]){const r=el("div","prio");const ok=t.stand==="ok",los=t.stand==="link";const pil=el("span","pil "+(ok?"goed":los?"uit":"let"),ok?"ok":los?"geen status":"let op");
+    const links=el("span");links.append(el("span","titel",t.naam)," ",pil);
+    r.append(el("span","code",""),links,el("span","reacties",`${t.eigenaar} · `+(t.bijgewerkt?`${t.reden} ${geleden(t.bijgewerkt)}`:t.reden)));
+    if(typeof t.link==="string"&&t.link.startsWith("https://")){const a=el("a","knop","Open");a.href=t.link;a.target="_blank";a.rel="noopener";r.append(a)}
+    bo.append(r)}
+  document.getElementById("borden-blok").hidden=!(d.borden||[]).length;
+}
 function teken(d){
   const bron=Object.entries(d.bronnen||{}).filter(([k])=>k!=="prioriteiten").map(([,v])=>v);const onb=bron.filter(b=>b.status!=="GEMETEN");
   const leeftijd=(Date.now()-new Date(d.gemeten_om))/60000;
@@ -146,7 +157,7 @@ function teken(d){
   else if(ing>0){niveau="fout";kop="Er is ingegrepen tijdens de burn-in.";tekst="PR "+bi.ingrepen_prs.join(", ")+" telt als ingreep na de start."}
   else if(onb.length&&onb.length===bron.length){niveau="fout";kop="Het bord kan route 2 niet lezen.";tekst="Geen enkele bron was te lezen ("+[...new Set(onb.map(b=>b.fout))].join(", ")+"). Controleer de leessleutel ROUTE2_LEES_TOKEN. Er wordt geen nul verzonnen."}
   else if(onb.length||ing==null){niveau="let";kop="Bijna alles gemeten.";tekst="Niet alle bronnen waren te lezen: "+(onb.length?onb.length+" onbewezen":"ingrepen onbewezen")+". Er wordt geen nul verzonnen."}
-  else{const mb0=bi.mac_offline_bewijs;const eisen=[bi.uitkomsten>=bi.orders_aantal,ing===0,!!(mb0&&mb0.bron&&mb0.uren>=4),(bi.verstreken_uur||0)>=24];const gehaald=eisen.filter(Boolean).length;if(gehaald<4){niveau="let"};kop=gehaald===4?`${bi.naam||"Burn-in"}: alle 4 eisen gehaald.`:`Wacht: ${gehaald} van 4 eisen gehaald. ${bi.naam||"Burn-in"} loopt zonder ingreep, ${bi.verstreken_uur} van 24 uur.`;tekst=`${bi.uitkomsten}/${bi.orders_aantal} opdrachten afgerond: ${bi.samengevoegd} samengevoegd, ${bi.afgekeurd} afgekeurd. Niets staat vast.`}
+  else{const mb0=bi.mac_offline_bewijs;const EIS=bi.eis_uitkomsten||bi.orders_aantal;const eisen=[bi.uitkomsten>=EIS,ing===0,!!(mb0&&mb0.bron&&mb0.uren>=4),(bi.verstreken_uur||0)>=24];const gehaald=eisen.filter(Boolean).length;if(gehaald<4){niveau="let"};kop=gehaald===4?`${bi.naam||"Burn-in"}: alle 4 eisen gehaald.`:`Wacht: ${gehaald} van 4 eisen gehaald. ${bi.naam||"Burn-in"} loopt zonder ingreep, ${bi.verstreken_uur} van 24 uur.`;tekst=`${bi.uitkomsten} van ${EIS} vereiste uitkomsten (${bi.orders_aantal} opdrachten geschreven): ${bi.samengevoegd} samengevoegd, ${bi.afgekeurd} afgekeurd. Niets staat vast.`}
   document.getElementById("oordeel").className="oordeel "+(niveau==="goed"?"":niveau);
   document.getElementById("oordeel-kop").textContent=kop;document.getElementById("oordeel-tekst").textContent=tekst;
   document.getElementById("stip").className="stip "+(niveau==="goed"?"":niveau);
@@ -164,6 +175,7 @@ function teken(d){
     const links=el("span");links.append(ti," ",pil);r.append(el("span","code",p.code),links,re,a);pr.append(r)}
   const pb=(d.bronnen||{}).prioriteiten;const pnoot=pb&&pb.status!=="GEMETEN"?" · status en reacties nog niet leesbaar (leessleutel mist toegang tot projectenregister)":"";
   document.getElementById("prio-sam").textContent=`${(d.prioriteiten||[]).length} prioriteiten · ${bijJou} bij jou of in overleg · reageren via het privé-issue (alleen jij)${pnoot}`;
+  tekenBorden(d);
   // Content: input en output naast elkaar, met stand en volgende stap.
   const ct=d.content||{};document.getElementById("ct-noot").textContent=ct.noot||"";
   const rijCt=(x)=>{const r=el("div","ct-rij");const l=el("div");l.append(el("b",null,x.naam),el("br"),el("small",null,x.wat),el("br"),el("small",null,`waar: ${x.waar} · volgende: ${x.volgende}`));r.append(l,el("span","ct-st "+x.stand,x.stand));return r};
@@ -212,15 +224,15 @@ function teken(d){
   document.getElementById("bi-balk").style.width=Math.min(100,(bi.verstreken_uur||0)/24*100)+"%";
   const e=document.getElementById("bi-eisen");e.replaceChildren();
   const eis=(ok,wat,stand)=>{const li=el("li");li.append(el("span","t "+(ok===true?"ja":ok===false?"nee":"open"),ok===true?"✓":ok===false?"✗":"…"),el("span",null,wat),el("small",null,stand));e.append(li)};
-  eis(bi.uitkomsten>=bi.orders_aantal?true:null,"Tien echte uitkomsten",`${bi.uitkomsten}/${bi.orders_aantal}`);
+  eis(bi.uitkomsten>=(bi.eis_uitkomsten||bi.orders_aantal)?true:null,`${bi.eis_uitkomsten||bi.orders_aantal} echte uitkomsten`,`${bi.uitkomsten}/${bi.eis_uitkomsten||bi.orders_aantal}`+(bi.eis_uitkomsten&&bi.orders_aantal<bi.eis_uitkomsten?` · maar ${bi.orders_aantal} opdrachten geschreven`:""));
   eis(ing==null?null:ing===0,"Nul ingrepen na de start",ing==null?"onbewezen":String(ing));
   const mb=bi.mac_offline_bewijs;eis(mb&&mb.bron&&typeof mb.uren==="number"?mb.uren>=4:null,"Mac minstens 4 uur offline (verklaring Richard)",mb&&mb.bron?`${mb.uren} u · ${mb.bron}`:"onbewezen");
   eis((bi.verstreken_uur||0)>=24?true:null,"24 uur aaneengesloten",`${Math.max(0,24-(bi.verstreken_uur||0)).toFixed(1)} u te gaan`);
-  const lop=(d.orders||[]).filter(o=>!o.uitkomst);const L=document.getElementById("lopend");L.replaceChildren();
+  const lop=(d.orders||[]).filter(o=>!o.eind);const L=document.getElementById("lopend");L.replaceChildren();
   if(!lop.length)L.textContent="Niets in uitvoering. Een lege wachtrij is geen stilstand.";
-  for(const o of lop){const p=el("div");p.append(el("b",null,o.order)," ",`${o.fase} · bouwer ${o.bouwer} · sinds ${hhmm(o.geopend)}`);L.append(p)}
+  for(const o of lop){const p=el("div");p.append(el("b",null,o.order)," ",`${o.fase}${o.uitkomst?" · voorlopig: "+o.uitkomst+" (nog geen eindstand)":""} · bouwer ${o.bouwer} · sinds ${hhmm(o.geopend)}`);L.append(p)}
 
-  const tb=document.getElementById("orders");tb.replaceChildren();const af=(d.orders||[]).filter(o=>o.uitkomst&&o.uitkomst!=="onbekend");
+  const tb=document.getElementById("orders");tb.replaceChildren();const af=(d.orders||[]).filter(o=>o.eind);
   document.getElementById("af-kop").textContent=`Opdrachten (${af.length} met uitkomst)`;
   for(const o of af){const tr=el("tr");const a=el("a",null,"#"+o.pr);a.href=REPO+o.pr;a.target="_blank";a.rel="noopener";const td=el("td","data");td.append(a);
     const k=o.uitkomst==="samengevoegd"?"goed":o.uitkomst==="zonder uitkomst"?"uit":"fout";const u=el("td");u.append(el("span","pil "+k,o.uitkomst));

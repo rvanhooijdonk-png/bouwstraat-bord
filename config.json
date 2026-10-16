@@ -26,13 +26,13 @@
       "naam": "claude3",
       "rol": "bouwer",
       "aangesloten": false,
-      "noot": "sleutel nodig"
+      "noot": "nog niet aangesloten"
     },
     {
       "naam": "claude4",
       "rol": "bouwer",
       "aangesloten": false,
-      "noot": "sleutel nodig"
+      "noot": "nog niet aangesloten"
     },
     {
       "naam": "claude1",
@@ -65,24 +65,25 @@
     }
   ],
   "burnin": {
-    "naam": "Burn-in run 1",
-    "t0": "2026-10-13T23:17:41Z",
-    "einde": "2026-10-14T23:17:41Z",
-    "start_pr": 55,
-    "orders_prefix": "BURNIN-",
-    "orders_aantal": 10,
+    "naam": "Burn-in run 2",
+    "t0": "2026-10-15T19:30:58Z",
+    "einde": "2026-10-16T19:30:58Z",
+    "start_pr": 94,
+    "orders_prefix": "BURNIN2-",
+    "orders_aantal": 6,
     "vooraf_ingrepen": [
-      53,
-      55,
-      56,
-      57
+      94
     ],
-    "mac_offline_bewijs": {
-      "bron": "OB-0948 (verklaring Richard)",
-      "uren": 5.4,
-      "van": "07:30",
-      "tot": "12:55"
-    }
+    "mac_offline_bewijs": null,
+    "orders": [
+      "BURNIN2-01",
+      "BURNIN2-02",
+      "BURNIN2-03",
+      "BURNIN2-04",
+      "BURNIN2-05",
+      "BURNIN2-06"
+    ],
+    "eis_uitkomsten": 10
   },
   "wacht_op_richard": [
     {
@@ -111,7 +112,7 @@
       "duur": "bespreken, niet uitvoeren"
     },
     {
-      "wat": "Sleutels voor claude3 en claude4",
+      "wat": "Twee nieuwe bouwrollen aansluiten (jij, na de burn-in)",
       "wanneer": "na het einde van run 1",
       "duur": "±1 minuut per account"
     },
@@ -472,13 +473,13 @@
   ],
   "werkvoorraad": [
     {
-      "titel": "Burn-in route 2, run 1",
+      "titel": "Burn-in route 2, run 1: geslaagd (Astra GO)",
       "spoor": "Bouwstraat",
-      "status": "loopt",
+      "status": "afgeleverd",
       "wie": "stack",
       "link": null,
-      "volgende": "einde 01:17; eindmeting door de mini",
-      "klaar_als": "24 uur, 10 echte uitkomsten, 0 ingrepen"
+      "volgende": "—",
+      "klaar_als": "24 uur, 10 uitkomsten, 0 ingrepen, Mac offline"
     },
     {
       "titel": "Bouwstraat-bord: publieke velden dicht, uitkomsten alleen eindstanden",
@@ -585,7 +586,7 @@
       "status": "bij Astra",
       "wie": "stack",
       "link": null,
-      "volgende": "extra WordPress-proef",
+      "volgende": "code klaar (Astra GO met voorwaarden); live herstelproef op het weblog met jouw akkoord",
       "klaar_als": "gemerged na Astra GO"
     },
     {
@@ -625,13 +626,13 @@
       "klaar_als": "voorstel vrijgegeven"
     },
     {
-      "titel": "Social: keuze publicatie- en meettool (maandkosten)",
+      "titel": "Social: Metricool aangesloten (15-10, €64/mnd + X-uitbreiding)",
       "spoor": "Social",
-      "status": "wacht op jou",
+      "status": "afgeleverd",
       "wie": "jij",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister/blob/voorstel-social/kennis/social-onderzoek-2026-10.md",
-      "volgende": "matrix per account met totaalprijs",
-      "klaar_als": "jouw keuze"
+      "volgende": "goedkeuringsstap aanzetten; meten via API",
+      "klaar_als": "X, Instagram, TikTok, YouTube en LinkedIn-bedrijfspagina gekoppeld; API werkt"
     },
     {
       "titel": "Social: extern corpus futuristen, patronenboek, winnaarstoets",
@@ -747,7 +748,7 @@
       "status": "gepland",
       "wie": "autocoding",
       "link": "https://github.com/rvanhooijdonk-png/projectenregister#gevonden-in-de-repos-taken-die-nog-niet-in-dit-register-stonden-14-10",
-      "volgende": "na de vrijgave",
+      "volgende": "na de vrijgave (Gemini-script fail-closed is gemerged, 15-10)",
       "klaar_als": "Telegram werkt, taken in gewone taal"
     },
     {
@@ -823,15 +824,6 @@
       "klaar_als": "series zichtbaar in triage"
     },
     {
-      "titel": "Granola-koppeling uitwerken",
-      "spoor": "Content-keten",
-      "status": "gepland",
-      "wie": "stack",
-      "link": null,
-      "volgende": "morgen uitwerken",
-      "klaar_als": "eerste notities als input, met toestemming"
-    },
-    {
       "titel": "Control-center: praten met je stack (P2)",
       "spoor": "Stackbreed",
       "status": "gepland",
@@ -895,15 +887,6 @@
       "klaar_als": "na elke ronde leeg"
     },
     {
-      "titel": "Ventures (#62–74): in verkenning, details alleen in het privé-register",
-      "spoor": "Ventures",
-      "status": "gepland",
-      "wie": "jij + stack",
-      "link": null,
-      "volgende": "bespreking week van 19-10",
-      "klaar_als": "per venture een besluit"
-    },
-    {
       "titel": "Content-input en -output: dit overzicht onderhouden",
       "spoor": "Overzicht",
       "status": "loopt",
@@ -913,14 +896,223 @@
       "klaar_als": "overzicht compleet"
     },
     {
-      "titel": "14 taken met beveiligings-, back-up- of outreachdetails (alleen in het privé-register)",
-      "spoor": "Overzicht",
+      "titel": "Back-up office-database: open melding nalopen",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "melding nalopen en werking meten",
+      "klaar_als": "back-up draait en is getest"
+    },
+    {
+      "titel": "Website: open beveiligingsmelding bij formulieren nalopen",
+      "spoor": "Websites",
+      "status": "gepland",
+      "wie": "stack (website-sessie)",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "melding nalopen",
+      "klaar_als": "opgelost en getest"
+    },
+    {
+      "titel": "Beveiliging weblog-server: updates, inlogbeleid, 2FA beheerders",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "jij + stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "onderhoudsvenster kiezen",
+      "klaar_als": "updates gedaan, inlogbeleid en 2FA op orde"
+    },
+    {
+      "titel": "Toegangsbeheer: sleutels periodiek vernieuwen",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "jij + stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "lijst doornemen",
+      "klaar_als": "alle sleutels met vervaldatum"
+    },
+    {
+      "titel": "Back-ups buiten huis + versleuteling + herstelproef",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "jij + stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "nieuwe opslagsleutel aanmaken (jij)",
+      "klaar_als": "herstel aantoonbaar gelukt"
+    },
+    {
+      "titel": "Herstelproef van alle back-ups",
+      "spoor": "Beveiliging en back-up",
       "status": "gepland",
       "wie": "stack + jij",
-      "link": "https://github.com/rvanhooijdonk-png/projectenregister"
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "plan doornemen",
+      "klaar_als": "herstel bewezen"
+    },
+    {
+      "titel": "Driftmeldingen stack-control afhandelen",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "meldingen doornemen",
+      "klaar_als": "geen open drift"
+    },
+    {
+      "titel": "Beveiligingsring rond de hele stack (P1)",
+      "spoor": "Beveiliging en back-up",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "overzicht sleutels (namen) en toegangsmatrix",
+      "klaar_als": "wekelijks beveiligingsrapport"
+    },
+    {
+      "titel": "Beheer weblog: oude externe toegang opruimen",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "jouw besluit",
+      "klaar_als": "alleen bekende beheerders"
+    },
+    {
+      "titel": "Telefoonmelding bij storing",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "dienst kiezen",
+      "klaar_als": "melding komt binnen bij uitval"
+    },
+    {
+      "titel": "Outreach-data: adressenbestand beheren en uitbreiden (P7)",
+      "spoor": "Outreach",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "sprints 2–6 voorbereiden (droogloop)",
+      "klaar_als": "bestand actueel, met grondslag per contact"
+    },
+    {
+      "titel": "Outreach: provider-tests en adresverificatie",
+      "spoor": "Outreach",
+      "status": "gepland",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "kosten vooraf (OB-0949)",
+      "klaar_als": "verificatie werkt op een proefbatch"
+    },
+    {
+      "titel": "Cold-email-stack (P8)",
+      "spoor": "Outreach",
+      "status": "later",
+      "wie": "jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "besluit over kosten en versturen",
+      "klaar_als": "—"
+    },
+    {
+      "titel": "Nieuwsbrief: bestaande contacten alleen met aantoonbare toestemming",
+      "spoor": "Outreach",
+      "status": "later",
+      "wie": "stack + jij",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "privacytoets en beslisboom",
+      "klaar_als": "pas na apart besluit"
+    },
+    {
+      "titel": "Granola-koppeling uitwerken",
+      "spoor": "Content-keten",
+      "status": "gepland",
+      "wie": "stack",
+      "link": "https://github.com/rvanhooijdonk-png/projectenregister",
+      "volgende": "notities inlezen in de dagregie",
+      "klaar_als": "eerste notities als input, met toestemming"
+    },
+    {
+      "titel": "Route 2: oude open opdrachten opruimen (na de burn-in)",
+      "spoor": "Bouwstraat",
+      "status": "wacht op jou",
+      "wie": "stack + jij",
+      "link": null,
+      "volgende": "34 open PR's, alle vervangen door een latere versie of afgesloten in run 1; jouw akkoord om te sluiten (heropenen kan altijd)",
+      "klaar_als": "'Lopend' toont alleen echt lopend werk"
+    },
+    {
+      "titel": "Run 2: claude3 en claude4 aangesloten als bouwrol",
+      "spoor": "Bouwstraat",
+      "status": "afgeleverd",
+      "wie": "Richard + claude2",
+      "volgende": "—",
+      "klaar_als": "aansluiting klaar (15-10)"
+    },
+    {
+      "titel": "Run 2: Claude-bouwer in route 2 (deel A: isolatie en sleutels, deel B: bouwer)",
+      "spoor": "Bouwstraat",
+      "status": "loopt",
+      "wie": "codex1, codex3 (bouw), codex2 (review)",
+      "volgende": "A1–A4 uitgerold; B1 faalt nog; B2 volgt na herstel",
+      "klaar_als": "claude3/claude4 bouwen een echte order met artifact, zonder sleutellek"
+    },
+    {
+      "titel": "Jortt-koppeling: facturen naar de Jortt-inbox",
+      "spoor": "Dagregie",
+      "status": "afgeleverd",
+      "wie": "Richard",
+      "volgende": "—",
+      "klaar_als": "koppeling getest (15-10)"
+    },
+    {
+      "titel": "Office: back-up verbeteren",
+      "spoor": "Beveiliging en back-up",
+      "status": "wacht op jou",
+      "wie": "claude2",
+      "volgende": "diagnose gemerged; volgende stap wacht op akkoord",
+      "klaar_als": "back-up en herstelproef aangetoond"
+    },
+    {
+      "titel": "Modellenradar: veilige melding",
+      "spoor": "Modellenvloot",
+      "status": "loopt",
+      "wie": "claude2",
+      "volgende": "fix gemerged (Astra GO R4); effect bij volgende melding controleren",
+      "klaar_als": "gemerged; wekelijkse melding zonder dubbelen"
+    },
+    {
+      "titel": "Inkoopfacturen: boeken in Jortt, betaling klaarzetten in Revolut, akkoord door Richard",
+      "spoor": "Dagregie",
+      "status": "gepland",
+      "wie": "claude2",
+      "volgende": "plan uitschrijven, Astra-toets, apart besluit over grenzen",
+      "klaar_als": "proefconcept van €0,01 zichtbaar in de Revolut-app en afgewezen; de stack betaalt nooit zelf"
+    },
+    {
+      "titel": "Invoer via de Apple Watch Ultra (Actieknop)",
+      "spoor": "Dagregie",
+      "status": "gepland",
+      "wie": "claude2",
+      "volgende": "proef op de eigen watch: dicteren, versturen, antwoord tonen",
+      "klaar_als": "meldingen komen zonder verlies op het actiebord"
+    },
+    {
+      "titel": "Run 2: Claude-bouwer afmaken (B1, B2)",
+      "spoor": "Bouwstraat",
+      "status": "loopt",
+      "wie": "claude2, codex1, codex3, codex2",
+      "volgende": "A1–A4 uitgerold; B1 faalt nog (oorzaak zoeken); B2 volgt na herstel",
+      "klaar_als": "claude3/claude4 bouwen een echte order"
+    },
+    {
+      "titel": "Burn-in run 2: 24-uursproef met zes accounts",
+      "spoor": "Bouwstraat",
+      "status": "gepland",
+      "wie": "claude2",
+      "volgende": "start na B1/B2 en een groene live isolatieproef",
+      "klaar_als": "24 uur, alle uitkomsten geteld, 0 ingrepen"
     }
   ],
-  "publieke_velden_besluit": "14-10 (TOEZICHT, ter bevestiging door Richard): uit privé-bronnen alleen vaste statusteksten, PR-nummers, tijden, accounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties. Nooit titels, beschrijvingen of tekst uit privé-bronnen. Werkvoorraad: alleen titels zonder beveiligings-, back-up-, sleutel-, account-, outreach- of adresdetails en zonder interne aantallen; statussen zijn planning, geen meting. Ter bevestiging door Richard.",
+  "publieke_velden_besluit": "OB-0952 (Richard, 14-10): alle taken staan op het publieke bord, ook beveiliging, back-up en outreach. Nooit: geheimen, sleutels, wachtwoorden, IP-adressen, inlog- of beheeraccounts van systemen (WordPress, server, externe diensten) of exploiteerbare details van een zwakke plek. Wel toegestaan: de rolnamen van de bouwaccounts van de stack (codex1–4, claude3/4), omdat Richard die in de meter wil zien (14-10: 'ik zie geen meetresultaten/accounts'). Uit privé-bronnen: alleen vaste statusteksten, PR-nummers, tijden, bouwaccounts uit de config, BURNIN-nn of OPDRACHT-<nr>, getypeerde tellingvelden, en per prioriteit 'wie', open/dicht en aantal reacties.",
   "werkvoorraad_toelating": "planning (handmatig bijgehouden), geen meting",
   "content": {
     "input": [
@@ -1239,5 +1431,64 @@
       "Intake-inzichten (Granola, alleen met toestemming): wat klanten vragen → onderwerpen"
     ],
     "noot": "Overzicht en planning, geen meting. 'idee' is nog niet besloten."
-  }
+  },
+  "borden": [
+    {
+      "naam": "Groeibord blog",
+      "eigenaar": "SEO/GEO",
+      "repo": "rvanhooijdonk-png/blog-seo-geo",
+      "pad": "bord/status.json",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/"
+    },
+    {
+      "naam": "Blog-voorstellen",
+      "eigenaar": "SEO/GEO",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/"
+    },
+    {
+      "naam": "Blog: magazine-opzet",
+      "eigenaar": "SEO/GEO",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/magazine-voorpagina/"
+    },
+    {
+      "naam": "Blog: tabbladen",
+      "eigenaar": "SEO/GEO",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/e-tabbladen/"
+    },
+    {
+      "naam": "SEA: repo's en tactieken",
+      "eigenaar": "SEA",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/sea-repos-en-tactieken/"
+    },
+    {
+      "naam": "SEA-landingspagina keynote AI",
+      "eigenaar": "SEA",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/sea-lp-ai-revolutie/"
+    },
+    {
+      "naam": "Publishing Board (mockup)",
+      "eigenaar": "TOEZICHT",
+      "link": "https://rvanhooijdonk-png.github.io/bouwstraat-bord/publishing.html"
+    },
+    {
+      "naam": "De hele stack",
+      "eigenaar": "TOEZICHT",
+      "link": "https://rvanhooijdonk-png.github.io/bouwstraat-bord/stack.html"
+    },
+    {
+      "naam": "Takenhub-indelingen",
+      "eigenaar": "Takenhub",
+      "link": "https://rvanhooijdonk-png.github.io/takenhub-ontwerp/"
+    },
+    {
+      "naam": "NQ Radar",
+      "eigenaar": "NQ",
+      "link": "https://rvanhooijdonk-png.github.io/nq-human-consensus-radar/"
+    },
+    {
+      "naam": "Beslisrechten bij agentische AI",
+      "eigenaar": "long-read",
+      "link": "https://rvanhooijdonk-png.github.io/ai-governance-beslisrechten/"
+    }
+  ]
 }
