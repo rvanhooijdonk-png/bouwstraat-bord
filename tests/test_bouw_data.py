@@ -31,7 +31,7 @@ def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, on
     prs = []
     BI = m.CONFIG["burnin"]
     namen = BI.get("orders") or [f"{BI['orders_prefix']}{i:02d}" for i in range(BI["orders_aantal"])]
-    for i, naam in enumerate(namen + [BI["orders_prefix"] + "00"]):  # de afgesproken orders plus één met een verkeerd nummer
+    for i, naam in enumerate(namen + [BI["orders_prefix"] + "00", BI["orders_prefix"] + "98"]):  # afgesproken orders plus twee verkeerde nummers ná T0
         prs.append({"number": 100 + i, "title": f"[ROUTE2 codex1] {naam}", "created_at": t0, "merged_at": None,
                     "closed_at": None, "head": {"sha": f"s{i}" if scenario != "rood" else f"rood{i}"}})
     prs.append({"number": 200, "title": "[ROUTE2 codex1] KLANT-ACME-OFFERTE", "created_at": na, "merged_at": None,
@@ -114,7 +114,12 @@ check("tien open rode PR's terwijl er nog workflows lopen: geen uitkomst", d_roo
 d_rood_klaar = draai("rood", 0)
 check("tien afgekeurde PR's en telling meldt 0 lopend: tien eindstanden", d_rood_klaar["burnin"]["uitkomsten"] == d_rood_klaar["burnin"]["orders_aantal"],
       str(d_rood_klaar["burnin"]["uitkomsten"]))
-check("alleen BURNIN2-01..06 tellen; 00 en 99 niet, 06 wel", d_rood_klaar["burnin"]["uitkomsten"] == 6 and laad().CONFIG["burnin"]["orders"][-1] == "BURNIN2-06" and "BURNIN2-00" not in laad().CONFIG["burnin"]["orders"])
+check("alleen BURNIN2-01..06 tellen; 00 en 98 ná T0 niet, 06 wel", d_rood_klaar["burnin"]["uitkomsten"] == 6 and laad().CONFIG["burnin"]["orders"][-1] == "BURNIN2-06" and "BURNIN2-00" not in laad().CONFIG["burnin"]["orders"])
+_mf = laad(); _mf.CONFIG = dict(_mf.CONFIG, burnin={k: v for k, v in _mf.CONFIG["burnin"].items() if k != "orders"})
+nep_api(_mf, scenario="rood", lopend=0); _of = io.StringIO()
+with contextlib.redirect_stdout(_of):
+    _mf.main()
+check("zonder orderlijst telt het voorvoegsel (oude runs): 6 + 00 + 98 = 8", json.loads(_of.getvalue())["burnin"]["uitkomsten"] == 8)
 check("oude telling (2 uur) met 0 lopend maakt open afgekeurde PR's geen eindstand",
       draai("rood", 0, telling_oud=True)["burnin"]["uitkomsten"] == 0)
 check("onvolledige telling met 0 lopend maakt open afgekeurde PR's geen eindstand",
