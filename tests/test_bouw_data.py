@@ -29,15 +29,16 @@ def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, on
     t0 = m.CONFIG["burnin"]["t0"]
     na = m.NU.isoformat().replace("+00:00", "Z")
     prs = []
-    for i in range(10):  # tien burn-in-opdrachten na t0
-        prs.append({"number": 100 + i, "title": f"[ROUTE2 codex1] BURNIN-{i:02d}", "created_at": t0, "merged_at": None,
+    BI = m.CONFIG["burnin"]
+    for i in range(BI["orders_aantal"]):  # alle burn-in-opdrachten van de lopende run, na t0
+        prs.append({"number": 100 + i, "title": f"[ROUTE2 codex1] {BI['orders_prefix']}{i:02d}", "created_at": t0, "merged_at": None,
                     "closed_at": None, "head": {"sha": f"s{i}" if scenario != "rood" else f"rood{i}"}})
     prs.append({"number": 200, "title": "[ROUTE2 codex1] KLANT-ACME-OFFERTE", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "k"}})
     prs.append({"number": 201, "title": "[ROUTE2 geheimaccount] PROEF-A1", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "g"}})
     oud = (m.NU - _td2(days=10)).isoformat().replace("+00:00", "Z")
-    prs.append({"number": 203, "title": "[ROUTE2 codex1] BURNIN-99", "created_at": oud, "merged_at": None,
+    prs.append({"number": 203, "title": f"[ROUTE2 codex1] {BI['orders_prefix']}99", "created_at": oud, "merged_at": None,
                 "closed_at": None, "head": {"sha": "oud"}})
     prs.append({"number": 202, "title": "[ROUTE2 codex1] PROEF-ACME", "created_at": na, "merged_at": None,
                 "closed_at": None, "head": {"sha": "a"}})
@@ -47,7 +48,7 @@ def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, on
     van = (m.tijd(t0) - _td(hours=1)).isoformat().replace("+00:00", "Z")
     tot = (m.tijd(t0) - _td(minutes=30)).isoformat().replace("+00:00", "Z") if venster_tot_voor_t0 else na
     telling = {"gemeten_om": gem, "volledig": not onvolledig, "venster": {"van": van, "tot": tot}, "stilstand": {"order_zonder_voortgang_45_minuten": False, "notitie": KANARIE},
-               "vrij_veld": KANARIE, "ingrepen": {"pr_nummers": [55, "57; " + KANARIE, 999], "bron": {"status": "GEMETEN"}},
+               "vrij_veld": KANARIE, "ingrepen": {"pr_nummers": [BI["start_pr"], "57; " + KANARIE, 999], "bron": {"status": "GEMETEN"}},
                "uitkomsten": {"merged": 0, "no_go": 10, "lopend": lopend, "pogingen_totaal": 10, "notitie": KANARIE,
                               "bron": {"status": "GEMETEN"}}}
     def api(pad):
@@ -92,6 +93,10 @@ check("ingrepen alleen gehele PR-nummers", d["burnin"]["ingrepen_prs"] == [999],
 check("telling alleen gekozen velden", set(d["telling"]) == {"gemeten_om", "volledig", "stilstand", "uitkomsten"})
 
 check("korte privé-ordernaam PROEF-ACME geneutraliseerd", "ACME" not in tekst)
+_m3 = laad()
+check("run-2-ordernamen (BURNIN2-01) blijven leesbaar en tellen mee", bool(_m3.PUBLIEKE_ORDER.match("BURNIN2-01")) and _m3.PUBLIEKE_ORDER.match("BURNIN-07") is not None and not _m3.PUBLIEKE_ORDER.match("BURNIN2-ACME"))
+check("bord toont burn-in run 2", _m3.CONFIG["burnin"]["t0"] == "2026-10-15T19:30:58Z" and _m3.CONFIG["burnin"]["orders_prefix"] == "BURNIN2-")
+check("eis-label volgt het aantal orders", "Tien echte uitkomsten" not in (ROOT_ := PAD.parent.parent / "index.html").read_text(encoding="utf-8"))
 
 
 def draai(scenario, lopend, **kw):
@@ -106,7 +111,7 @@ d_rood_lopend = draai("rood", 1)
 check("tien open rode PR's terwijl er nog workflows lopen: geen uitkomst", d_rood_lopend["burnin"]["uitkomsten"] == 0,
       str(d_rood_lopend["burnin"]["uitkomsten"]))
 d_rood_klaar = draai("rood", 0)
-check("tien afgekeurde PR's en telling meldt 0 lopend: tien eindstanden", d_rood_klaar["burnin"]["uitkomsten"] == 10,
+check("tien afgekeurde PR's en telling meldt 0 lopend: tien eindstanden", d_rood_klaar["burnin"]["uitkomsten"] == d_rood_klaar["burnin"]["orders_aantal"],
       str(d_rood_klaar["burnin"]["uitkomsten"]))
 check("oude telling (2 uur) met 0 lopend maakt open afgekeurde PR's geen eindstand",
       draai("rood", 0, telling_oud=True)["burnin"]["uitkomsten"] == 0)
@@ -117,7 +122,7 @@ check("venster dat vóór de burn-in-start eindigt telt niet",
 check("meettijd in de toekomst telt niet", draai("rood", 0, toekomst=True)["burnin"]["uitkomsten"] == 0)
 check("open PR ouder dan 3 dagen blijft zichtbaar als lopend", any(o["pr"] == 203 and o["uitkomst"] is None for o in d["orders"]))
 d_verl = draai("verlaten", 1)
-check("verlaten opdrachten blijven zichtbaar als lopend (geen uitkomst)", all(o["uitkomst"] is None for o in d_verl["orders"] if o["order"].startswith("BURNIN-")))
+check("verlaten opdrachten blijven zichtbaar als lopend (geen uitkomst)", all(o["uitkomst"] is None for o in d_verl["orders"] if o["order"].startswith(m.CONFIG["burnin"]["orders_prefix"])))
 check("telling-uitkomsten alleen gehele getallen, geen notitie", d_rood_klaar["telling"]["uitkomsten"] == {"merged": 0, "no_go": 10, "lopend": 0, "pogingen_totaal": 10})
 
 # Andere borden (groeibord blog, SEO/GEO 16-10; Astra NO_GO 16-10 punten 1-5).
@@ -248,7 +253,7 @@ check("proef: verzonnen systeemlogin in wacht_op_richard maakt de volledige scan
 _htmls2 = dict(htmls, **{"stack.html": htmls["stack.html"].replace('["Back-ups en herstelproef","deels"]', '["Back-ups en herstelproef wp_beheerder_42","deels"]')})
 check("proef: verzonnen systeemlogin in stack.html maakt de volledige scan rood", bool(privacyscan(cfg, _htmls2, tekst)))
 check("open afgekeurde PR zonder geldige nul is geen eindstand (UI-contract eind=false)",
-      all(not o["eind"] for o in d_rood_lopend["orders"] if o["order"].startswith("BURNIN-")))
+      all(not o["eind"] for o in d_rood_lopend["orders"] if o["order"].startswith(m.CONFIG["burnin"]["orders_prefix"])))
 
 print("\nALLE PROEVEN GROEN" if not FOUT else "\nER ZIJN FOUTEN")
 sys.exit(FOUT)

@@ -224,7 +224,7 @@ function teken(d){
   document.getElementById("bi-balk").style.width=Math.min(100,(bi.verstreken_uur||0)/24*100)+"%";
   const e=document.getElementById("bi-eisen");e.replaceChildren();
   const eis=(ok,wat,stand)=>{const li=el("li");li.append(el("span","t "+(ok===true?"ja":ok===false?"nee":"open"),ok===true?"✓":ok===false?"✗":"…"),el("span",null,wat),el("small",null,stand));e.append(li)};
-  eis(bi.uitkomsten>=bi.orders_aantal?true:null,"Tien echte uitkomsten",`${bi.uitkomsten}/${bi.orders_aantal}`);
+  eis(bi.uitkomsten>=bi.orders_aantal?true:null,`${bi.orders_aantal} echte uitkomsten`,`${bi.uitkomsten}/${bi.orders_aantal}`);
   eis(ing==null?null:ing===0,"Nul ingrepen na de start",ing==null?"onbewezen":String(ing));
   const mb=bi.mac_offline_bewijs;eis(mb&&mb.bron&&typeof mb.uren==="number"?mb.uren>=4:null,"Mac minstens 4 uur offline (verklaring Richard)",mb&&mb.bron?`${mb.uren} u · ${mb.bron}`:"onbewezen");
   eis((bi.verstreken_uur||0)>=24?true:null,"24 uur aaneengesloten",`${Math.max(0,24-(bi.verstreken_uur||0)).toFixed(1)} u te gaan`);

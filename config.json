@@ -65,24 +65,16 @@
     }
   ],
   "burnin": {
-    "naam": "Burn-in run 1 (geslaagd)",
-    "t0": "2026-10-13T23:17:41Z",
-    "einde": "2026-10-14T23:17:41Z",
-    "start_pr": 55,
-    "orders_prefix": "BURNIN-",
-    "orders_aantal": 10,
+    "naam": "Burn-in run 2",
+    "t0": "2026-10-15T19:30:58Z",
+    "einde": "2026-10-16T19:30:58Z",
+    "start_pr": 94,
+    "orders_prefix": "BURNIN2-",
+    "orders_aantal": 6,
     "vooraf_ingrepen": [
-      53,
-      55,
-      56,
-      57
+      94
     ],
-    "mac_offline_bewijs": {
-      "bron": "OB-0948 (verklaring Richard)",
-      "uren": 5.4,
-      "van": "07:30",
-      "tot": "12:55"
-    }
+    "mac_offline_bewijs": null
   },
   "wacht_op_richard": [
     {
