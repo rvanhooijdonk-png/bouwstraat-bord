@@ -276,7 +276,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   </aside>
 
   <main class="hoofd">
-    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 17:18</span></div>
+    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 17:20</span></div>
 
     <section id="scherm-triage" hidden>
       <div class="kop"><div><h1>Triage 1</h1><p>Hier geef je alleen akkoord. In deze mockup staan voorbeelditems; straks komen hier de scans, de trends uit de trechter en de nieuwsbrieven uit je mailbox binnen, en gaan AI-tools apart naar SUPERVISOR. Die routes bestaan nog niet. Daarna bundelt het board eerdere, recente content over hetzelfde onderwerp mee en zet het item in Input. Alles komt in de dossiers.</p></div></div>
@@ -402,8 +402,10 @@ function isRecent(dmy){const m=/^(\d{2})-(\d{2})$/.exec(dmy||"");if(!m)return fa
 // Waarschuwing bij dubbel werk: kijkt naar wat al live, goedgekeurd of in de rij staat.
 const STOP=new Set(["zonder","met","voor","door","over","naar","van","het","een","de","als","in","op","en","de","die","dat","zelf"]);
 const kern=t=>new Set(t.toLowerCase().replace(/[^a-zà-ü0-9 ]/g," ").split(/\s+/).filter(w=>w.length>4&&!STOP.has(w)));
-function lijktOp(a,b){const x=kern(a),y=kern(b);let n=0;for(const w of x)if(y.has(w))n++;return n>=2}
-function overlap(item){const uit=[];for(const p of pakketten){if(p.id==="p-"+item.id)continue;if(!(p.onderwerp?p.onderwerp===item.onderwerp:lijktOp(p.titel,item.titel)))continue;
+function lijktOp(a,b){const x=kern(a),y=kern(b);let n=0;for(const w of x)if(y.has(w))n++;return n>=1}
+function overlap(item){const uit=[];for(const p of pakketten){if(p.id==="p-"+item.id)continue;
+  if(!p.onderwerp){if(lijktOp(p.titel,item.titel))uit.push(["let",`Lijkt op "${p.titel}" (geen onderwerp vastgelegd, controleer zelf)`]);continue}
+  if(p.onderwerp!==item.onderwerp)continue;
   for(const [m,st] of Object.entries(p.middelen)){if(st==="Weg")continue;const wat=`"${p.titel}" (${MIDDELNAAM[m]||m})`;
     if(st==="Gepubliceerd")uit.push(["fout","Al gepubliceerd: "+wat]);else if(st==="Goedgekeurd"||st==="Ingepland")uit.push(["let",`Al ${st.toLowerCase()}: `+wat]);else uit.push(["mail","Zit al in de rij: "+wat])}
   if(!Object.keys(p.middelen).length&&p.nieuw)uit.push(["mail",`Zit al in de rij: "${p.titel}"`])}
@@ -627,7 +629,7 @@ function inputKaart(it,i,altijdOpen){const c=el("article","in-item"+(i===inFocus
   const kop=el("div","in-kop");const lb=el("div","labels");lb.append(el("span","label","fictief voorbeeld"),el("span","label",it.week),el("span","label",it.bron));
   if(it.bundel.filter(b=>b.mee).length)lb.append(el("span","label bundel",`+${it.bundel.filter(b=>b.mee).length} gekoppeld`));
   for(const [kl,tekst] of overlap(it))lb.append(el("span","label w-"+kl,tekst.split(":")[0]));
-  const ti=el("h3",null,it.titel);kop.append(lb,ti);const w0=overlap(it);if(w0.length)kop.append(el("div","waarsch w-"+w0[0][0],w0[0][1]+(w0.length>1?` (+${w0.length-1})`:"")));c.append(kop);
+  const ti=el("h3",null,it.titel);kop.append(lb,ti);for(const [kl,t] of overlap(it))kop.append(el("div","waarsch w-"+kl,t));c.append(kop);
   const open=altijdOpen||inOpen.has(it.id);
   const meer=el("button","in-meer",open?"Minder ▲":"Meer ▼");meer.setAttribute("aria-expanded",String(open));meer.onclick=()=>{open?inOpen.delete(it.id):inOpen.add(it.id);tekenInput()};
   if(open){const d=el("div","in-diepte");d.append(el("p","kern",it.kern),el("p","zin",it.zin));
@@ -652,7 +654,7 @@ function tekenInput(){const tel=st=>inputItems.filter(x=>x.stand===st).length;
   if(inWeergave==="kaart"){const it=lijst[inFocus];w.append(el("div","voortgang",`${inFocus+1} van ${lijst.length}`),inputKaart(it,inFocus,false));return}
   lijst.forEach((it,i)=>w.append(inputKaart(it,i,false)))}
 function verwerk(){const ster=inputItems.filter(x=>x.stand==="ster");if(!ster.length){toast("Niets met een ster.");return}
-  const met=ster.filter(it=>overlap(it).length);const sleutel=ster.map(it=>it.id+":"+overlap(it).length).join("|");
+  const met=ster.filter(it=>overlap(it).length);const sleutel=JSON.stringify(ster.map(it=>[it.id,overlap(it)]));
   if(met.length&&verwerk.bevestigd!==sleutel){verwerk.bevestigd=sleutel;const w=$("verwerk-waarsch");w.replaceChildren(el("b",null,`Let op, ${met.length} item(s) overlappen met eerder werk. Klik nog een keer op Verwerk om toch door te gaan.`));
     for(const it of met)for(const [kl,t] of overlap(it))w.append(el("div","waarsch w-"+kl,`${it.titel}: ${t}`));w.hidden=false;return}
   verwerk.bevestigd=null;$("verwerk-waarsch").hidden=true;
