@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Publishing Board</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+:root{
+  --grond:#F3F5F1;--vlak:#FFFFFF;--vlak2:#F8FAF7;--inkt:#15201B;--zacht:#5D6B64;--lijn:#DCE3DC;
+  --accent:#1F5F4A;--accent-zacht:#E2EFE8;--accent-inkt:#FFFFFF;
+  --laat:#A4482A;--laat-zacht:#F8E7DF;--wacht:#5B4E9A;--wacht-zacht:#ECE9F7;
+  --mail:#1E5A8A;--mail-zacht:#E3EEF7;--geel:#8A6A10;--geel-zacht:#FBF1D6;--focus:#2F7D63;
+  --schaduw:0 1px 2px rgba(21,32,27,.06),0 6px 24px rgba(21,32,27,.06);
+  --letter:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --li-blauw:#0A66C2;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --grond:#0F1513;--vlak:#17201C;--vlak2:#1C2722;--inkt:#E6ECE8;--zacht:#9AABA2;--lijn:#2A3832;
+  --accent:#6CC4A1;--accent-zacht:#1D3A2F;--accent-inkt:#0F1513;
+  --laat:#E59A7B;--laat-zacht:#3A2219;--wacht:#B3A8EE;--wacht-zacht:#2A2545;
+  --mail:#8DC0EA;--mail-zacht:#1A2D3D;--geel:#E3C46A;--geel-zacht:#352B10;--focus:#6CC4A1;
+  --schaduw:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.25);--li-blauw:#70B5F9;
+}}
+:root[data-theme="dark"]{
+  --grond:#0F1513;--vlak:#17201C;--vlak2:#1C2722;--inkt:#E6ECE8;--zacht:#9AABA2;--lijn:#2A3832;
+  --accent:#6CC4A1;--accent-zacht:#1D3A2F;--accent-inkt:#0F1513;
+  --laat:#E59A7B;--laat-zacht:#3A2219;--wacht:#B3A8EE;--wacht-zacht:#2A2545;
+  --mail:#8DC0EA;--mail-zacht:#1A2D3D;--geel:#E3C46A;--geel-zacht:#352B10;--focus:#6CC4A1;
+  --schaduw:0 1px 2px rgba(0,0,0,.3),0 6px 24px rgba(0,0,0,.25);--li-blauw:#70B5F9;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--grond);color:var(--inkt);font:15px/1.5 var(--letter);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+.app{display:grid;grid-template-columns:232px minmax(0,1fr);min-height:100vh}
+/* zijbalk */
+.zij{background:var(--vlak);border-right:1px solid var(--lijn);padding:20px 14px;display:flex;flex-direction:column;gap:18px;position:sticky;top:0;height:100vh}
+.merk{font-weight:700;font-size:16px;letter-spacing:-.01em;padding:0 8px}
+.merk small{display:block;font-weight:400;color:var(--zacht);font-size:12px}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav button{display:flex;justify-content:space-between;align-items:center;gap:8px;border:0;background:none;padding:9px 10px;border-radius:8px;text-align:left;font-weight:500}
+.nav button:hover{background:var(--vlak2)}
+.nav button[aria-current="page"]{background:var(--accent-zacht);color:var(--accent)}
+.tel{font:500 12px var(--mono);background:var(--laat);color:#fff;border-radius:99px;padding:1px 7px;min-width:22px;text-align:center}
+.tel.leeg{background:var(--lijn);color:var(--zacht)}
+.nav .later{font-size:11px;color:var(--zacht);font-weight:400}
+.zij .noot{margin-top:auto;font-size:12px;color:var(--zacht);padding:10px;border:1px dashed var(--lijn);border-radius:8px}
+/* hoofd */
+.hoofd{padding:22px clamp(16px,3vw,36px) 60px;min-width:0}
+.banier{display:flex;gap:10px;align-items:center;background:var(--geel-zacht);color:var(--geel);border-radius:8px;padding:8px 12px;font-size:13px;margin-bottom:18px}
+.kop{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px 20px;margin-bottom:16px}
+h1{font-size:24px;line-height:1.2;margin:0;letter-spacing:-.015em;text-wrap:balance}
+.kop p{margin:4px 0 0;color:var(--zacht);font-size:14px}
+h2{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--zacht);margin:22px 0 8px;font-weight:600}
+/* chips en statussen */
+.st{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.st::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.s-gevraagd{background:var(--vlak2);color:var(--zacht);box-shadow:inset 0 0 0 1px var(--lijn)}
+.s-productie{background:var(--mail-zacht);color:var(--mail)}
+.s-wacht{background:var(--laat-zacht);color:var(--laat)}
+.s-aanpassen{background:var(--wacht-zacht);color:var(--wacht)}
+.s-goed{background:var(--accent-zacht);color:var(--accent)}
+.s-gepland{background:var(--accent-zacht);color:var(--accent)}
+.s-live{background:var(--accent);color:var(--accent-inkt)}
+.s-weg{background:var(--vlak2);color:var(--zacht);text-decoration:line-through}
+.middel{font:500 12px var(--mono);color:var(--zacht)}
+/* wacht op jou */
+.lijst{display:flex;flex-direction:column;background:var(--vlak);border-radius:12px;box-shadow:var(--schaduw);overflow:hidden}
+.rij{display:grid;grid-template-columns:120px minmax(0,1fr) auto auto;gap:6px 16px;align-items:center;padding:14px 16px;border:0;border-top:1px solid var(--lijn);background:none;text-align:left;width:100%}
+.rij:first-child{border-top:0}
+.rij:hover{background:var(--vlak2)}
+.rij .t{font-weight:600}
+.rij .sub{font-size:13px;color:var(--zacht)}
+.rij .open{font-size:13px;font-weight:600;color:var(--accent)}
+.leeg-melding{padding:28px 16px;text-align:center;color:var(--zacht)}
+/* rij-kolommen */
+.kolommen{display:grid;grid-template-columns:repeat(5,minmax(200px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
+.kolom{background:var(--vlak2);border:1px solid var(--lijn);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:10px;min-width:200px}
+.kolom h3{margin:2px 4px;font-size:13px;display:flex;justify-content:space-between;color:var(--zacht);font-weight:600}
+.kaart{background:var(--vlak);border-radius:10px;padding:12px;box-shadow:var(--schaduw);display:flex;flex-direction:column;gap:8px}
+.kaart .t{font-weight:600;line-height:1.3}
+.kaart .herkomst{font-size:12px;color:var(--zacht)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:0;display:inline-flex;gap:6px;align-items:center;font-size:12px;border-radius:7px;padding:3px 8px;background:var(--vlak2);box-shadow:inset 0 0 0 1px var(--lijn)}
+.chip i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.chip:hover{box-shadow:inset 0 0 0 1px var(--accent)}
+.legenda{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+/* review */
+.terug{border:0;background:none;color:var(--accent);font-weight:600;padding:0;margin-bottom:10px}
+.review{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+.voorbeeld{background:var(--vlak);border-radius:14px;box-shadow:var(--schaduw);padding:18px;min-width:0}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.vtabs button{border:1px solid var(--lijn);background:var(--vlak);border-radius:8px;padding:5px 10px;font-size:13px}
+.vtabs button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-zacht);color:var(--accent);font-weight:600}
+.vtabs .uitleg{font-size:12px;color:var(--zacht);margin-left:auto}
+.zin{border-radius:3px;cursor:pointer;transition:background .15s}
+.zin:hover{background:var(--geel-zacht)}
+.zin.nieuw{background:var(--accent-zacht);box-shadow:0 2px 0 var(--accent)}
+.zin.opm{background:var(--wacht-zacht);box-shadow:0 2px 0 var(--wacht)}
+.zin.ruim{background:var(--laat-zacht);text-decoration:line-through;text-decoration-color:var(--laat)}
+/* echte weergaven */
+.tel-frame{max-width:390px;margin:0 auto;border:10px solid #111;border-radius:34px;background:#fff;color:#1d1d1d;overflow:hidden}
+.li-kop{display:flex;gap:10px;padding:14px 14px 6px;align-items:center}
+.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#2c5e50,#9fc9b4);flex:none}
+.li-kop b{display:block;font-size:14px}.li-kop small{color:#666;font-size:12px}
+.li-tekst{padding:4px 14px 10px;font-size:14px;line-height:1.45;white-space:normal}
+.li-tekst p{margin:0 0 10px}
+.li-beeld{height:190px;background:linear-gradient(160deg,#16352c 0%,#2f6b57 45%,#d9e9df 100%);display:flex;align-items:flex-end;padding:12px;color:#fff;font:600 15px var(--letter)}
+.li-acties{display:flex;justify-content:space-around;border-top:1px solid #e6e6e6;padding:8px 0;font-size:12px;color:#555}
+.mail-frame{max-width:640px;margin:0 auto;border:1px solid var(--lijn);border-radius:10px;overflow:hidden;background:#fff;color:#1d1d1d}
+.mail-kop{background:#f4f4f2;padding:10px 14px;font-size:12px;color:#555;border-bottom:1px solid #e3e3e0}
+.mail-kop b{color:#222}
+.mail-body{padding:26px 30px;font:16px/1.6 var(--serif)}
+.mail-body h3{font:600 24px/1.25 var(--serif);margin:0 0 12px}
+.mail-body p{margin:0 0 14px}
+.mail-knop{display:inline-block;background:#1F5F4A;color:#fff;border-radius:6px;padding:9px 16px;font:600 14px var(--letter)}
+.web-frame{border:1px solid var(--lijn);border-radius:10px;overflow:hidden;background:#fff;color:#1d1d1d}
+.web-balk{display:flex;gap:6px;align-items:center;padding:8px 12px;background:#efefec;border-bottom:1px solid #e0e0dc;font:12px var(--mono);color:#666}
+.web-balk i{width:9px;height:9px;border-radius:50%;background:#cfcfca;display:inline-block}
+.web-body{max-width:680px;margin:0 auto;padding:30px 22px;font:17px/1.65 var(--serif)}
+.web-body .rubriek{font:600 12px var(--letter);text-transform:uppercase;letter-spacing:.08em;color:#1F5F4A}
+.web-body h3{font:600 32px/1.15 var(--serif);margin:6px 0 10px;text-wrap:balance}
+.web-body .intro{font-size:19px;color:#444}
+.web-body h4{font:600 20px var(--serif);margin:26px 0 6px}
+.web-body p{margin:0 0 14px}
+/* paneel */
+.paneel{display:flex;flex-direction:column;gap:14px;position:sticky;top:16px}
+.blok{background:var(--vlak);border-radius:12px;box-shadow:var(--schaduw);padding:14px}
+.blok h3{margin:0 0 10px;font-size:14px}
+.knoppen{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.knop{border:1px solid var(--lijn);background:var(--vlak);border-radius:9px;padding:9px 10px;font-weight:600;font-size:14px}
+.knop:hover{border-color:var(--accent)}
+.knop.hoofd-k{background:var(--accent);border-color:var(--accent);color:var(--accent-inkt)}
+.knop.weg-k{color:var(--laat)}
+.snel{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.snel button{border:1px solid var(--lijn);background:var(--vlak2);border-radius:99px;padding:3px 10px;font-size:13px}
+.snel button[aria-pressed="true"]{background:var(--wacht-zacht);border-color:var(--wacht);color:var(--wacht)}
+textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9px;padding:9px;font:inherit;background:var(--vlak2);color:var(--inkt);resize:vertical}
+.verstuur{display:flex;justify-content:flex-end;gap:8px;margin-top:8px}
+.feit{display:grid;grid-template-columns:16px 1fr;gap:4px 8px;font-size:13px;padding:7px 0;border-top:1px solid var(--lijn)}
+.feit:first-of-type{border-top:0}
+.feit .bol{width:10px;height:10px;border-radius:50%;margin-top:5px}
+.feit small{grid-column:2;color:var(--zacht);font-family:var(--mono);font-size:11px}
+.hist{list-style:none;margin:0;padding:0;font-size:13px}
+.hist li{padding:6px 0;border-top:1px solid var(--lijn);display:grid;grid-template-columns:44px 1fr;gap:8px}
+.hist li:first-child{border-top:0}
+.hist .wanneer{font:12px var(--mono);color:var(--zacht)}
+.opm-lijst{list-style:none;margin:0;padding:0;font-size:13px}
+.opm-lijst li{padding:6px 8px;border-left:3px solid var(--wacht);background:var(--wacht-zacht);border-radius:4px;margin-top:6px}
+.opm-lijst q{display:block;color:var(--zacht);font-size:12px}
+/* popover */
+.pop{position:fixed;z-index:20;width:min(320px,calc(100vw - 32px));background:var(--vlak);border:1px solid var(--lijn);border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,.18);padding:12px}
+.pop q{display:block;font-size:13px;color:var(--zacht);margin-bottom:8px}
+/* kalender en stijl */
+.week{display:grid;grid-template-columns:repeat(7,minmax(120px,1fr));gap:8px;overflow-x:auto}
+.dag{background:var(--vlak);border-radius:10px;box-shadow:var(--schaduw);padding:10px;min-height:150px}
+.dag h3{margin:0 0 8px;font-size:13px;color:var(--zacht);font-weight:600}
+.dag .item{font-size:13px;border-left:3px solid var(--accent);background:var(--accent-zacht);border-radius:4px;padding:5px 7px;margin-bottom:6px}
+.dag .item.live{border-left-color:var(--zacht);background:var(--vlak2)}
+.dag .item small{display:block;font:11px var(--mono);color:var(--zacht)}
+.regels{display:flex;flex-direction:column;gap:10px}
+.regel{background:var(--vlak);border-radius:12px;box-shadow:var(--schaduw);padding:14px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 14px;align-items:center}
+.regel p{margin:0}.regel small{color:var(--zacht);grid-column:1}
+.regel .acties{grid-row:1/3;grid-column:2;display:flex;gap:6px}
+.fictief{display:block;background:#FBF1D6;color:#7A5C0A;font:600 11px/1.3 var(--letter);text-transform:uppercase;letter-spacing:.08em;padding:6px 12px;text-align:center;border-bottom:1px solid #EBDDB0}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--inkt);color:var(--grond);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;box-shadow:var(--schaduw)}
+[hidden]{display:none!important}
+@media (max-width:1060px){.review{grid-template-columns:1fr}.paneel{position:static}}
+@media (max-width:760px){
+  .app{grid-template-columns:1fr}
+  .zij{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 16px;gap:10px;border-right:0;border-bottom:1px solid var(--lijn)}
+  .nav{flex-direction:row;flex-wrap:wrap}
+  .nav .later,.zij .noot{display:none}
+  .rij{grid-template-columns:1fr auto}
+  .rij .middel{grid-column:1/-1}
+  .rij .open{display:none}
+  .mail-body{padding:18px}
+  .web-body h3{font-size:26px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="zij">
+    <div class="merk">Publishing Board<small>input → rij → bekijken → live</small></div>
+    <nav class="nav" aria-label="Onderdelen">
+      <button data-scherm="wacht" aria-current="page">Wacht op jou <span class="tel" id="tel-wacht">0</span></button>
+      <button data-scherm="rij">De rij <span class="tel leeg" id="tel-rij">0</span></button>
+      <button data-scherm="kalender">Kalender <span class="later">stap 6</span></button>
+      <button data-scherm="stijl">Stijlregels <span class="tel leeg" id="tel-stijl">0</span></button>
+    </nav>
+    <div class="noot">Mockup met voorbeeldteksten. Knoppen werken, maar niets wordt opgeslagen, gemaakt of gepubliceerd.</div>
+  </aside>
+
+  <main class="hoofd">
+    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster.</div>
+
+    <section id="scherm-wacht">
+      <div class="kop"><div><h1>Wacht op jou</h1><p>Alles waar jij nu over beslist. Klik een uiting om hem te bekijken zoals hij echt wordt.</p></div></div>
+      <div class="lijst" id="wacht-lijst"></div>
+      <h2>Net door jou beoordeeld</h2>
+      <div class="lijst" id="recent-lijst"></div>
+    </section>
+
+    <section id="scherm-rij" hidden>
+      <div class="kop"><div><h1>De rij</h1><p>Elk pakket komt uit jouw keuze in input. Per middel zie je waar het staat.</p></div></div>
+      <div class="legenda" id="legenda"></div>
+      <div class="kolommen" id="kolommen"></div>
+    </section>
+
+    <section id="scherm-review" hidden>
+      <button class="terug" id="terug">← Terug</button>
+      <div class="kop"><div><h1 id="r-titel"></h1><p id="r-sub"></p></div><span id="r-status"></span></div>
+      <div class="review">
+        <div class="voorbeeld">
+          <div class="vtabs" id="vtabs"></div>
+          <div id="weergave"></div>
+        </div>
+        <div class="paneel">
+          <div class="blok">
+            <h3>Jouw oordeel</h3>
+            <div class="knoppen">
+              <button class="knop hoofd-k" data-actie="Goedgekeurd">Goedkeuren</button>
+              <button class="knop" data-actie="Aanpassen">Aanpassen</button>
+              <button class="knop" data-actie="Opnieuw">Opnieuw</button>
+              <button class="knop weg-k" data-actie="Weg">Weg</button>
+            </div>
+            <div id="aanpas" hidden>
+              <div class="snel" id="snel"></div>
+              <label for="vrij" class="middel">Wat moet er anders?</label>
+              <textarea id="vrij" placeholder="Bijvoorbeeld: begin met het verhaal van de verpleegkundige, niet met het cijfer."></textarea>
+              <div class="verstuur"><button class="knop" id="annuleer">Annuleer</button><button class="knop hoofd-k" id="stuur">Stuur feedback</button></div>
+            </div>
+            <p class="middel" style="margin:10px 0 0">Tip: klik op een zin in de tekst om er een opmerking bij te zetten.</p>
+          </div>
+          <div class="blok" id="opm-blok" hidden><h3>Opmerkingen bij zinnen</h3><ul class="opm-lijst" id="opm-lijst"></ul></div>
+          <div class="blok"><h3>Feiten en bronnen</h3><div id="feiten"></div></div>
+          <div class="blok"><h3>Geschiedenis</h3><ul class="hist" id="hist"></ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="scherm-kalender" hidden>
+      <div class="kop"><div><h1>Kalender</h1><p>Week 42–43 · wat is ingepland en wat al live staat. Komt in stap 6; dit is een voorbeeld.</p></div></div>
+      <div class="week" id="week"></div>
+    </section>
+
+    <section id="scherm-stijl" hidden>
+      <div class="kop"><div><h1>Stijlregels</h1><p>Feedback die je vaker geeft, wordt een voorstel voor een vaste regel. Jij beslist.</p></div></div>
+      <div class="regels" id="regels"></div>
+    </section>
+  </main>
+</div>
+<div class="pop" id="pop" hidden role="dialog" aria-label="Opmerking bij zin">
+  <q id="pop-zin"></q>
+  <label for="pop-tekst" class="middel">Jouw opmerking</label>
+  <textarea id="pop-tekst" placeholder="Wat klopt er niet aan deze zin?"></textarea>
+  <div class="verstuur"><button class="knop" id="pop-weg">Annuleer</button><button class="knop hoofd-k" id="pop-ok">Zet erbij</button></div>
+</div>
+<div class="toast" id="toast" hidden role="status"></div>
+
+<script>
+// ---------- Voorbeelddata (geen echte concepten) ----------
+const MIDDELNAAM={longread:"Long-read",blog:"Blog",linkedin:"LinkedIn",nieuwsbrief:"Nieuwsbrief",beeld:"Beeld"};
+const STATUS={"Gevraagd":"s-gevraagd","In productie":"s-productie","Wacht op jou":"s-wacht","Aanpassen":"s-aanpassen","Goedgekeurd":"s-goed","Ingepland":"s-gepland","Gepubliceerd":"s-live","Weg":"s-weg"};
+const FASES=["Onderzoek","Artikel","Middelen","Klaar","Live"];
+const pakketten=[
+ {id:"p1",titel:"Humanoïde robots in de zorg",herkomst:"gekozen in input · swipe 14-10",fase:"Middelen",
+  middelen:{longread:"Wacht op jou",linkedin:"Wacht op jou",nieuwsbrief:"In productie",beeld:"Goedgekeurd"}},
+ {id:"p6",titel:"Slimme brillen op de werkvloer",herkomst:"vrije opdracht · 15-10",fase:"Middelen",
+  middelen:{nieuwsbrief:"Wacht op jou",linkedin:"In productie"}},
+ {id:"p2",titel:"Natriumbatterijen verdringen lithium",herkomst:"gekozen in input · triage 13-10",fase:"Artikel",
+  middelen:{longread:"Aanpassen",linkedin:"Gevraagd",nieuwsbrief:"Gevraagd"}},
+ {id:"p4",titel:"AI-agents nemen de klantenservice over",herkomst:"10 voorstellen · nr. 3 · 16-10",fase:"Onderzoek",
+  middelen:{longread:"Gevraagd",linkedin:"Gevraagd"}},
+ {id:"p3",titel:"De supermarkt zonder kassa",herkomst:"mediavoorraad · 2025",fase:"Klaar",
+  middelen:{blog:"Goedgekeurd",linkedin:"Ingepland",nieuwsbrief:"Goedgekeurd"}},
+ {id:"p5",titel:"Drones als ambulance",herkomst:"gekozen in input · swipe 09-10",fase:"Live",
+  middelen:{blog:"Gepubliceerd",linkedin:"Gepubliceerd"}}
+];
+// Tekst als alinea's van zinnen. n = nieuw t.o.v. vorige versie, x = geschrapt in deze versie.
+const uitingen={
+ "p1:linkedin":{versies:[
+   {v:1,wanneer:"15-10 16:40",alineas:[
+     [{t:"In 2030 heeft Nederland 135.000 zorgmedewerkers te weinig."},{t:"Dat is een probleem dat we niet met werving alleen oplossen."},{t:"Daarom kijken ziekenhuizen in Japan, Duitsland en Nederland steeds vaker naar humanoïde robots die tillen, halen en brengen.",x:true}],
+     [{t:"Wat ik zie in de laboratoria is indrukwekkend, maar de echte vraag is niet technisch."},{t:"De vraag is: welk werk willen we als mensen blijven doen?"}],
+     [{t:"Ik ben benieuwd hoe jij dit ziet.",x:true}]
+   ]},
+   {v:2,wanneer:"16-10 09:12",alineas:[
+     [{t:"Een verpleegkundige in Tilburg loopt per dienst 14 kilometer.",n:true},{t:"Een flink deel daarvan is halen en brengen.",n:true}],
+     [{t:"In 2030 heeft Nederland 135.000 zorgmedewerkers te weinig."},{t:"Dat lossen we niet met werving alleen op."}],
+     [{t:"Wat ik zie in de laboratoria is indrukwekkend, maar de echte vraag is niet technisch."},{t:"De vraag is: welk werk willen we als mensen blijven doen?"}],
+     [{t:"Welke taak zou jij als eerste aan een robot geven?",n:true}]
+   ]}],
+  feiten:[{b:"135.000 zorgmedewerkers tekort in 2030",bron:"Prognosemodel zorg en welzijn, 2024",ok:true},
+          {b:"Verpleegkundige loopt 14 km per dienst",bron:"geen bron gevonden — controleer",ok:false},
+          {b:"Ziekenhuizen in Japan en Duitsland testen tilrobots",bron:"research-intelligence · 3 bronnen",ok:true}],
+  hist:[["15-10","Stack","v1 gemaakt uit research"],["15-10","Jij","Aanpassen · sterkere opening · minder vraag aan het eind"],["16-10","Stack","v2 gemaakt met jouw feedback"]]},
+ "p1:longread":{versies:[
+   {v:1,wanneer:"16-10 08:05",web:true,rubriek:"Zorg & technologie",kop:"De robot die tilt, en de verpleegkundige die blijft",intro:"Humanoïde robots komen de zorg binnen. Niet om mensen te vervangen, maar om het werk terug te geven waar het om draait.",alineas:[
+     [{t:"Wie een nachtdienst meeloopt op een verpleegafdeling, ziet vooral beweging."},{t:"Infuuszakken halen, linnen wegbrengen, een patiënt helpen draaien."},{t:"Het is werk dat ertoe doet, maar het is niet het werk waarvoor mensen de zorg in gingen."}],
+     [{h:"Wat er nu al kan"}],
+     [{t:"In een revalidatiecentrum in Osaka tilt een robot sinds vorig jaar patiënten van bed naar rolstoel."},{t:"De robot doet dat in ruim veertig seconden, en het personeel noemt het vooral rustgevend."},{t:"Duitse ziekenhuizen testen robots die 's nachts medicijnen rondbrengen."}],
+     [{h:"De echte vraag"}],
+     [{t:"De techniek is niet het moeilijkste deel."},{t:"Het moeilijkste deel is kiezen welke taken we bewust bij mensen laten."},{t:"Daar moeten bestuurders nu over nadenken, niet pas als de robots er staan."}]
+   ]}],
+  feiten:[{b:"Robot tilt patiënten in Osaka sinds vorig jaar",bron:"research-intelligence · 2 bronnen",ok:true},
+          {b:"Ruim veertig seconden per til",bron:"één bron — fabrikant",ok:false},
+          {b:"Duitse ziekenhuizen testen medicijnrobots",bron:"research-intelligence · 4 bronnen",ok:true}],
+  hist:[["16-10","Stack","v1 gemaakt uit outline (Long-read Studio)"]]},
+ "p6:nieuwsbrief":{versies:[
+   {v:1,wanneer:"16-10 10:30",mail:true,onderwerp:"Waarom de monteur van morgen een bril draagt",kop:"De bril die meekijkt",alineas:[
+     [{t:"Goedemorgen,"}],
+     [{t:"Deze week zag ik een monteur een windturbine repareren terwijl een collega in Denemarken via zijn bril meekeek."},{t:"Geen handleiding, geen telefoon, gewoon handen vrij."}],
+     [{t:"Slimme brillen waren tien jaar geleden een hype."},{t:"Nu zijn ze een gereedschap, en dat is precies het moment waarop een technologie echt doorbreekt."}],
+     [{t:"In de long-read lees je welke drie sectoren als eerste overstappen."}]
+   ]}],
+  feiten:[{b:"Monteur repareert turbine met hulp op afstand",bron:"voorbeeld uit reportage, 2026",ok:true},
+          {b:"Drie sectoren stappen als eerste over",bron:"long-read p6 · nog niet goedgekeurd",ok:false}],
+  hist:[["16-10","Stack","v1 gemaakt (Beehiiv-format, NL)"]]}
+};
+// Voorbeelden van al beoordeelde uitingen
+const recent=[{k:"p1:beeld",wat:"Goedgekeurd",wanneer:"16-10 08:40"},{k:"p3:linkedin",wat:"Ingepland · do 17-10 08:30",wanneer:"15-10 17:10"}];
+const SNEL=["te lang","sterkere opening","minder formeel","feit checken","meer concreet voorbeeld","ander beeld"];
+let regels=[{tekst:"Begin LinkedIn-posts met een concreet beeld of persoon, niet met een cijfer.",telling:3,stand:"voorstel"},
+            {tekst:"Geen open vraag als slotzin, tenzij hij specifiek is.",telling:2,stand:"voorstel"},
+            {tekst:"Nieuwsbrief altijd in de ik-vorm, met een groet.",telling:5,stand:"vast"}];
+let opmerkingen={};   // sleutel -> [{zin, tekst}]
+let geschiedenisExtra={};
+// ---------- Helpers ----------
+const $=id=>document.getElementById(id);
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const status=(s)=>el("span","st "+(STATUS[s]||"s-gevraagd"),s);
+const kleur={"s-gevraagd":"var(--lijn)","s-productie":"var(--mail)","s-wacht":"var(--laat)","s-aanpassen":"var(--wacht)","s-goed":"var(--accent)","s-gepland":"var(--accent)","s-live":"var(--inkt)","s-weg":"var(--zacht)"};
+function toast(t){const e=$("toast");e.textContent=t;e.hidden=false;clearTimeout(toast.h);toast.h=setTimeout(()=>e.hidden=true,2600)}
+const pak=id=>pakketten.find(p=>p.id===id);
+function wachtItems(){const uit=[];for(const p of pakketten)for(const [m,s] of Object.entries(p.middelen))if(s==="Wacht op jou")uit.push({p,m});return uit}
+// ---------- Navigatie ----------
+let huidig={scherm:"wacht",sleutel:null,versie:null,vorig:"wacht"};
+function toon(scherm){for(const s of ["wacht","rij","review","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
+  for(const b of document.querySelectorAll(".nav button"))b.setAttribute("aria-current",b.dataset.scherm===scherm||(scherm==="review"&&b.dataset.scherm===huidig.vorig)?"page":"false");
+  huidig.scherm=scherm;window.scrollTo({top:0})}
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{huidig.vorig=b.dataset.scherm;teken();toon(b.dataset.scherm)});
+$("terug").onclick=()=>{teken();toon(huidig.vorig)};
+// ---------- Wacht op jou ----------
+function tekenWacht(){
+  const l=$("wacht-lijst");l.replaceChildren();const items=wachtItems();
+  $("tel-wacht").textContent=items.length;$("tel-wacht").className="tel"+(items.length?"":" leeg");
+  if(!items.length)l.append(el("div","leeg-melding","Niets wacht op jou. De stack werkt aan de rest."));
+  for(const {p,m} of items){const u=uitingen[p.id+":"+m];const v=u?u.versies[u.versies.length-1]:null;
+    const r=el("button","rij");r.append(el("span","middel",MIDDELNAAM[m]));
+    const mid=el("span");mid.append(el("div","t",p.titel),el("div","sub",(v?`versie ${v.v} · klaar ${v.wanneer}`:"")+(u&&u.feiten.some(f=>!f.ok)?" · 1 feit om te checken":"")));
+    r.append(mid,status("Wacht op jou"),el("span","open","Bekijk →"));r.onclick=()=>openReview(p.id+":"+m,"wacht");l.append(r)}
+  const rl=$("recent-lijst");rl.replaceChildren();
+  for(const x of recent){const [pid,m]=x.k.split(":");const r=el("div","rij");r.style.cursor="default";r.append(el("span","middel",MIDDELNAAM[m]));
+    const mid=el("span");mid.append(el("div","t",pak(pid).titel),el("div","sub","door jou · "+x.wanneer));r.append(mid,status(x.wat.split(" ·")[0]),el("span","sub",x.wat.includes("·")?x.wat.split("· ")[1]:""));rl.append(r)}
+}
+// ---------- De rij ----------
+function tekenRij(){
+  $("tel-rij").textContent=pakketten.length;
+  const lg=$("legenda");lg.replaceChildren();for(const s of Object.keys(STATUS))lg.append(status(s));
+  const k=$("kolommen");k.replaceChildren();
+  for(const f of FASES){const kol=el("div","kolom");const ps=pakketten.filter(p=>p.fase===f);const h=el("h3");h.append(el("span",null,f),el("span","middel",String(ps.length)));kol.append(h);
+    for(const p of ps){const c=el("div","kaart");c.append(el("div","t",p.titel),el("div","herkomst",p.herkomst));const ch=el("div","chips");
+      for(const [m,s] of Object.entries(p.middelen)){const b=el("button","chip");const i=el("i");i.style.background=kleur[STATUS[s]];b.append(i,MIDDELNAAM[m]);b.title=`${MIDDELNAAM[m]}: ${s}`;b.setAttribute("aria-label",`${MIDDELNAAM[m]}, ${s}`);
+        const sl=p.id+":"+m;if(uitingen[sl])b.onclick=()=>openReview(sl,"rij");else b.onclick=()=>toast(`${MIDDELNAAM[m]} van "${p.titel}": ${s}. Er is nog geen versie om te bekijken.`);ch.append(b)}
+      c.append(ch);kol.append(c)}
+    k.append(kol)}
+}
+// ---------- Review ----------
+function openReview(sleutel,vanaf){huidig.sleutel=sleutel;huidig.vorig=vanaf;const u=uitingen[sleutel];huidig.versie=u.versies.length-1;huidig.vergelijk=false;tekenReview();toon("review")}
+function zinnen(alineas,sleutel,toonDiff){
+  const frag=document.createDocumentFragment();const opm=(opmerkingen[sleutel]||[]).map(o=>o.zin);
+  for(const al of alineas){if(al[0]&&al[0].h){frag.append(el("h4",null,al[0].h));continue}
+    const p=el("p");for(const z of al){const s=el("span","zin"+(toonDiff&&z.n?" nieuw":"")+(toonDiff&&z.x?" ruim":"")+(opm.includes(z.t)?" opm":""),z.t);
+      s.tabIndex=0;s.setAttribute("role","button");s.onclick=e=>openPop(z.t,e.currentTarget);s.onkeydown=e=>{if(e.key==="Enter")openPop(z.t,e.currentTarget)};p.append(s," ")}
+    frag.append(p)}
+  return frag}
+function tekenReview(){
+  const [pid,m]=huidig.sleutel.split(":");const p=pak(pid);const u=uitingen[huidig.sleutel];const v=u.versies[huidig.versie];
+  $("r-titel").textContent=p.titel;$("r-sub").textContent=`${MIDDELNAAM[m]} · versie ${v.v} van ${u.versies.length} · ${p.herkomst}`;
+  $("r-status").replaceChildren(status(p.middelen[m]));
+  // versietabs
+  const vt=$("vtabs");vt.replaceChildren();
+  u.versies.forEach((x,i)=>{const b=el("button",null,`Versie ${x.v}`);b.setAttribute("aria-pressed",String(i===huidig.versie&&!huidig.vergelijk));b.onclick=()=>{huidig.versie=i;huidig.vergelijk=false;tekenReview()};vt.append(b)});
+  if(u.versies.length>1){const b=el("button",null,"Wat is er veranderd?");b.setAttribute("aria-pressed",String(!!huidig.vergelijk));b.onclick=()=>{huidig.versie=u.versies.length-1;huidig.vergelijk=!huidig.vergelijk;tekenReview()};vt.append(b)}
+  vt.append(el("span","uitleg",huidig.vergelijk?"groen = nieuw · doorgestreept = geschrapt":"zoals hij straks verschijnt"));
+  // weergave per middel
+  const w=$("weergave");w.replaceChildren();
+  const tekst=()=>{const vv=huidig.vergelijk?{alineas:[...u.versies[u.versies.length-2].alineas.flat().filter(z=>z.x).map(z=>[z]),...v.alineas]}:v;return zinnen(vv.alineas,huidig.sleutel,huidig.vergelijk)};
+  if(m==="linkedin"){const f=el("div","tel-frame");const k=el("div","li-kop");k.append(el("div","avatar"));const n=el("div");n.append(el("b",null,"Richard van Hooijdonk"),el("small",null,"Voorbeeldweergave · fictieve tekst"));k.append(n);
+    const t=el("div","li-tekst");t.append(tekst());const b=el("div","li-beeld","Beeld: robot helpt verpleegkundige (goedgekeurd)");const a=el("div","li-acties");for(const x of ["Interessant","Reageren","Delen","Versturen"])a.append(el("span",null,x));f.append(el("span","fictief","Fictief voorbeeld · geen echte post"),k,t,b,a);w.append(f)}
+  else if(v.mail){const f=el("div","mail-frame");const k=el("div","mail-kop");k.append("Van: ",el("b",null,"Richard van Hooijdonk")," · Onderwerp: ",el("b",null,v.onderwerp));const b=el("div","mail-body");b.append(el("h3",null,v.kop),tekst(),el("span","mail-knop","Lees de long-read"));f.append(el("span","fictief","Fictief voorbeeld · geen echte nieuwsbrief"),k,b);w.append(f)}
+  else{const f=el("div","web-frame");const bl=el("div","web-balk");bl.append(el("i"),el("i"),el("i")," voorbeeld · blog-concept in WordPress");const b=el("div","web-body");b.append(el("div","rubriek",v.rubriek),el("h3",null,v.kop),el("p","intro",v.intro),tekst());f.append(el("span","fictief","Fictief voorbeeld · geen echt artikel"),bl,b);w.append(f)}
+  // feiten
+  const fe=$("feiten");fe.replaceChildren();for(const x of u.feiten){const r=el("div","feit");const bol=el("span","bol");bol.style.background=x.ok?"var(--accent)":"var(--laat)";r.append(bol,el("span",null,x.b),el("small",null,x.bron));fe.append(r)}
+  // opmerkingen
+  const ol=$("opm-lijst");ol.replaceChildren();const lijst=opmerkingen[huidig.sleutel]||[];$("opm-blok").hidden=!lijst.length;
+  for(const o of lijst){const li=el("li");li.append(el("q",null,o.zin),o.tekst);ol.append(li)}
+  // geschiedenis
+  const h=$("hist");h.replaceChildren();for(const [wanneer,wie,wat] of [...u.hist,...(geschiedenisExtra[huidig.sleutel]||[])]){const li=el("li");li.append(el("span","wanneer",wanneer));const t=el("span");t.append(el("b",null,wie+" "),wat);li.append(t);h.append(li)}
+  // aanpassen-paneel dicht
+  $("aanpas").hidden=true;$("vrij").value="";
+  const sn=$("snel");sn.replaceChildren();for(const s of SNEL){const b=el("button",null,s);b.setAttribute("aria-pressed","false");b.onclick=()=>b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));sn.append(b)}
+}
+function vandaag(){const d=new Date();return String(d.getDate()).padStart(2,"0")+"-"+String(d.getMonth()+1).padStart(2,"0")}
+function zetStatus(nieuw,wat){const [pid,m]=huidig.sleutel.split(":");const p=pak(pid);p.middelen[m]=nieuw;
+  (geschiedenisExtra[huidig.sleutel]=geschiedenisExtra[huidig.sleutel]||[]).push([vandaag(),"Jij",wat]);
+  if(nieuw==="Goedgekeurd"||nieuw==="Weg")recent.unshift({k:huidig.sleutel,wat:nieuw,wanneer:"zojuist"});
+  teken();tekenReview()}
+document.querySelectorAll("[data-actie]").forEach(b=>b.onclick=()=>{
+  const a=b.dataset.actie;
+  if(a==="Aanpassen"){$("aanpas").hidden=false;$("vrij").focus();return}
+  if(a==="Goedgekeurd"){zetStatus("Goedgekeurd","Goedgekeurd · versie "+(huidig.versie+1)+" (nog geen publicatieakkoord)");toast("Goedgekeurd. Publiceren vraagt straks een apart akkoord.");return}
+  if(a==="Opnieuw"){zetStatus("In productie","Opnieuw gevraagd · verzoek vastgelegd");toast("Verzoek vastgelegd. In deze mockup start er geen schrijver.");return}
+  if(a==="Weg"){zetStatus("Weg","Weg · deze uiting komt niet");toast("Weggezet. Terug te halen vanuit de rij.");return}
+});
+$("annuleer").onclick=()=>{$("aanpas").hidden=true};
+$("stuur").onclick=()=>{const keuze=[...$("snel").querySelectorAll('[aria-pressed="true"]')].map(b=>b.textContent);const vrij=$("vrij").value.trim();
+  if(!keuze.length&&!vrij){toast("Kies een snelkeuze of schrijf wat er anders moet.");return}
+  const n=(opmerkingen[huidig.sleutel]||[]).length;
+  zetStatus("Aanpassen","Aanpassen · "+[...keuze,vrij&&`“${vrij}”`].filter(Boolean).join(" · ")+(n?` · ${n} opmerking(en) bij zinnen`:""));
+  for(const k of keuze){const r=regels.find(x=>x.bron===k);if(r)r.telling++;else if(k==="te lang")regels.unshift({tekst:"Houd LinkedIn-posts onder de 120 woorden.",telling:1,stand:"verzamelt",bron:k})}
+  teken();toast("Feedback gestuurd. De stack maakt een nieuwe versie.")};
+// ---------- Opmerking bij zin ----------
+let popZin=null;
+function openPop(zin,doel){popZin=zin;$("pop-zin").textContent=zin;$("pop-tekst").value="";const p=$("pop");p.hidden=false;
+  const r=doel.getBoundingClientRect();const top=Math.min(window.innerHeight-p.offsetHeight-12,r.bottom+8);p.style.top=Math.max(12,top)+"px";p.style.left=Math.max(16,Math.min(window.innerWidth-p.offsetWidth-16,r.left))+"px";$("pop-tekst").focus()}
+$("pop-weg").onclick=()=>{$("pop").hidden=true};
+$("pop-ok").onclick=()=>{const t=$("pop-tekst").value.trim();if(!t){$("pop-tekst").focus();return}
+  (opmerkingen[huidig.sleutel]=opmerkingen[huidig.sleutel]||[]).push({zin:popZin,tekst:t});$("pop").hidden=true;tekenReview();toast("Opmerking bij de zin gezet. Hij gaat mee met je feedback.")};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")$("pop").hidden=true});
+// ---------- Kalender ----------
+function tekenKalender(){const w=$("week");w.replaceChildren();
+  const dagen=[["ma 14-10",[["live","Drones als ambulance","Blog · 09:00"]]],["di 15-10",[["live","Drones als ambulance","LinkedIn · 08:30"]]],["wo 16-10",[]],["do 17-10",[["","De supermarkt zonder kassa","LinkedIn · 08:30"]]],["vr 18-10",[["","De supermarkt zonder kassa","Nieuwsbrief NL · 07:00"]]],["za 19-10",[]],["zo 20-10",[]]];
+  for(const [d,items] of dagen){const c=el("div","dag");c.append(el("h3",null,d));for(const [k,t,s] of items){const i=el("div","item "+k);i.append(t,el("small",null,s+(k?" · live":" · ingepland")));c.append(i)}w.append(c)}}
+// ---------- Stijlregels ----------
+function tekenStijl(){const r=$("regels");r.replaceChildren();const open=regels.filter(x=>x.stand==="voorstel").length;$("tel-stijl").textContent=open;$("tel-stijl").className="tel"+(open?"":" leeg");
+  for(const x of regels){const c=el("div","regel");c.append(el("p",null,x.tekst),el("small",null,x.stand==="vast"?`vaste regel · ${x.telling}× in je feedback`:x.stand==="verzamelt"?`${x.telling}× in je feedback · bij 3× een voorstel`:`${x.telling}× in je feedback · voorstel`));
+    const a=el("div","acties");if(x.stand==="voorstel"){const ja=el("button","knop hoofd-k","Maak vast");ja.onclick=()=>{x.stand="vast";tekenStijl();toast("Vaste stijlregel. Nieuwe versies houden er rekening mee.")};const nee=el("button","knop","Nee");nee.onclick=()=>{regels=regels.filter(y=>y!==x);tekenStijl()};a.append(ja,nee)}
+    else if(x.stand==="vast"){a.append(status("Goedgekeurd"))}c.append(a);r.append(c)}}
+function teken(){tekenWacht();tekenRij();tekenKalender();tekenStijl()}
+teken();
+</script>
+</body>
+</html>

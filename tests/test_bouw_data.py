@@ -229,7 +229,7 @@ def privacyscan(cfg, htmls, data_json):
 
 ROOT = PAD.parent.parent
 cfg = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
-htmls = {n: (ROOT / n).read_text(encoding="utf-8") for n in ("index.html", "voorstel.html", "stack.html")}
+htmls = {n: (ROOT / n).read_text(encoding="utf-8") for n in ("index.html", "voorstel.html", "stack.html", "publishing.html")}
 fouten = privacyscan(cfg, htmls, tekst)
 check("publieke site bevat geen geheimen, systeemlogins of exploiteerbare details", not fouten, str(fouten[:5]))
 _cfg2 = dict(cfg, wacht_op_richard=cfg.get("wacht_op_richard", []) + [{"wat": "login wp_beheerder_42 aanpassen", "wanneer": "-", "duur": "-"}])
