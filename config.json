@@ -65,24 +65,30 @@
     }
   ],
   "burnin": {
-    "naam": "Burn-in run 2",
-    "t0": "2026-10-15T19:30:58Z",
-    "einde": "2026-10-16T19:30:58Z",
-    "start_pr": 94,
-    "orders_prefix": "BURNIN2-",
-    "orders_aantal": 6,
+    "naam": "Burn-in run 3",
+    "t0": "2026-10-16T20:09:01Z",
+    "einde": "2026-10-17T20:09:01Z",
+    "start_pr": 105,
+    "orders_prefix": "BURNIN3-",
+    "orders_aantal": 12,
+    "orders": [
+      "BURNIN3-01",
+      "BURNIN3-02",
+      "BURNIN3-03",
+      "BURNIN3-04",
+      "BURNIN3-05",
+      "BURNIN3-06",
+      "BURNIN3-07",
+      "BURNIN3-08",
+      "BURNIN3-09",
+      "BURNIN3-10",
+      "BURNIN3-11",
+      "BURNIN3-12"
+    ],
     "vooraf_ingrepen": [
-      94
+      105
     ],
     "mac_offline_bewijs": null,
-    "orders": [
-      "BURNIN2-01",
-      "BURNIN2-02",
-      "BURNIN2-03",
-      "BURNIN2-04",
-      "BURNIN2-05",
-      "BURNIN2-06"
-    ],
     "eis_uitkomsten": 10
   },
   "wacht_op_richard": [
