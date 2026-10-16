@@ -80,6 +80,7 @@ h2{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--zach
 /* rij-kolommen */
 .kolommen{display:grid;grid-template-columns:repeat(5,minmax(200px,1fr));gap:12px;overflow-x:auto;padding-bottom:6px}
 .kolom{background:var(--vlak2);border:1px solid var(--lijn);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:10px;min-width:200px}
+.kolom>.herkomst{margin:-8px 4px 2px;font-size:12px;color:var(--zacht)}
 .kolom h3{margin:2px 4px;font-size:13px;display:flex;justify-content:space-between;color:var(--zacht);font-weight:600}
 .kaart{background:var(--vlak);border-radius:10px;padding:12px;box-shadow:var(--schaduw);display:flex;flex-direction:column;gap:8px}
 .kaart .t{font-weight:600;line-height:1.3}
@@ -167,10 +168,27 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
 .regel p{margin:0}.regel small{color:var(--zacht);grid-column:1}
 .regel .acties{grid-row:1/3;grid-column:2;display:flex;gap:6px}
 .fictief{display:block;background:#FBF1D6;color:#7A5C0A;font:600 11px/1.3 var(--letter);text-transform:uppercase;letter-spacing:.08em;padding:6px 12px;text-align:center;border-bottom:1px solid #EBDDB0}
+.stapel{max-width:620px;display:flex;flex-direction:column;gap:14px}
+.kaartgroot{background:var(--vlak);border-radius:16px;box-shadow:var(--schaduw);padding:22px;display:flex;flex-direction:column;gap:10px}
+.kaartgroot .labels{display:flex;flex-wrap:wrap;gap:6px}
+.kaartgroot .label{font:500 12px var(--mono);color:var(--zacht);background:var(--vlak2);border-radius:6px;padding:2px 8px;box-shadow:inset 0 0 0 1px var(--lijn)}
+.kaartgroot h3{margin:0;font:600 22px/1.25 var(--serif);text-wrap:balance}
+.kaartgroot .kern{margin:0;color:var(--inkt)}
+.kaartgroot .zin{cursor:default;color:var(--zacht);font-style:italic}
+.media{display:flex;flex-wrap:wrap;gap:6px}
+.media button{border:1px solid var(--lijn);background:var(--vlak2);border-radius:99px;padding:4px 11px;font-size:13px}
+.media button[aria-pressed="true"]{background:var(--accent-zacht);border-color:var(--accent);color:var(--accent);font-weight:600}
+.keuzes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.keuzes .knop{padding:11px 6px}
+.keuzes .ster{background:var(--accent);border-color:var(--accent);color:var(--accent-inkt)}
+.voortgang{font:13px var(--mono);color:var(--zacht);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.toetsen{font-size:12px;color:var(--zacht)}
+.toetsen kbd{font:11px var(--mono);border:1px solid var(--lijn);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--vlak)}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--inkt);color:var(--grond);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;box-shadow:var(--schaduw)}
 [hidden]{display:none!important}
 @media (max-width:1060px){.review{grid-template-columns:1fr}.paneel{position:static}}
 @media (max-width:760px){
+  .keuzes{grid-template-columns:1fr 1fr}
   .app{grid-template-columns:1fr}
   .zij{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 16px;gap:10px;border-right:0;border-bottom:1px solid var(--lijn)}
   .nav{flex-direction:row;flex-wrap:wrap}
@@ -189,6 +207,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   <aside class="zij">
     <div class="merk">Publishing Board<small>input → rij → bekijken → live</small></div>
     <nav class="nav" aria-label="Onderdelen">
+      <button data-scherm="input">Input <span class="tel leeg" id="tel-input">0</span></button>
       <button data-scherm="wacht" aria-current="page">Wacht op jou <span class="tel" id="tel-wacht">0</span></button>
       <button data-scherm="rij">De rij <span class="tel leeg" id="tel-rij">0</span></button>
       <button data-scherm="kalender">Kalender <span class="later">stap 6</span></button>
@@ -199,6 +218,11 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
 
   <main class="hoofd">
     <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster.</div>
+
+    <section id="scherm-input" hidden>
+      <div class="kop"><div><h1>Input</h1><p>Kaarten uit de pipeline. Geef een ster en kies de media: het pakket staat dan meteen in de rij.</p></div></div>
+      <div class="stapel" id="stapel"></div>
+    </section>
 
     <section id="scherm-wacht">
       <div class="kop"><div><h1>Wacht op jou</h1><p>Alles waar jij nu over beslist. Klik een uiting om hem te bekijken zoals hij echt wordt.</p></div></div>
@@ -266,9 +290,27 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
 
 <script>
 // ---------- Voorbeelddata (geen echte concepten) ----------
-const MIDDELNAAM={longread:"Long-read",blog:"Blog",linkedin:"LinkedIn",nieuwsbrief:"Nieuwsbrief",beeld:"Beeld"};
+const MIDDELNAAM={longread:"Long-read",blog:"Blog",linkedin:"LinkedIn",nieuwsbrief:"Nieuwsbrief",beeld:"Beeld",video:"Video",keynote:"Keynote"};
+const MEDIA=["blog","nieuwsbrief","linkedin","video","keynote","longread"];
+// Voorbeeldkaarten zoals de swipe ze toont (fictief): bron, week, titel, kern, één zin.
+const kaarten=[
+ {id:"k1",week:"W40",bron:"nieuwsbrief · tech",titel:"Een bank laat AI-agents zelf hypotheekdossiers compleet maken",kern:"De agent vraagt ontbrekende stukken op, controleert ze en zet het dossier klaar voor de adviseur.",zin:"Het werk verschuift van invullen naar beoordelen."},
+ {id:"k2",week:"W40",bron:"podcast · zorg",titel:"Thuiszorg test sensoren die vallen voorspellen in plaats van melden",kern:"Een loopanalyse over twee weken geeft een waarschuwing voordat iemand valt.",zin:"Preventie wordt een datastroom."},
+ {id:"k3",week:"W39",bron:"whitepaper · energie",titel:"Netbeheerder verkoopt 'flexibele aansluiting' met korting",kern:"Bedrijven krijgen sneller stroom als ze accepteren dat het net hen soms terugschakelt.",zin:"Wachtlijsten worden een prijsmodel."},
+ {id:"k4",week:"W39",bron:"jouw notitie · type 1",titel:"Idee: keynote over 'de werkweek van een AI-collega'",kern:"Een dag uit het leven van een agent, uur voor uur, met wat een mens nog doet.",zin:"Maakt het abstracte concreet voor zaal."},
+ {id:"k5",week:"W40",bron:"YouTube · retail",titel:"Winkelketen schrapt de kassa in vijftig filialen",kern:"Camera's en gewichtssensoren rekenen af; personeel gaat naar advies en bijvullen.",zin:"Volgt op 'De supermarkt zonder kassa'."}
+];
+let kaartIndex=0;const kaartKeuzes={};
 const STATUS={"Gevraagd":"s-gevraagd","In productie":"s-productie","Wacht op jou":"s-wacht","Aanpassen":"s-aanpassen","Goedgekeurd":"s-goed","Ingepland":"s-gepland","Gepubliceerd":"s-live","Weg":"s-weg"};
-const FASES=["Onderzoek","Artikel","Middelen","Klaar","Live"];
+const FASES=[["Onderzoek","de stack zoekt bronnen en feiten"],["Schrijven","de stack maakt of past aan"],["Bij jou","ligt klaar voor je oordeel"],["Goedgekeurd","wacht op een datum of staat ingepland"],["Live","staat online"]];
+// De kolom volgt uit de uitingen: wie is er aan de beurt?
+function faseVan(p){const st=Object.values(p.middelen).filter(s=>s!=="Weg");
+  if(!st.length)return null; // alles weggezet: niet in de kolommen
+  if(st.includes("Wacht op jou"))return "Bij jou";
+  if(st.every(s=>s==="Gepubliceerd"))return "Live";
+  if(st.some(s=>s==="In productie"||s==="Aanpassen"))return "Schrijven";
+  if(st.every(s=>["Goedgekeurd","Ingepland","Gepubliceerd"].includes(s)))return "Goedgekeurd";
+  return "Onderzoek"}
 const pakketten=[
  {id:"p1",titel:"Humanoïde robots in de zorg",herkomst:"gekozen in input · swipe 14-10",fase:"Middelen",
   middelen:{longread:"Wacht op jou",linkedin:"Wacht op jou",nieuwsbrief:"In productie",beeld:"Goedgekeurd"}},
@@ -342,7 +384,7 @@ const pak=id=>pakketten.find(p=>p.id===id);
 function wachtItems(){const uit=[];for(const p of pakketten)for(const [m,s] of Object.entries(p.middelen))if(s==="Wacht op jou")uit.push({p,m});return uit}
 // ---------- Navigatie ----------
 let huidig={scherm:"wacht",sleutel:null,versie:null,vorig:"wacht"};
-function toon(scherm){for(const s of ["wacht","rij","review","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
+function toon(scherm){for(const s of ["input","wacht","rij","review","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
   for(const b of document.querySelectorAll(".nav button"))b.setAttribute("aria-current",b.dataset.scherm===scherm||(scherm==="review"&&b.dataset.scherm===huidig.vorig)?"page":"false");
   huidig.scherm=scherm;window.scrollTo({top:0})}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{huidig.vorig=b.dataset.scherm;teken();toon(b.dataset.scherm)});
@@ -364,8 +406,9 @@ function tekenWacht(){
 function tekenRij(){
   $("tel-rij").textContent=pakketten.length;
   const lg=$("legenda");lg.replaceChildren();for(const s of Object.keys(STATUS))lg.append(status(s));
+  const weg=pakketten.filter(p=>faseVan(p)===null).length;if(weg)lg.append(el("span","middel",`${weg} pakket(ten) helemaal weggezet`));
   const k=$("kolommen");k.replaceChildren();
-  for(const f of FASES){const kol=el("div","kolom");const ps=pakketten.filter(p=>p.fase===f);const h=el("h3");h.append(el("span",null,f),el("span","middel",String(ps.length)));kol.append(h);
+  for(const [f,uitleg] of FASES){const kol=el("div","kolom");const ps=pakketten.filter(p=>faseVan(p)===f);const h=el("h3");h.append(el("span",null,f),el("span","middel",String(ps.length)));kol.append(h,el("div","herkomst",uitleg));
     for(const p of ps){const c=el("div","kaart");c.append(el("div","t",p.titel),el("div","herkomst",p.herkomst));const ch=el("div","chips");
       for(const [m,s] of Object.entries(p.middelen)){const b=el("button","chip");const i=el("i");i.style.background=kleur[STATUS[s]];b.append(i,MIDDELNAAM[m]);b.title=`${MIDDELNAAM[m]}: ${s}`;b.setAttribute("aria-label",`${MIDDELNAAM[m]}, ${s}`);
         const sl=p.id+":"+m;if(uitingen[sl])b.onclick=()=>openReview(sl,"rij");else b.onclick=()=>toast(`${MIDDELNAAM[m]} van "${p.titel}": ${s}. Er is nog geen versie om te bekijken.`);ch.append(b)}
@@ -444,7 +487,30 @@ function tekenStijl(){const r=$("regels");r.replaceChildren();const open=regels.
   for(const x of regels){const c=el("div","regel");c.append(el("p",null,x.tekst),el("small",null,x.stand==="vast"?`vaste regel · ${x.telling}× in je feedback`:x.stand==="verzamelt"?`${x.telling}× in je feedback · bij 3× een voorstel`:`${x.telling}× in je feedback · voorstel`));
     const a=el("div","acties");if(x.stand==="voorstel"){const ja=el("button","knop hoofd-k","Maak vast");ja.onclick=()=>{x.stand="vast";tekenStijl();toast("Vaste stijlregel. Nieuwe versies houden er rekening mee.")};const nee=el("button","knop","Nee");nee.onclick=()=>{regels=regels.filter(y=>y!==x);tekenStijl()};a.append(ja,nee)}
     else if(x.stand==="vast"){a.append(status("Goedgekeurd"))}c.append(a);r.append(c)}}
-function teken(){tekenWacht();tekenRij();tekenKalender();tekenStijl()}
+function tekenInput(){
+  const st=$("stapel");st.replaceChildren();const over=kaarten.length-kaartIndex;
+  $("tel-input").textContent=over;$("tel-input").className="tel"+(over?"":" leeg");
+  const tel=el("div","voortgang");tel.append(el("span",null,`${over} van ${kaarten.length} kaarten te gaan · voorbeeldkaarten`),el("span",null,`${Object.values(kaartKeuzes).filter(k=>k==="Ster").length} met ster`));st.append(tel);
+  if(!over){st.append(el("div","leeg-melding","Alle kaarten zijn bekeken. De pakketten met een ster staan in de rij."));return}
+  const k=kaarten[kaartIndex];const c=el("article","kaartgroot");const lb=el("div","labels");lb.append(el("span","label","fictief voorbeeld"),el("span","label",k.week),el("span","label",k.bron));
+  c.append(lb,el("h3",null,k.titel),el("p","kern",k.kern),el("p","zin",k.zin));
+  c.append(el("div","middel","Media bij een ster"));const md=el("div","media");md.id="media";
+  for(const m of MEDIA){const b=el("button",null,MIDDELNAAM[m]);b.dataset.m=m;b.setAttribute("aria-pressed","false");b.onclick=()=>b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));md.append(b)}
+  c.append(md);const kz=el("div","keuzes");
+  for(const [naam,kl] of [["Weg","weg-k"],["Archief",""],["Later",""],["Ster","ster"]]){const b=el("button","knop "+kl,naam);b.onclick=()=>kies(naam);kz.append(b)}
+  c.append(kz);const t=el("div","toetsen");t.append("Toetsen: ",el("kbd",null,"1"),"–",el("kbd",null,"6")," media · ",el("kbd",null,"←")," weg · ",el("kbd",null,"↓")," later · ",el("kbd",null,"→")," ster");c.append(t);st.append(c)}
+function kies(naam){const k=kaarten[kaartIndex];if(!k)return;
+  if(naam==="Ster"){const media=[...$("media").querySelectorAll('[aria-pressed="true"]')].map(b=>b.dataset.m);
+    if(!media.length){toast("Kies bij een ster minstens één medium.");return}
+    const id="p-"+k.id;const mid={};for(const m of media)mid[m]="Gevraagd";
+    pakketten.push({id,titel:k.titel,herkomst:`gekozen in input · ster · ${k.week}`,fase:"Onderzoek",middelen:mid});
+    toast(`In de rij: ${media.map(m=>MIDDELNAAM[m]).join(", ")}.`)}
+  else toast(naam==="Weg"?"Weg. Deze kaart komt niet terug.":naam==="Later"?"Later. Hij komt volgende week terug.":"In het archief.");
+  kaartKeuzes[k.id]=naam;kaartIndex++;teken()}
+document.addEventListener("keydown",e=>{if(huidig.scherm!=="input"||e.target.closest("textarea"))return;
+  if(e.key==="ArrowLeft")kies("Weg");else if(e.key==="ArrowDown")kies("Later");else if(e.key==="ArrowRight")kies("Ster");
+  else if(/^[1-6]$/.test(e.key)){const b=$("media")&&$("media").children[+e.key-1];if(b)b.click()}});
+function teken(){tekenInput();tekenWacht();tekenRij();tekenKalender();tekenStijl()}
 teken();
 </script>
 </body>
