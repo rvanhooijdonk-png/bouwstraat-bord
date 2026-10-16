@@ -128,6 +128,15 @@ def prioriteiten():
     return lijst
 
 
+def publiek(url):
+    """Openbaar JSON-bestand lezen, zonder leessleutel (alleen https)."""
+    if not url.startswith("https://"):
+        raise ValueError("alleen https")
+    req = urllib.request.Request(url, headers={"User-Agent": "bouwstraat-bord", "Cache-Control": "no-cache"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return json.load(resp)
+
+
 def lokale_tijd(tekst):
     """'dd-mm-jjjj uu:mm' in Amsterdamse tijd naar UTC; None bij een ongeldige, niet-bestaande of dubbelzinnige tijd."""
     if not (isinstance(tekst, str) and BIJGEWERKT.match(tekst)):
@@ -156,11 +165,12 @@ def borden():
             continue  # alleen vertrouwde https-links uit config
         tegel = {"naam": b["naam"], "eigenaar": b["eigenaar"], "link": b["link"], "bijgewerkt": None,
                  "stand": "let_op", "reden": "status niet leesbaar"}
-        if not (b.get("repo") and b.get("pad")):  # bord zonder statusbestand: alleen de link
+        if not (b.get("status_url") or (b.get("repo") and b.get("pad"))):  # bord zonder statusbestand: alleen de link
             uit.append(dict(tegel, stand="link", reden="geen status gekoppeld"))
             continue
         try:
-            st = json.loads(base64.b64decode(api(f"repos/{b['repo']}/contents/{b['pad']}")["content"]))
+            st = (publiek(b["status_url"]) if b.get("status_url")
+                  else json.loads(base64.b64decode(api(f"repos/{b['repo']}/contents/{b['pad']}")["content"])))
         except Exception:
             uit.append(tegel)
             continue

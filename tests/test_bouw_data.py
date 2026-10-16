@@ -11,6 +11,7 @@ from pathlib import Path
 PAD = Path(__file__).resolve().parent.parent / "scripts" / "bouw_data.py"
 KANARIE = "KANARIE-Klant-Acme-Dorpsstraat-1"
 FOUT = 0
+PUBLIEK_AANROEPEN = []
 
 
 def check(naam, ok, detail=""):
@@ -77,6 +78,14 @@ def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, on
                      "labels": [{"name": "bezig"}]} for p in m.CONFIG.get("prioriteiten", [])]
         raise AssertionError("onverwacht pad " + pad)
     m.api = api
+    def publiek(url):
+        PUBLIEK_AANROEPEN.append(url)
+        if bord == "weg":
+            raise OSError("niet bereikbaar")
+        b = bord or {"bord": "Groeibord blog", "eigenaar": "x", "bijgewerkt": m.NU.astimezone(m.AMS).strftime("%d-%m-%Y %H:%M"),
+                     "status": "ok", "bronnen_met_probleem": [], "link": "javascript:alert(1)", "kosten": KANARIE}
+        return b
+    m.publiek = publiek
 
 
 m = laad(); nep_api(m)
@@ -200,6 +209,7 @@ _t = json.loads(_o.getvalue())["borden"]
 check("bord zonder statusbestand: tegel met alleen link, stand 'link', geen statusverzoek",
       _t == [{"naam": "Zonder status", "eigenaar": "SEA", "link": "https://rvanhooijdonk-png.github.io/x/", "bijgewerkt": None,
               "stand": "link", "reden": "geen status gekoppeld"}] and not any("/contents/" in v and "telling" not in v for v in _vraag), str(_t))
+check("groeibord leest het openbare status.json (geen leessleutel nodig)", any(u.startswith("https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json") for u in PUBLIEK_AANROEPEN), str(PUBLIEK_AANROEPEN[:2]))
 check("alle borden uit config hebben een https-link en een eigenaar",
       all(str(b.get("link", "")).startswith("https://") and b.get("eigenaar") for b in laad().CONFIG["borden"]) and len(laad().CONFIG["borden"]) >= 9)
 _mm = laad(); _mm.CONFIG = dict(_mm.CONFIG, borden=[dict(_mm.CONFIG["borden"][0], link="javascript:alert(1)")])
