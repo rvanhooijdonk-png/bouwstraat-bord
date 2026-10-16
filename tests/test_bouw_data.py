@@ -104,8 +104,9 @@ check("telling alleen gekozen velden", set(d["telling"]) == {"gemeten_om", "voll
 
 check("korte privé-ordernaam PROEF-ACME geneutraliseerd", "ACME" not in tekst)
 _m3 = laad()
-check("run-2-ordernamen (BURNIN2-01) blijven leesbaar en tellen mee", bool(_m3.PUBLIEKE_ORDER.match("BURNIN2-01")) and _m3.PUBLIEKE_ORDER.match("BURNIN-07") is not None and not _m3.PUBLIEKE_ORDER.match("BURNIN2-ACME"))
-check("bord toont burn-in run 2", _m3.CONFIG["burnin"]["t0"] == "2026-10-15T19:30:58Z" and _m3.CONFIG["burnin"]["orders_prefix"] == "BURNIN2-")
+check("ordernamen van elke run (BURNIN-07, BURNIN2-01, BURNIN3-12) blijven leesbaar", all(_m3.PUBLIEKE_ORDER.match(x) for x in ("BURNIN-07","BURNIN2-01","BURNIN3-12")) and not _m3.PUBLIEKE_ORDER.match("BURNIN2-ACME") and not _m3.PUBLIEKE_ORDER.match("BURNIN33-01"))
+_bi = _m3.CONFIG["burnin"]
+check("burn-inconfig is consistent: orders volgen voorvoegsel en aantal", len(_bi.get("orders", [])) == _bi["orders_aantal"] and all(o.startswith(_bi["orders_prefix"]) for o in _bi.get("orders", [])))
 _idx = (PAD.parent.parent / "index.html").read_text(encoding="utf-8")
 check("eis is tien uitkomsten (OB-0947, besluit 02-10), niet het aantal geschreven orders",
       _m3.CONFIG["burnin"].get("eis_uitkomsten") == 10 and _idx.count("bi.eis_uitkomsten") >= 2 and "bi.uitkomsten>=bi.orders_aantal" not in _idx)
@@ -126,12 +127,13 @@ check("tien open rode PR's terwijl er nog workflows lopen: geen uitkomst", d_roo
 d_rood_klaar = draai("rood", 0)
 check("tien afgekeurde PR's en telling meldt 0 lopend: tien eindstanden", d_rood_klaar["burnin"]["uitkomsten"] == d_rood_klaar["burnin"]["orders_aantal"],
       str(d_rood_klaar["burnin"]["uitkomsten"]))
-check("alleen BURNIN2-01..06 tellen; 00 en 98 ná T0 niet, 06 wel", d_rood_klaar["burnin"]["uitkomsten"] == 6 and laad().CONFIG["burnin"]["orders"][-1] == "BURNIN2-06" and "BURNIN2-00" not in laad().CONFIG["burnin"]["orders"])
+_bc = laad().CONFIG["burnin"]
+check("alleen de afgesproken orders tellen; 00 en 98 ná T0 niet, de laatste wel", d_rood_klaar["burnin"]["uitkomsten"] == _bc["orders_aantal"] and _bc["orders"][-1] == _bc["orders_prefix"] + "%02d" % _bc["orders_aantal"] and _bc["orders_prefix"] + "00" not in _bc["orders"])
 _mf = laad(); _mf.CONFIG = dict(_mf.CONFIG, burnin={k: v for k, v in _mf.CONFIG["burnin"].items() if k != "orders"})
 nep_api(_mf, scenario="rood", lopend=0); _of = io.StringIO()
 with contextlib.redirect_stdout(_of):
     _mf.main()
-check("zonder orderlijst telt elk uniek nummer met het voorvoegsel (oude runs): 00..05 + 98 = 7", json.loads(_of.getvalue())["burnin"]["uitkomsten"] == 7)
+check("zonder orderlijst telt elk uniek nummer met het voorvoegsel (oude runs): 00..N-1 + 98 = N+1", json.loads(_of.getvalue())["burnin"]["uitkomsten"] == laad().CONFIG["burnin"]["orders_aantal"] + 1)
 check("oude telling (2 uur) met 0 lopend maakt open afgekeurde PR's geen eindstand",
       draai("rood", 0, telling_oud=True)["burnin"]["uitkomsten"] == 0)
 check("onvolledige telling met 0 lopend maakt open afgekeurde PR's geen eindstand",

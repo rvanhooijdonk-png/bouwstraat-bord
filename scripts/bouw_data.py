@@ -25,7 +25,7 @@ TOKEN = os.environ.get("ROUTE2_LEES_TOKEN", "")
 TITEL = re.compile(r"^\[ROUTE2 ([a-z0-9]+)\] ([A-Z0-9][A-Z0-9-]{1,60})$")
 NU = datetime.now(timezone.utc)
 BEKENDE_ACCOUNTS = {a["naam"] for a in CONFIG["accounts"]}
-PUBLIEKE_ORDER = re.compile(r"^BURNIN2?-\d{2}$")  # al het andere wordt OPDRACHT-<pr-nummer> (Astra R4)
+PUBLIEKE_ORDER = re.compile(r"^BURNIN[2-9]?-\d{2}$")  # al het andere wordt OPDRACHT-<pr-nummer> (Astra R4)
 # Alleen deze eindtoestanden zijn een echte burn-in-uitkomst; gesloten, onbekend en zonder uitkomst niet.
 ECHTE_UITKOMST = {"samengevoegd", "afgekeurd", "tests rood"}
 bronnen = {}
