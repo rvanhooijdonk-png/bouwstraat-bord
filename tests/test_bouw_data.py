@@ -120,20 +120,66 @@ d_verl = draai("verlaten", 1)
 check("verlaten opdrachten blijven zichtbaar als lopend (geen uitkomst)", all(o["uitkomst"] is None for o in d_verl["orders"] if o["order"].startswith("BURNIN-")))
 check("telling-uitkomsten alleen gehele getallen, geen notitie", d_rood_klaar["telling"]["uitkomsten"] == {"merged": 0, "no_go": 10, "lopend": 0, "pogingen_totaal": 10})
 
-# Andere borden (groeibord blog, SEO/GEO 16-10): alleen vaste velden; let op bij let_op, ouder dan 26 uur of onleesbaar.
+# Andere borden (groeibord blog, SEO/GEO 16-10; Astra NO_GO 16-10 punten 1-5).
+from datetime import datetime as _dt, timezone as _tz
+
+
+def draai_bord(bord, nu=None):
+    """Volledige run met een vaste klok; geeft (geldige JSON, foutcode)."""
+    mm = laad()
+    if nu:
+        mm.NU = _dt.fromisoformat(nu).replace(tzinfo=_tz.utc)
+    nep_api(mm, bord=bord)
+    o = io.StringIO()
+    try:
+        with contextlib.redirect_stdout(o):
+            mm.main()
+    except SystemExit as exc:
+        return None, exc.code
+    except Exception as exc:  # een crash is precies wat punt 1 verbiedt
+        return None, type(exc).__name__
+    return json.loads(o.getvalue()), 0
+
+
+def st(bij, status="ok", **x):
+    return dict({"bord": "Groeibord blog", "eigenaar": "x", "bijgewerkt": bij, "status": status,
+                 "bronnen_met_probleem": [KANARIE], "link": "javascript:alert(1)", "kosten": KANARIE}, **x)
+
+
+NU_T = "2026-10-16T12:00:00"  # 14:00 Amsterdamse zomertijd
 gb = (d.get("borden") or [{}])[0]
 check("groeibord: verse ok-status is ok, link uit config", gb.get("stand") == "ok" and gb.get("link", "").startswith("https://rvanhooijdonk-png.github.io/"), str(gb))
 check("groeibord: alleen vaste velden", set(gb) == {"naam", "eigenaar", "link", "bijgewerkt", "stand", "reden"}, str(sorted(gb)))
-check("groeibord: link uit status.json wordt nooit gebruikt", "javascript:" not in tekst)
-_oud = draai("verlaten", 1, bord={"bord": "Groeibord blog", "bijgewerkt": "01-10-2026 07:15", "status": "ok", "bronnen_met_probleem": []})["borden"][0]
-check("groeibord: ouder dan 26 uur is let op", _oud["stand"] == "let_op" and "26 uur" in _oud["reden"], str(_oud))
-_lo = draai("verlaten", 1, bord={"bord": "Groeibord blog", "bijgewerkt": "01-10-2026 07:15", "status": "let_op", "bronnen_met_probleem": [KANARIE]})
-check("groeibord: let_op telt, probleembron-namen gaan niet mee", _lo["borden"][0]["stand"] == "let_op" and KANARIE not in json.dumps(_lo))
-for _fout in ("weg", {"status": "groen", "bijgewerkt": "nu"}, {"bord": "x"}):
-    _b = draai("verlaten", 1, bord=_fout)["borden"][0]
-    check(f"groeibord: onleesbaar of ongeldig ({str(_fout)[:20]}) is let op, nooit ok", _b["stand"] == "let_op", str(_b))
-_weg = draai("verlaten", 1, bord="weg")
-check("groeibord onleesbaar telt niet mee in de burn-in-bronnen", all(not k.startswith("bord_") for k in _weg["bronnen"]), str(list(_weg["bronnen"])))
+GEVALLEN = [  # (omschrijving, bijgewerkt, status, klok, verwachte stand, verwachte reden)
+    ("precies 26 uur oud blijft ok", "15-10-2026 12:00", "ok", NU_T, "ok", "bijgewerkt"),
+    ("26 uur en 1 minuut is let op", "15-10-2026 11:59", "ok", NU_T, "let_op", "ouder dan 26 uur"),
+    ("ongeldige kalenderdatum 31-02", "31-02-2026 07:15", "ok", NU_T, "let_op", "status ongeldig"),
+    ("niet-bestaand uur zomertijdwissel", "29-03-2026 02:30", "ok", "2026-03-29T08:00:00", "let_op", "status ongeldig"),
+    ("dubbel uur wintertijdwissel", "25-10-2026 02:30", "ok", "2026-10-25T08:00:00", "let_op", "status ongeldig"),
+    ("controle: gewoon uur op de wisseldag", "25-10-2026 03:30", "ok", "2026-10-25T08:00:00", "ok", "bijgewerkt"),
+    ("tijd in de toekomst", "16-10-2026 15:00", "ok", NU_T, "let_op", "status ongeldig"),
+    ("onbekende status", "16-10-2026 13:00", "groen", NU_T, "let_op", "status ongeldig"),
+    ("let_op: vaste tekst, geen telling", "16-10-2026 13:00", "let_op", NU_T, "let_op", "bord meldt let op"),
+]
+basis, _ = draai_bord(st("16-10-2026 13:00"), NU_T)
+for oms, bij, status, klok, stand, reden in GEVALLEN:
+    uitv, code = draai_bord(st(bij, status), klok)
+    t = (uitv or {}).get("borden", [{}])[0]
+    check(f"groeibord: {oms}", code == 0 and t.get("stand") == stand and t.get("reden") == reden, f"code={code} {t}")
+for oms, bord in (("onleesbaar", "weg"), ("geen datum", {"bord": "x", "status": "ok"}), ("geen object", ["x"])):
+    uitv, code = draai_bord(bord, NU_T)
+    t = (uitv or {}).get("borden", [{}])[0]
+    check(f"groeibord: {oms} geeft volledige JSON met let op", code == 0 and t.get("stand") == "let_op", f"code={code} {t}")
+    check(f"groeibord: {oms} laat de bronnen exact gelijk",
+          uitv is not None and {k: v["status"] for k, v in uitv["bronnen"].items()} == {k: v["status"] for k, v in basis["bronnen"].items()},
+          str(uitv and uitv["bronnen"].keys()))
+_tekst = json.dumps(basis)
+check("groeibord: link, kosten en probleembronnen uit status.json komen er niet in", "javascript:" not in _tekst and KANARIE not in _tekst)
+_mm = laad(); _mm.CONFIG = dict(_mm.CONFIG, borden=[dict(_mm.CONFIG["borden"][0], link="javascript:alert(1)")])
+nep_api(_mm); _o = io.StringIO()
+with contextlib.redirect_stdout(_o):
+    _mm.main()
+check("groeibord: een niet-https-link in config geeft geen tegel", json.loads(_o.getvalue())["borden"] == [])
 
 m2 = laad(); nep_api(m2, prs_ok=False)
 uit2 = io.StringIO()

@@ -134,6 +134,16 @@ const hhmm=s=>new Date(s).toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-d
 const dagtijd=s=>new Date(s).toLocaleString("nl-NL",{weekday:"short",hour:"2-digit",minute:"2-digit",timeZone:"Europe/Amsterdam"});
 const geleden=s=>{if(!s)return "nooit";const m=Math.round((Date.now()-new Date(s))/60000);return m<1?"zojuist":m<60?m+" min geleden":m<1440?Math.round(m/60)+" uur geleden":Math.round(m/1440)+" dagen geleden"};
 let gezien=new Set();
+// Andere borden: naam, eigenaar, bijgewerkt en ok/let op. Alles als tekst (textContent); link alleen https uit config.
+function tekenBorden(d){
+  const bo=document.getElementById("borden");bo.replaceChildren();
+  for(const t of d.borden||[]){const r=el("div","prio");const ok=t.stand==="ok";const pil=el("span","pil "+(ok?"goed":"let"),ok?"ok":"let op");
+    const links=el("span");links.append(el("span","titel",t.naam)," ",pil);
+    r.append(el("span","code",""),links,el("span","reacties",`${t.eigenaar} · `+(t.bijgewerkt?`${t.reden} ${geleden(t.bijgewerkt)}`:t.reden)));
+    if(typeof t.link==="string"&&t.link.startsWith("https://")){const a=el("a","knop","Open");a.href=t.link;a.target="_blank";a.rel="noopener";r.append(a)}
+    bo.append(r)}
+  document.getElementById("borden-blok").hidden=!(d.borden||[]).length;
+}
 function teken(d){
   const bron=Object.entries(d.bronnen||{}).filter(([k])=>k!=="prioriteiten").map(([,v])=>v);const onb=bron.filter(b=>b.status!=="GEMETEN");
   const leeftijd=(Date.now()-new Date(d.gemeten_om))/60000;
@@ -165,13 +175,7 @@ function teken(d){
     const links=el("span");links.append(ti," ",pil);r.append(el("span","code",p.code),links,re,a);pr.append(r)}
   const pb=(d.bronnen||{}).prioriteiten;const pnoot=pb&&pb.status!=="GEMETEN"?" · status en reacties nog niet leesbaar (leessleutel mist toegang tot projectenregister)":"";
   document.getElementById("prio-sam").textContent=`${(d.prioriteiten||[]).length} prioriteiten · ${bijJou} bij jou of in overleg · reageren via het privé-issue (alleen jij)${pnoot}`;
-  // Andere borden: naam, eigenaar, bijgewerkt en ok/let op; link uit config.
-  const bo=document.getElementById("borden");bo.replaceChildren();
-  for(const t of d.borden||[]){const r=el("div","prio");const pil=el("span","pil "+(t.stand==="ok"?"goed":"let"),t.stand==="ok"?"ok":"let op");
-    const links=el("span");links.append(el("span","titel",t.naam)," ",pil);
-    const a=el("a","knop","Open");a.href=t.link;a.target="_blank";a.rel="noopener";
-    r.append(el("span","code",""),links,el("span","reacties",`${t.eigenaar} · `+(t.bijgewerkt?`${t.reden} ${geleden(t.bijgewerkt)}`:t.reden)),a);bo.append(r)}
-  document.getElementById("borden-blok").hidden=!(d.borden||[]).length;
+  tekenBorden(d);
   // Content: input en output naast elkaar, met stand en volgende stap.
   const ct=d.content||{};document.getElementById("ct-noot").textContent=ct.noot||"";
   const rijCt=(x)=>{const r=el("div","ct-rij");const l=el("div");l.append(el("b",null,x.naam),el("br"),el("small",null,x.wat),el("br"),el("small",null,`waar: ${x.waar} · volgende: ${x.volgende}`));r.append(l,el("span","ct-st "+x.stand,x.stand));return r};

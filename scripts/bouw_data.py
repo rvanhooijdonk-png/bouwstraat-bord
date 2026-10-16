@@ -128,12 +128,32 @@ def prioriteiten():
     return lijst
 
 
+def lokale_tijd(tekst):
+    """'dd-mm-jjjj uu:mm' in Amsterdamse tijd naar UTC; None bij een ongeldige, niet-bestaande of dubbelzinnige tijd."""
+    if not (isinstance(tekst, str) and BIJGEWERKT.match(tekst)):
+        return None
+    try:
+        kaal = datetime.strptime(tekst, "%d-%m-%Y %H:%M")
+    except ValueError:  # bijv. 31-02
+        return None
+    vroeg, laat = kaal.replace(tzinfo=AMS, fold=0), kaal.replace(tzinfo=AMS, fold=1)
+    if vroeg.utcoffset() != laat.utcoffset():  # uur dat bij de wintertijdwissel twee keer voorkomt
+        return None
+    utc = vroeg.astimezone(timezone.utc)
+    if utc.astimezone(AMS).replace(tzinfo=None) != kaal:  # uur dat bij de zomertijdwissel niet bestaat
+        return None
+    return utc
+
+
 def borden():
     """Tegels van andere borden (bijv. groeibord blog). Naam, eigenaar en link komen uit config; uit status.json
-    alleen status en bijgewerkt in vaste vorm. Let op bij let_op, ouder dan 26 uur, ongeldig of onleesbaar.
-    Telt bewust niet mee in `bronnen`: een onleesbaar ander bord mag de burn-in-kop niet kleuren."""
+    alleen status en bijgewerkt. De reden is altijd een vaste tekst. Let op bij let_op, ouder dan 26 uur, ongeldig,
+    in de toekomst of onleesbaar. Telt bewust niet mee in `bronnen`: een onleesbaar ander bord mag de burn-in-kop
+    niet kleuren (Astra 16-10)."""
     uit = []
     for b in CONFIG.get("borden", []):
+        if not str(b.get("link", "")).startswith("https://"):
+            continue  # alleen vertrouwde https-links uit config
         tegel = {"naam": b["naam"], "eigenaar": b["eigenaar"], "link": b["link"], "bijgewerkt": None,
                  "stand": "let_op", "reden": "status niet leesbaar"}
         try:
@@ -141,15 +161,13 @@ def borden():
         except Exception:
             uit.append(tegel)
             continue
-        bij = st.get("bijgewerkt") if isinstance(st, dict) else None
-        if not (isinstance(bij, str) and BIJGEWERKT.match(bij)) or st.get("status") not in ("ok", "let_op"):
+        moment = lokale_tijd(st.get("bijgewerkt")) if isinstance(st, dict) else None
+        if moment is None or st.get("status") not in ("ok", "let_op") or moment > NU + timedelta(minutes=5):
             uit.append(dict(tegel, reden="status ongeldig"))
             continue
-        moment = datetime.strptime(bij, "%d-%m-%Y %H:%M").replace(tzinfo=AMS)
-        tegel["bijgewerkt"] = moment.astimezone(timezone.utc).isoformat()
+        tegel["bijgewerkt"] = moment.isoformat()
         if st["status"] == "let_op":
-            n = st.get("bronnen_met_probleem")
-            tegel["reden"] = f"{len(n)} bron(nen) met een probleem" if isinstance(n, list) and n else "bord meldt let op"
+            tegel["reden"] = "bord meldt let op"
         elif NU - moment > timedelta(hours=26):
             tegel["reden"] = "ouder dan 26 uur"
         else:

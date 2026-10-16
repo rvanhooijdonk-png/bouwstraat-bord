@@ -26,6 +26,8 @@ jobs:
           python-version: "3.12"
       - name: Offline proef van de generator (geen privétekst naar de publieke site)
         run: python3 tests/test_bouw_data.py
+      - name: DOM-proef tegels andere borden
+        run: node tests/test_borden_dom.mjs
       - name: Gegevens ophalen (alleen lezen)
         env:
           ROUTE2_LEES_TOKEN: ${{ secrets.ROUTE2_LEES_TOKEN }}
