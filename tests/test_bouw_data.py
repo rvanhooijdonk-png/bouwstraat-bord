@@ -11,6 +11,7 @@ from pathlib import Path
 PAD = Path(__file__).resolve().parent.parent / "scripts" / "bouw_data.py"
 KANARIE = "KANARIE-Klant-Acme-Dorpsstraat-1"
 FOUT = 0
+PUBLIEK_AANROEPEN = []
 
 
 def check(naam, ok, detail=""):
@@ -77,6 +78,14 @@ def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, on
                      "labels": [{"name": "bezig"}]} for p in m.CONFIG.get("prioriteiten", [])]
         raise AssertionError("onverwacht pad " + pad)
     m.api = api
+    def publiek(url):
+        PUBLIEK_AANROEPEN.append(url)
+        if bord == "weg":
+            raise OSError("niet bereikbaar")
+        b = bord or {"bord": "Groeibord blog", "eigenaar": "x", "bijgewerkt": m.NU.astimezone(m.AMS).strftime("%d-%m-%Y %H:%M"),
+                     "status": "ok", "bronnen_met_probleem": [], "link": "javascript:alert(1)", "kosten": KANARIE}
+        return b
+    m.publiek = publiek
 
 
 m = laad(); nep_api(m)
@@ -95,8 +104,9 @@ check("telling alleen gekozen velden", set(d["telling"]) == {"gemeten_om", "voll
 
 check("korte privé-ordernaam PROEF-ACME geneutraliseerd", "ACME" not in tekst)
 _m3 = laad()
-check("run-2-ordernamen (BURNIN2-01) blijven leesbaar en tellen mee", bool(_m3.PUBLIEKE_ORDER.match("BURNIN2-01")) and _m3.PUBLIEKE_ORDER.match("BURNIN-07") is not None and not _m3.PUBLIEKE_ORDER.match("BURNIN2-ACME"))
-check("bord toont burn-in run 2", _m3.CONFIG["burnin"]["t0"] == "2026-10-15T19:30:58Z" and _m3.CONFIG["burnin"]["orders_prefix"] == "BURNIN2-")
+check("ordernamen van elke run (BURNIN-07, BURNIN2-01, BURNIN3-12) blijven leesbaar", all(_m3.PUBLIEKE_ORDER.match(x) for x in ("BURNIN-07","BURNIN2-01","BURNIN3-12")) and not _m3.PUBLIEKE_ORDER.match("BURNIN2-ACME") and not _m3.PUBLIEKE_ORDER.match("BURNIN33-01"))
+_bi = _m3.CONFIG["burnin"]
+check("burn-inconfig is consistent: orders volgen voorvoegsel en aantal", len(_bi.get("orders", [])) == _bi["orders_aantal"] and all(o.startswith(_bi["orders_prefix"]) for o in _bi.get("orders", [])))
 _idx = (PAD.parent.parent / "index.html").read_text(encoding="utf-8")
 check("eis is tien uitkomsten (OB-0947, besluit 02-10), niet het aantal geschreven orders",
       _m3.CONFIG["burnin"].get("eis_uitkomsten") == 10 and _idx.count("bi.eis_uitkomsten") >= 2 and "bi.uitkomsten>=bi.orders_aantal" not in _idx)
@@ -117,12 +127,13 @@ check("tien open rode PR's terwijl er nog workflows lopen: geen uitkomst", d_roo
 d_rood_klaar = draai("rood", 0)
 check("tien afgekeurde PR's en telling meldt 0 lopend: tien eindstanden", d_rood_klaar["burnin"]["uitkomsten"] == d_rood_klaar["burnin"]["orders_aantal"],
       str(d_rood_klaar["burnin"]["uitkomsten"]))
-check("alleen BURNIN2-01..06 tellen; 00 en 98 ná T0 niet, 06 wel", d_rood_klaar["burnin"]["uitkomsten"] == 6 and laad().CONFIG["burnin"]["orders"][-1] == "BURNIN2-06" and "BURNIN2-00" not in laad().CONFIG["burnin"]["orders"])
+_bc = laad().CONFIG["burnin"]
+check("alleen de afgesproken orders tellen; 00 en 98 ná T0 niet, de laatste wel", d_rood_klaar["burnin"]["uitkomsten"] == _bc["orders_aantal"] and _bc["orders"][-1] == _bc["orders_prefix"] + "%02d" % _bc["orders_aantal"] and _bc["orders_prefix"] + "00" not in _bc["orders"])
 _mf = laad(); _mf.CONFIG = dict(_mf.CONFIG, burnin={k: v for k, v in _mf.CONFIG["burnin"].items() if k != "orders"})
 nep_api(_mf, scenario="rood", lopend=0); _of = io.StringIO()
 with contextlib.redirect_stdout(_of):
     _mf.main()
-check("zonder orderlijst telt elk uniek nummer met het voorvoegsel (oude runs): 00..05 + 98 = 7", json.loads(_of.getvalue())["burnin"]["uitkomsten"] == 7)
+check("zonder orderlijst telt elk uniek nummer met het voorvoegsel (oude runs): 00..N-1 + 98 = N+1", json.loads(_of.getvalue())["burnin"]["uitkomsten"] == laad().CONFIG["burnin"]["orders_aantal"] + 1)
 check("oude telling (2 uur) met 0 lopend maakt open afgekeurde PR's geen eindstand",
       draai("rood", 0, telling_oud=True)["burnin"]["uitkomsten"] == 0)
 check("onvolledige telling met 0 lopend maakt open afgekeurde PR's geen eindstand",
@@ -200,6 +211,36 @@ _t = json.loads(_o.getvalue())["borden"]
 check("bord zonder statusbestand: tegel met alleen link, stand 'link', geen statusverzoek",
       _t == [{"naam": "Zonder status", "eigenaar": "SEA", "link": "https://rvanhooijdonk-png.github.io/x/", "bijgewerkt": None,
               "stand": "link", "reden": "geen status gekoppeld"}] and not any("/contents/" in v and "telling" not in v for v in _vraag), str(_t))
+check("groeibord leest het openbare status.json (geen leessleutel nodig)", any(u.startswith("https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json") for u in PUBLIEK_AANROEPEN), str(PUBLIEK_AANROEPEN[:2]))
+_mp = laad()
+import urllib.request as _ur, urllib.error as _ue
+_echt_open = _ur.OpenerDirector.open
+def _geen_netwerk(*a, **k):
+    raise AssertionError("netwerk gebruikt")
+_ur.OpenerDirector.open = _geen_netwerk
+def _fout(f):
+    try:
+        f(); return None
+    except Exception as exc:
+        return exc
+_e1 = _fout(lambda: _mp.publiek("http://rvanhooijdonk-png.github.io/x.json"))
+check("publiek(): http geweigerd vóór elk netwerkverzoek", isinstance(_e1, ValueError), repr(_e1))
+_e2 = _fout(lambda: _mp.publiek("https://evil.example/x.json"))
+check("publiek(): ander domein geweigerd vóór elk netwerkverzoek", isinstance(_e2, ValueError), repr(_e2))
+_ur.OpenerDirector.open = _echt_open
+_e3 = _fout(lambda: _mp.GeenOmleiding().redirect_request(_ur.Request("https://rvanhooijdonk-png.github.io/a"), None, 302, "Found", {}, "https://evil.example/b"))
+check("publiek(): omleiding geweigerd met HTTPError", isinstance(_e3, _ue.HTTPError) and "omleiding geweigerd" in str(_e3), repr(_e3))
+import io as _io, email.message as _em
+class _Nep302(_ur.HTTPSHandler):
+    aanroepen = []
+    def https_open(self, req):
+        _Nep302.aanroepen.append(req.full_url)
+        h = _em.Message(); h["Location"] = "https://evil.example/b"
+        r = _ur.addinfourl(_io.BytesIO(b""), h, req.full_url, 302); r.msg = "Found"
+        return r
+_op = _ur.build_opener(_mp.GeenOmleiding, _Nep302)
+_e4 = _fout(lambda: _op.open("https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json"))
+check("echte opener: 302 geeft HTTPError en geen tweede verzoek", isinstance(_e4, _ue.HTTPError) and _Nep302.aanroepen == ["https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json"], f"{_e4!r} {_Nep302.aanroepen}")
 check("alle borden uit config hebben een https-link en een eigenaar",
       all(str(b.get("link", "")).startswith("https://") and b.get("eigenaar") for b in laad().CONFIG["borden"]) and len(laad().CONFIG["borden"]) >= 9)
 _mm = laad(); _mm.CONFIG = dict(_mm.CONFIG, borden=[dict(_mm.CONFIG["borden"][0], link="javascript:alert(1)")])

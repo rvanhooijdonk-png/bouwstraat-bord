@@ -1436,9 +1436,8 @@
     {
       "naam": "Groeibord blog",
       "eigenaar": "SEO/GEO",
-      "repo": "rvanhooijdonk-png/blog-seo-geo",
-      "pad": "bord/status.json",
-      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/"
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/",
+      "status_url": "https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json"
     },
     {
       "naam": "Blog-voorstellen",
