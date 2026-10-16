@@ -1438,6 +1438,56 @@
       "repo": "rvanhooijdonk-png/blog-seo-geo",
       "pad": "bord/status.json",
       "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/"
+    },
+    {
+      "naam": "Blog-voorstellen",
+      "eigenaar": "SEO/GEO",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/"
+    },
+    {
+      "naam": "Blog: magazine-opzet",
+      "eigenaar": "SEO/GEO",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/magazine-voorpagina/"
+    },
+    {
+      "naam": "Blog: tabbladen",
+      "eigenaar": "SEO/GEO",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/e-tabbladen/"
+    },
+    {
+      "naam": "SEA: repo's en tactieken",
+      "eigenaar": "SEA",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/sea-repos-en-tactieken/"
+    },
+    {
+      "naam": "SEA-landingspagina keynote AI",
+      "eigenaar": "SEA",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/sea-lp-ai-revolutie/"
+    },
+    {
+      "naam": "Publishing Board (mockup)",
+      "eigenaar": "TOEZICHT",
+      "link": "https://rvanhooijdonk-png.github.io/bouwstraat-bord/publishing.html"
+    },
+    {
+      "naam": "De hele stack",
+      "eigenaar": "TOEZICHT",
+      "link": "https://rvanhooijdonk-png.github.io/bouwstraat-bord/stack.html"
+    },
+    {
+      "naam": "Takenhub-indelingen",
+      "eigenaar": "Takenhub",
+      "link": "https://rvanhooijdonk-png.github.io/takenhub-ontwerp/"
+    },
+    {
+      "naam": "NQ Radar",
+      "eigenaar": "NQ",
+      "link": "https://rvanhooijdonk-png.github.io/nq-human-consensus-radar/"
+    },
+    {
+      "naam": "Beslisrechten bij agentische AI",
+      "eigenaar": "long-read",
+      "link": "https://rvanhooijdonk-png.github.io/ai-governance-beslisrechten/"
     }
   ]
 }

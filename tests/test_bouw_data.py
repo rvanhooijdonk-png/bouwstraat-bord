@@ -176,6 +176,17 @@ for oms, bord in (("onleesbaar", "weg"), ("geen datum", {"bord": "x", "status": 
           uitv is not None and uitv["bronnen"] == basis["bronnen"], str(uitv and uitv["bronnen"]))
 _tekst = json.dumps(basis)
 check("groeibord: link, kosten en probleembronnen uit status.json komen er niet in", "javascript:" not in _tekst and KANARIE not in _tekst)
+_mm = laad(); _vraag = []
+_mm.CONFIG = dict(_mm.CONFIG, borden=[{"naam": "Zonder status", "eigenaar": "SEA", "link": "https://rvanhooijdonk-png.github.io/x/"}])
+nep_api(_mm); _api = _mm.api; _mm.api = lambda pad: (_vraag.append(pad), _api(pad))[1]; _o = io.StringIO()
+with contextlib.redirect_stdout(_o):
+    _mm.main()
+_t = json.loads(_o.getvalue())["borden"]
+check("bord zonder statusbestand: tegel met alleen link, stand 'link', geen statusverzoek",
+      _t == [{"naam": "Zonder status", "eigenaar": "SEA", "link": "https://rvanhooijdonk-png.github.io/x/", "bijgewerkt": None,
+              "stand": "link", "reden": "geen status gekoppeld"}] and not any("/contents/" in v and "telling" not in v for v in _vraag), str(_t))
+check("alle borden uit config hebben een https-link en een eigenaar",
+      all(str(b.get("link", "")).startswith("https://") and b.get("eigenaar") for b in laad().CONFIG["borden"]) and len(laad().CONFIG["borden"]) >= 9)
 _mm = laad(); _mm.CONFIG = dict(_mm.CONFIG, borden=[dict(_mm.CONFIG["borden"][0], link="javascript:alert(1)")])
 nep_api(_mm); _o = io.StringIO()
 with contextlib.redirect_stdout(_o):

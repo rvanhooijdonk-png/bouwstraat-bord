@@ -26,5 +26,8 @@ check("https-link wordt href", links.length === 1 && links[0].href === "https://
 check("javascript-link krijgt geen knop", !links.some(a => String(a.href).startsWith("javascript:")));
 check("ok is groen, let_op is oranje", knopen.some(n => n.className === "pil goed" && n.textContent === "ok") && knopen.some(n => n.className === "pil let" && n.textContent === "let op"));
 check("blok zichtbaar met tegels", els["borden-blok"].hidden === false);
+teken({ borden: [{ naam: "C", eigenaar: "SEA", link: "https://rvanhooijdonk-png.github.io/x/", bijgewerkt: null, stand: "link", reden: "geen status gekoppeld" }] });
+const k2 = alle(els.borden);
+check("bord zonder status: grijze pil 'geen status' en wel een knop", k2.some(n => n.className === "pil uit" && n.textContent === "geen status") && k2.some(n => n.tag === "a" && n.href === "https://rvanhooijdonk-png.github.io/x/"));
 teken({}); check("blok verborgen zonder tegels", els["borden-blok"].hidden === true);
 console.log(fout ? "\nER ZIJN FOUTEN" : "\nALLE PROEVEN GROEN"); process.exit(fout);

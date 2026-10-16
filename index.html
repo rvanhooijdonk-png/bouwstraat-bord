@@ -110,7 +110,7 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
   <section class="oordeel" id="oordeel"><h1 id="oordeel-kop">Gegevens laden…</h1><p id="oordeel-tekst"></p><span class="vers"><span class="stip" id="stip"></span><span id="vers">—</span></span></section>
   <section class="jij"><h2>Wacht op jou</h2><ol id="jij"></ol></section>
   <section class="blok"><div class="blokkop"><h2>Prioriteiten</h2><span class="klein" id="prio-sam">reageren gaat via het privé-issue (alleen jij)</span></div><div class="prios" id="prios"></div></section>
-  <section class="blok" id="borden-blok"><div class="blokkop"><h2>Andere borden</h2><span class="klein">alleen of ze bijgewerkt zijn; de cijfers staan op het bord zelf</span></div><div class="prios" id="borden"></div></section>
+  <section class="blok" id="borden-blok"><div class="blokkop"><h2>Andere borden</h2><span class="klein">alle pagina’s en borden · status alleen waar het bord die levert</span></div><div class="prios" id="borden"></div></section>
   <section class="blok"><div class="blokkop"><h2>Meter · accounts</h2><span class="klein" id="meter-sam"></span></div><div class="meter" id="meter"></div></section>
   <div class="duo">
     <section class="blok"><div class="blokkop"><h2>Ticker · wat er gebeurt</h2><span class="klein">nieuwste boven · ververst elke minuut</span></div><ul class="ticker" id="ticker"></ul></section>
@@ -137,7 +137,7 @@ let gezien=new Set();
 // Andere borden: naam, eigenaar, bijgewerkt en ok/let op. Alles als tekst (textContent); link alleen https uit config.
 function tekenBorden(d){
   const bo=document.getElementById("borden");bo.replaceChildren();
-  for(const t of d.borden||[]){const r=el("div","prio");const ok=t.stand==="ok";const pil=el("span","pil "+(ok?"goed":"let"),ok?"ok":"let op");
+  for(const t of d.borden||[]){const r=el("div","prio");const ok=t.stand==="ok",los=t.stand==="link";const pil=el("span","pil "+(ok?"goed":los?"uit":"let"),ok?"ok":los?"geen status":"let op");
     const links=el("span");links.append(el("span","titel",t.naam)," ",pil);
     r.append(el("span","code",""),links,el("span","reacties",`${t.eigenaar} · `+(t.bijgewerkt?`${t.reden} ${geleden(t.bijgewerkt)}`:t.reden)));
     if(typeof t.link==="string"&&t.link.startsWith("https://")){const a=el("a","knop","Open");a.href=t.link;a.target="_blank";a.rel="noopener";r.append(a)}

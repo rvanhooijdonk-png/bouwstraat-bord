@@ -156,6 +156,9 @@ def borden():
             continue  # alleen vertrouwde https-links uit config
         tegel = {"naam": b["naam"], "eigenaar": b["eigenaar"], "link": b["link"], "bijgewerkt": None,
                  "stand": "let_op", "reden": "status niet leesbaar"}
+        if not (b.get("repo") and b.get("pad")):  # bord zonder statusbestand: alleen de link
+            uit.append(dict(tegel, stand="link", reden="geen status gekoppeld"))
+            continue
         try:
             st = json.loads(base64.b64decode(api(f"repos/{b['repo']}/contents/{b['pad']}")["content"]))
         except Exception:
