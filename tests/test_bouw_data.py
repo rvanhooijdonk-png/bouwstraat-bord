@@ -97,6 +97,9 @@ check("korte privé-ordernaam PROEF-ACME geneutraliseerd", "ACME" not in tekst)
 _m3 = laad()
 check("run-2-ordernamen (BURNIN2-01) blijven leesbaar en tellen mee", bool(_m3.PUBLIEKE_ORDER.match("BURNIN2-01")) and _m3.PUBLIEKE_ORDER.match("BURNIN-07") is not None and not _m3.PUBLIEKE_ORDER.match("BURNIN2-ACME"))
 check("bord toont burn-in run 2", _m3.CONFIG["burnin"]["t0"] == "2026-10-15T19:30:58Z" and _m3.CONFIG["burnin"]["orders_prefix"] == "BURNIN2-")
+_idx = (PAD.parent.parent / "index.html").read_text(encoding="utf-8")
+check("eis is tien uitkomsten (OB-0947, besluit 02-10), niet het aantal geschreven orders",
+      _m3.CONFIG["burnin"].get("eis_uitkomsten") == 10 and _idx.count("bi.eis_uitkomsten") >= 2 and "bi.uitkomsten>=bi.orders_aantal" not in _idx)
 check("eis-label volgt het aantal orders", "Tien echte uitkomsten" not in (ROOT_ := PAD.parent.parent / "index.html").read_text(encoding="utf-8"))
 
 
