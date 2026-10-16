@@ -276,7 +276,9 @@ def main():
                          "bezig": f"{bezig['fase']} · {bezig['order']}" if bezig else None})
 
     bi = CONFIG["burnin"]
-    bi_orders = [o for o in orders if o["order"].startswith(bi["orders_prefix"]) and o["na_t0"]]
+    # Alleen de afgesproken orders tellen (Astra 16-10): een andere naam met hetzelfde voorvoegsel telt niet mee.
+    afgesproken = set(bi.get("orders") or [])
+    bi_orders = [o for o in orders if o["na_t0"] and (o["order"] in afgesproken if afgesproken else o["order"].startswith(bi["orders_prefix"]))]
     uniek = {}
     for o in sorted(bi_orders, key=lambda o: o["geopend"]):
         uniek[o["order"]] = o

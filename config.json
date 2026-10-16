@@ -74,7 +74,15 @@
     "vooraf_ingrepen": [
       94
     ],
-    "mac_offline_bewijs": null
+    "mac_offline_bewijs": null,
+    "orders": [
+      "BURNIN2-01",
+      "BURNIN2-02",
+      "BURNIN2-03",
+      "BURNIN2-04",
+      "BURNIN2-05",
+      "BURNIN2-06"
+    ]
   },
   "wacht_op_richard": [
     {
