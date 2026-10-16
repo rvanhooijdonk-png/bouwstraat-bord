@@ -184,9 +184,41 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
 .voortgang{font:13px var(--mono);color:var(--zacht);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
 .toetsen{font-size:12px;color:var(--zacht)}
 .toetsen kbd{font:11px var(--mono);border:1px solid var(--lijn);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--vlak)}
+.kn-balk{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--vlak);border-radius:12px;box-shadow:var(--schaduw);padding:14px 16px;margin-bottom:16px}
+.kn-balk b{font-size:16px}
+.kn-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.kn-tabs button{border:1px solid var(--lijn);background:var(--vlak);border-radius:8px;padding:6px 12px;font-weight:600;font-size:14px}
+.kn-tabs button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-zacht);color:var(--accent)}
+.kn-item{background:var(--vlak);border-radius:12px;box-shadow:var(--schaduw);padding:16px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px 20px;margin-bottom:12px}
+.kn-item .t{font-weight:600;font-size:16px;line-height:1.3}
+.kn-item .soort{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.kn-item .soort button{border:1px solid var(--lijn);background:var(--vlak2);border-radius:99px;padding:3px 10px;font-size:13px}
+.kn-item .soort button[aria-pressed="true"]{background:var(--wacht-zacht);border-color:var(--wacht);color:var(--wacht);font-weight:600}
+.kn-item label{font-size:12px;color:var(--zacht)}
+.kn-aantal{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--zacht)}
+.kn-aantal input{width:64px;border:1px solid var(--lijn);border-radius:8px;padding:5px 8px;background:var(--vlak2);color:var(--inkt);font:inherit}
+.kn-res{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:18px;align-items:start}
+.slide{aspect-ratio:16/9;width:100%;border-radius:10px;overflow:hidden;position:relative;background:#101614;color:#F2F5F3;display:flex;flex-direction:column;justify-content:flex-end;padding:5% 6%;box-shadow:0 10px 40px rgba(0,0,0,.25)}
+.slide .vis{position:absolute;inset:0;background:var(--sl-bg,linear-gradient(135deg,#123128,#2F6B57 55%,#9FC9B4))}
+.slide .vis::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 30%,rgba(0,0,0,.65))}
+.slide .in{position:relative;display:flex;flex-direction:column;gap:.6em}
+.slide .cijfer{font:700 clamp(40px,9vw,120px)/1 var(--letter);letter-spacing:-.03em}
+.slide .st{background:none;padding:0;font:600 clamp(18px,3vw,40px)/1.15 var(--letter);color:#fff;text-wrap:balance}
+.slide .st::before{display:none}
+.slide .sub{font:clamp(12px,1.4vw,19px)/1.4 var(--letter);color:rgba(255,255,255,.82);max-width:70%}
+.slide .stempel{position:absolute;top:4%;right:4%;font:600 clamp(9px,1vw,12px) var(--letter);letter-spacing:.08em;text-transform:uppercase;background:rgba(251,241,214,.92);color:#7A5C0A;padding:4px 8px;border-radius:4px}
+.slide .nr{position:absolute;top:4%;left:4%;font:500 clamp(10px,1.1vw,13px) var(--mono);color:rgba(255,255,255,.7)}
+.duimen{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 4px}
+.duimen button{flex:none;width:150px;border:2px solid transparent;border-radius:8px;padding:0;background:none}
+.duimen button[aria-pressed="true"]{border-color:var(--accent)}
+.duimen .slide{padding:6%;box-shadow:none;border-radius:6px}
+.duimen .slide .st{font-size:11px}.duimen .slide .cijfer{font-size:22px}.duimen .slide .sub,.duimen .slide .stempel{display:none}
+.duimen .opm-stip{position:absolute;bottom:6px;right:6px;width:10px;height:10px;border-radius:50%;background:var(--wacht);box-shadow:0 0 0 2px #fff}
+.groot-knop{margin-left:auto}
+.slide:fullscreen{border-radius:0;padding:4% 6%}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--inkt);color:var(--grond);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;box-shadow:var(--schaduw)}
 [hidden]{display:none!important}
-@media (max-width:1060px){.review{grid-template-columns:1fr}.paneel{position:static}}
+@media (max-width:1060px){.review{grid-template-columns:1fr}.paneel{position:static}.kn-res{grid-template-columns:1fr}.kn-item{grid-template-columns:1fr}}
 @media (max-width:760px){
   .keuzes{grid-template-columns:1fr 1fr}
   .app{grid-template-columns:1fr}
@@ -210,6 +242,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
       <button data-scherm="input">Input <span class="tel leeg" id="tel-input">0</span></button>
       <button data-scherm="wacht" aria-current="page">Wacht op jou <span class="tel" id="tel-wacht">0</span></button>
       <button data-scherm="rij">De rij <span class="tel leeg" id="tel-rij">0</span></button>
+      <button data-scherm="keynote">Keynotes <span class="tel leeg" id="tel-keynote">0</span></button>
       <button data-scherm="kalender">Kalender <span class="later">stap 6</span></button>
       <button data-scherm="stijl">Stijlregels <span class="tel leeg" id="tel-stijl">0</span></button>
     </nav>
@@ -217,7 +250,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   </aside>
 
   <main class="hoofd">
-    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 16:20</span></div>
+    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 17:05</span></div>
 
     <section id="scherm-input" hidden>
       <div class="kop"><div><h1>Input</h1><p>Kaarten uit de triage. Geef een ster: het pakket staat meteen in de rij, en daar kies je de media.</p></div></div>
@@ -269,6 +302,12 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
       </div>
     </section>
 
+    <section id="scherm-keynote" hidden>
+      <div class="kop"><div><h1>Keynotes</h1><p>Een eigen rij, los van de andere content. Je verzamelt items, geeft per item instructies mee en draait dan één batch. In deze mockup is de batch een simulatie met voorbeeldslides.</p></div></div>
+      <div class="kn-tabs" id="kn-tabs"></div>
+      <div id="kn-inhoud"></div>
+    </section>
+
     <section id="scherm-kalender" hidden>
       <div class="kop"><div><h1>Kalender</h1><p>Week 42–43 · wat is ingepland en wat al live staat. Komt in stap 6; dit is een voorbeeld.</p></div></div>
       <div class="week" id="week"></div>
@@ -301,10 +340,21 @@ const kaarten=[
  {id:"k5",week:"W40",bron:"YouTube · retail",titel:"Winkelketen schrapt de kassa in vijftig filialen",kern:"Camera's en gewichtssensoren rekenen af; personeel gaat naar advies en bijvullen.",zin:"Volgt op 'De supermarkt zonder kassa'."}
 ];
 let kaartIndex=0;const kaartKeuzes={};
-const STATUS={"Gevraagd":"s-gevraagd","In productie":"s-productie","Wacht op jou":"s-wacht","Aanpassen":"s-aanpassen","Goedgekeurd":"s-goed","Ingepland":"s-gepland","Gepubliceerd":"s-live","Weg":"s-weg"};
+// Keynote-rij (fictief). soort: nieuw (aantal slides) | aanvulling | details
+const keynoteRij=[
+ {id:"kn1",pakket:"p1",titel:"Humanoïde robots in de zorg",soort:"nieuw",aantal:3,instructie:"Drie slides: het tekort in één cijfer, wat robots nu al doen, en de vraag welk werk we bij mensen houden.",stand:"Verzameld"},
+ {id:"kn2",pakket:null,titel:"Thuiszorg test sensoren die vallen voorspellen",soort:"aanvulling",aantal:1,instructie:"Aanvulling op mijn zorgkeynote: één slide na het blok 'preventie'.",stand:"Verzameld"},
+ {id:"kn3",pakket:"p3",titel:"De supermarkt zonder kassa",soort:"nieuw",aantal:4,instructie:"Vier slides voor de retailkeynote, met een groot cijfer en een beeld van een winkel zonder kassa.",stand:"Resultaat",
+  slides:[{cijfer:"50",st:"filialen zonder kassa in één jaar",sub:"Camera's en gewichtssensoren rekenen af terwijl je naar buiten loopt.",bg:"linear-gradient(135deg,#1b2a3a,#2e5a7a 55%,#a9c7dd)"},
+          {st:"De kassa verdwijnt. Het personeel niet.",sub:"Medewerkers verschuiven van afrekenen naar advies, bijvullen en gastvrijheid.",bg:"linear-gradient(135deg,#2a1b14,#7a4a2e 55%,#e0bfa3)"},
+          {cijfer:"38 s",st:"gemiddelde tijd van binnenkomst tot vertrek",sub:"Voor een kleine boodschap. Vergelijk dat met de rij bij de kassa.",bg:"linear-gradient(135deg,#16302a,#2f6b57 55%,#c9e3d6)"},
+          {st:"Wat doet jouw winkel als niemand meer hoeft te wachten?",sub:"Slotvraag voor de zaal.",bg:"linear-gradient(135deg,#231a33,#4e3a7a 55%,#c8bde6)"}]}
+];
+const slideOpm={};let knTab="verzameld",knItem="kn3",knSlide=0;
+const STATUS={"Verzameld":"s-aanpassen","Gevraagd":"s-gevraagd","In productie":"s-productie","Wacht op jou":"s-wacht","Aanpassen":"s-aanpassen","Goedgekeurd":"s-goed","Ingepland":"s-gepland","Gepubliceerd":"s-live","Weg":"s-weg"};
 const FASES=[["Kies media","nieuw uit input: kies wat je wilt"],["Onderzoek","de stack zoekt bronnen en feiten"],["Schrijven","de stack maakt of past aan"],["Bij jou","ligt klaar voor je oordeel"],["Goedgekeurd","wacht op een datum of staat ingepland"],["Live","staat online"]];
 // De kolom volgt uit de uitingen: wie is er aan de beurt?
-function faseVan(p){if(p.nieuw)return "Kies media";const st=Object.values(p.middelen).filter(s=>s!=="Weg");
+function faseVan(p){if(p.nieuw)return "Kies media";const st=Object.entries(p.middelen).filter(([m,s])=>m!=="keynote"&&s!=="Weg").map(([,s])=>s);
   if(!st.length)return null; // alles weggezet: niet in de kolommen
   if(st.includes("Wacht op jou"))return "Bij jou";
   if(st.every(s=>s==="Gepubliceerd"))return "Live";
@@ -313,7 +363,7 @@ function faseVan(p){if(p.nieuw)return "Kies media";const st=Object.values(p.midd
   return "Onderzoek"}
 const pakketten=[
  {id:"p1",titel:"Humanoïde robots in de zorg",herkomst:"gekozen in input · swipe 14-10",fase:"Middelen",
-  middelen:{longread:"Wacht op jou",linkedin:"Wacht op jou",nieuwsbrief:"In productie",beeld:"Goedgekeurd"}},
+  middelen:{longread:"Wacht op jou",linkedin:"Wacht op jou",nieuwsbrief:"In productie",beeld:"Goedgekeurd",keynote:"Verzameld"}},
  {id:"p6",titel:"Slimme brillen op de werkvloer",herkomst:"vrije opdracht · 15-10",fase:"Middelen",
   middelen:{nieuwsbrief:"Wacht op jou",linkedin:"In productie"}},
  {id:"p2",titel:"Natriumbatterijen verdringen lithium",herkomst:"gekozen in input · triage 13-10",fase:"Artikel",
@@ -321,7 +371,7 @@ const pakketten=[
  {id:"p4",titel:"AI-agents nemen de klantenservice over",herkomst:"10 voorstellen · nr. 3 · 16-10",fase:"Onderzoek",
   middelen:{longread:"Gevraagd",linkedin:"Gevraagd"}},
  {id:"p3",titel:"De supermarkt zonder kassa",herkomst:"mediavoorraad · 2025",fase:"Klaar",
-  middelen:{blog:"Goedgekeurd",linkedin:"Ingepland",nieuwsbrief:"Goedgekeurd"}},
+  middelen:{blog:"Goedgekeurd",linkedin:"Ingepland",nieuwsbrief:"Goedgekeurd",keynote:"Wacht op jou"}},
  {id:"p5",titel:"Drones als ambulance",herkomst:"gekozen in input · swipe 09-10",fase:"Live",
   middelen:{blog:"Gepubliceerd",linkedin:"Gepubliceerd"}}
 ];
@@ -384,7 +434,7 @@ const pak=id=>pakketten.find(p=>p.id===id);
 function wachtItems(){const uit=[];for(const p of pakketten)for(const [m,s] of Object.entries(p.middelen))if(s==="Wacht op jou")uit.push({p,m});return uit}
 // ---------- Navigatie ----------
 let huidig={scherm:"wacht",sleutel:null,versie:null,vorig:"wacht"};
-function toon(scherm){for(const s of ["input","wacht","rij","review","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
+function toon(scherm){for(const s of ["input","wacht","rij","review","keynote","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
   for(const b of document.querySelectorAll(".nav button"))b.setAttribute("aria-current",b.dataset.scherm===scherm||(scherm==="review"&&b.dataset.scherm===huidig.vorig)?"page":"false");
   huidig.scherm=scherm;window.scrollTo({top:0})}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{huidig.vorig=b.dataset.scherm;teken();toon(b.dataset.scherm)});
@@ -397,7 +447,7 @@ function tekenWacht(){
   for(const {p,m} of items){const u=uitingen[p.id+":"+m];const v=u?u.versies[u.versies.length-1]:null;
     const r=el("button","rij");r.append(el("span","middel",MIDDELNAAM[m]));
     const mid=el("span");mid.append(el("div","t",p.titel),el("div","sub",(v?`versie ${v.v} · klaar ${v.wanneer}`:"")+(u&&u.feiten.some(f=>!f.ok)?" · 1 feit om te checken":"")));
-    r.append(mid,status("Wacht op jou"),el("span","open","Bekijk →"));r.onclick=()=>openReview(p.id+":"+m,"wacht");l.append(r)}
+    r.append(mid,status("Wacht op jou"),el("span","open","Bekijk →"));r.onclick=()=>{if(m==="keynote")openKeynote(p.id);else openReview(p.id+":"+m,"wacht")};l.append(r)}
   const rl=$("recent-lijst");rl.replaceChildren();
   for(const x of recent){const [pid,m]=x.k.split(":");const r=el("div","rij");r.style.cursor="default";r.append(el("span","middel",MIDDELNAAM[m]));
     const mid=el("span");mid.append(el("div","t",pak(pid).titel),el("div","sub","door jou · "+x.wanneer));r.append(mid,status(x.wat.split(" ·")[0]),el("span","sub",x.wat.includes("·")?x.wat.split("· ")[1]:""));rl.append(r)}
@@ -406,15 +456,19 @@ function tekenWacht(){
 function tekenRij(){
   $("tel-rij").textContent=pakketten.length;
   const lg=$("legenda");lg.replaceChildren();for(const s of Object.keys(STATUS))lg.append(status(s));
-  const weg=pakketten.filter(p=>faseVan(p)===null).length;if(weg)lg.append(el("span","middel",`${weg} pakket(ten) helemaal weggezet`));
+  const alleenKn=pakketten.filter(p=>faseVan(p)===null&&p.middelen.keynote&&p.middelen.keynote!=="Weg").length;
+  const weg=pakketten.filter(p=>faseVan(p)===null).length-alleenKn;if(weg)lg.append(el("span","middel",`${weg} pakket(ten) helemaal weggezet`));
+  if(alleenKn)lg.append(el("span","middel",`${alleenKn} pakket(ten) alleen in de keynote-rij`));
   const k=$("kolommen");k.replaceChildren();
   for(const [f,uitleg] of FASES){const kol=el("div","kolom");const ps=pakketten.filter(p=>faseVan(p)===f);const h=el("h3");h.append(el("span",null,f),el("span","middel",String(ps.length)));kol.append(h,el("div","herkomst",uitleg));
     for(const p of ps){const c=el("div","kaart");c.append(el("div","t",p.titel),el("div","herkomst",p.herkomst));const ch=el("div","chips");
       for(const [m,s] of Object.entries(p.middelen)){const b=el("button","chip");const i=el("i");i.style.background=kleur[STATUS[s]];b.append(i,MIDDELNAAM[m]);b.title=`${MIDDELNAAM[m]}: ${s}`;b.setAttribute("aria-label",`${MIDDELNAAM[m]}, ${s}`);
-        const sl=p.id+":"+m;if(uitingen[sl])b.onclick=()=>openReview(sl,"rij");else b.onclick=()=>toast(`${MIDDELNAAM[m]} van "${p.titel}": ${s}. Er is nog geen versie om te bekijken.`);ch.append(b)}
+        const sl=p.id+":"+m;if(m==="keynote")b.onclick=()=>openKeynote(p.id);else if(uitingen[sl])b.onclick=()=>openReview(sl,"rij");else b.onclick=()=>toast(`${MIDDELNAAM[m]} van "${p.titel}": ${s}. Er is nog geen versie om te bekijken.`);ch.append(b)}
       if(p.nieuw){const md=el("div","media");for(const m of MEDIA){const b=el("button",null,MIDDELNAAM[m]);b.setAttribute("aria-pressed","false");b.onclick=()=>b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));b.dataset.m=m;md.append(b)}
         const ok=el("button","knop hoofd-k","Start productie");ok.onclick=()=>{const keuze=[...md.querySelectorAll('[aria-pressed="true"]')].map(b=>b.dataset.m);if(!keuze.length){toast("Kies minstens één medium.");return}
-          for(const m of keuze)p.middelen[m]="Gevraagd";delete p.nieuw;teken();toast(`Productie gevraagd: ${keuze.map(m=>MIDDELNAAM[m]).join(", ")}. In de mockup start er niets.`)};c.append(md,ok)}
+          for(const m of keuze)p.middelen[m]=m==="keynote"?"Verzameld":"Gevraagd";
+          if(keuze.includes("keynote"))keynoteRij.push({id:"kn-"+p.id,pakket:p.id,titel:p.titel,soort:"nieuw",aantal:3,instructie:"",stand:"Verzameld"});
+          delete p.nieuw;teken();toast(`Productie gevraagd: ${keuze.map(m=>MIDDELNAAM[m]).join(", ")}. In de mockup start er niets.`)};c.append(md,ok)}
       c.append(ch);kol.append(c)}
     k.append(kol)}
 }
@@ -508,8 +562,56 @@ function kies(naam){const k=kaarten[kaartIndex];if(!k)return;
 document.addEventListener("keydown",e=>{if(huidig.scherm!=="input"||e.target.closest("textarea"))return;
   if(e.key==="ArrowLeft")kies("Weg");else if(e.key==="ArrowDown")kies("Later");else if(e.key==="ArrowRight")kies("Ster");
 });
-function teken(){tekenInput();tekenWacht();tekenRij();tekenKalender();tekenStijl()}
+function tekenKeynote(){
+  const verz=keynoteRij.filter(k=>k.stand==="Verzameld"),res=keynoteRij.filter(k=>k.stand!=="Verzameld");
+  $("tel-keynote").textContent=verz.length;$("tel-keynote").className="tel"+(verz.length?"":" leeg");
+  const tb=$("kn-tabs");tb.replaceChildren();
+  for(const [k,naam] of [["verzameld",`Verzameld (${verz.length})`],["resultaten",`Resultaten (${res.length})`]]){const b=el("button",null,naam);b.setAttribute("aria-pressed",String(knTab===k));b.onclick=()=>{knTab=k;tekenKeynote()};tb.append(b)}
+  const w=$("kn-inhoud");w.replaceChildren();
+  if(knTab==="verzameld"){
+    const balk=el("div","kn-balk");const l=el("div");l.append(el("b",null,`${verz.length} item(s) verzameld voor de volgende batch`),el("div","middel","Straks draait de keynote creator hier één batch voor alles hieronder. In deze mockup is dat een simulatie."));
+    const run=el("button","knop hoofd-k",`Batch draaien (${verz.length})`);run.disabled=!verz.length;run.onclick=()=>draaiBatch();balk.append(l,run);w.append(balk);
+    if(!verz.length)w.append(el("div","leeg-melding","Niets verzameld. Kies bij een pakket het medium Keynote, dan komt het hier."));
+    for(const k of verz){const c=el("div","kn-item");const links=el("div");links.append(el("div","t",k.titel),el("div","middel",k.pakket?"uit pakket in de rij":"los keynote-item"));
+      const so=el("div","soort");for(const [v,naam] of [["nieuw","Nieuwe slides"],["aanvulling","Aanvulling op bestaande slide"],["details","Details of correctie"]]){const b=el("button",null,naam);b.setAttribute("aria-pressed",String(k.soort===v));b.onclick=()=>{k.soort=v;tekenKeynote()};so.append(b)}
+      const an=el("label","kn-aantal");const inp=el("input");inp.type="number";inp.min="1";inp.max="20";inp.value=k.aantal;inp.id="aantal-"+k.id;inp.onchange=()=>{k.aantal=Math.max(1,Math.min(20,+inp.value||1))};an.append("Aantal slides",inp);
+      if(k.soort==="nieuw")links.append(so,an);else links.append(so,el("div","middel","Eén slide: aanvulling of correctie op een bestaande slide."));
+      const rechts=el("div");const lab=el("label",null,"Instructie voor de keynote creator");lab.htmlFor="instr-"+k.id;const ta=el("textarea");ta.id="instr-"+k.id;ta.value=k.instructie;ta.oninput=()=>{k.instructie=ta.value};
+      const weg=el("button","knop weg-k","Uit de rij");weg.style.marginTop="8px";weg.onclick=()=>{keynoteRij.splice(keynoteRij.indexOf(k),1);const pk=k.pakket&&pak(k.pakket);if(pk&&pk.middelen.keynote)pk.middelen.keynote="Weg";teken();toast("Uit de keynote-rij gehaald.")};
+      rechts.append(lab,ta,weg);c.append(links,rechts);w.append(c)}
+    return}
+  if(!res.length){w.append(el("div","leeg-melding","Nog geen resultaten. Draai eerst een batch."));return}
+  if(!res.find(k=>k.id===knItem))knItem=res[0].id;
+  const kies=el("div","vtabs");for(const k of res){const b=el("button",null,k.titel);b.setAttribute("aria-pressed",String(k.id===knItem));b.onclick=()=>{knItem=k.id;knSlide=0;tekenKeynote()};kies.append(b)}w.append(kies);
+  const k=res.find(x=>x.id===knItem);const sl=k.slides||[];knSlide=Math.max(0,Math.min(knSlide,sl.length-1));
+  const grid=el("div","kn-res");const links=el("div");
+  const groot=maakSlide(sl[knSlide],knSlide,sl.length,true);groot.id="groot";links.append(groot);
+  const du=el("div","duimen");sl.forEach((x,i)=>{const b=el("button");b.setAttribute("aria-pressed",String(i===knSlide));b.setAttribute("aria-label","Slide "+(i+1));const m=maakSlide(x,i,sl.length,false);if((slideOpm[k.id+":"+i]||[]).length)m.append(el("span","opm-stip"));b.append(m);b.onclick=()=>{knSlide=i;tekenKeynote()};du.append(b)});links.append(du);
+  const rechts=el("div","paneel");const blok=el("div","blok");blok.append(el("h3",null,`Slide ${knSlide+1} van ${sl.length}`));
+  const vg=el("div","vtabs");const vol=el("button",null,"Volledig scherm");vol.onclick=()=>{const g=$("groot");if(g.requestFullscreen)g.requestFullscreen()};
+  const vorige=el("button",null,"← Vorige");vorige.onclick=()=>{knSlide=Math.max(0,knSlide-1);tekenKeynote()};const volgende=el("button",null,"Volgende →");volgende.onclick=()=>{knSlide=Math.min(sl.length-1,knSlide+1);tekenKeynote()};vg.append(vorige,volgende,vol);blok.append(vg);
+  const sleutel=k.id+":"+knSlide;const lijst=el("ul","opm-lijst");for(const o of slideOpm[sleutel]||[])lijst.append(el("li",null,o));
+  const lab=el("label","middel","Opmerking bij deze slide");lab.htmlFor="slide-opm";const ta=el("textarea");ta.id="slide-opm";ta.placeholder="Bijvoorbeeld: groter cijfer, ander beeld, kortere titel.";
+  const zet=el("button","knop","Zet erbij");zet.onclick=()=>{const t=ta.value.trim();if(!t){ta.focus();return}(slideOpm[sleutel]=slideOpm[sleutel]||[]).push(t);tekenKeynote();toast("Opmerking bij slide "+(knSlide+1)+" gezet.")};
+  blok.append(lijst,lab,ta,el("div","verstuur"));blok.lastChild.append(zet);rechts.append(blok);
+  const oord=el("div","blok");const ins=el("p",null,k.instructie||"Geen instructie meegegeven.");ins.style.cssText="margin:0 0 10px;font-size:13px;color:var(--zacht)";oord.append(el("h3",null,"Oordeel over deze keynote"),ins);
+  const kn=el("div","knoppen");const tel=Object.keys(slideOpm).filter(x=>x.startsWith(k.id+":")).reduce((a,x)=>a+slideOpm[x].length,0);
+  for(const [naam,kl,actie] of [["Goedkeuren","hoofd-k","Goedgekeurd"],["Aanpassen","","Aanpassen"]]){const b=el("button","knop "+kl,naam);b.onclick=()=>{k.stand=actie;const pk=k.pakket&&pak(k.pakket);if(pk&&pk.middelen.keynote)pk.middelen.keynote=actie;teken();toast(actie==="Goedgekeurd"?"Goedgekeurd (simulatie: er wordt geen .key-bestand gemaakt).":`Aanpassen gevraagd met ${tel} opmerking(en) bij slides (simulatie).`)};kn.append(b)}
+  oord.append(kn,el("p","middel",`Stand: ${k.stand}`));rechts.append(oord);
+  grid.append(links,rechts);w.append(grid)}
+function openKeynote(pid){const k=keynoteRij.find(x=>x.pakket===pid);knTab=k&&k.stand!=="Verzameld"?"resultaten":"verzameld";if(k){knItem=k.id;knSlide=0}huidig.vorig="keynote";teken();toon("keynote")}
+function maakSlide(x,i,n,groot){const s=el("div","slide");const v=el("div","vis");if(x.bg)v.style.setProperty("--sl-bg",x.bg);s.append(v);
+  const inn=el("div","in");if(x.cijfer)inn.append(el("div","cijfer",x.cijfer));inn.append(el("div","st",x.st));if(x.sub)inn.append(el("div","sub",x.sub));s.append(inn);
+  if(groot){s.append(el("span","nr",`${i+1} / ${n}`),el("span","stempel","fictief voorbeeld"))}return s}
+function draaiBatch(){const verz=keynoteRij.filter(k=>k.stand==="Verzameld");
+  for(const k of verz){k.stand="Resultaat";k.slides=Array.from({length:k.soort==="nieuw"?k.aantal:1},(_,i)=>({st:i===0?k.titel:`${k.titel}: punt ${i+1}`,sub:(k.soort==="nieuw"?"Nieuwe slide":k.soort==="aanvulling"?"Aanvulling":"Detail")+" volgens je instructie (voorbeeld).",bg:["linear-gradient(135deg,#123128,#2F6B57 55%,#9FC9B4)","linear-gradient(135deg,#1b2a3a,#2e5a7a 55%,#a9c7dd)","linear-gradient(135deg,#2a1b14,#7a4a2e 55%,#e0bfa3)"][i%3]}))}
+  knTab="resultaten";knItem=verz[0]?verz[0].id:knItem;knSlide=0;teken();toast(`Simulatie: voorbeeldslides voor ${verz.length} item(s). Er is niets gebouwd.`)}
+document.addEventListener("keydown",e=>{if(huidig.scherm!=="keynote"||knTab!=="resultaten"||e.target.closest("textarea,input"))return;
+  if(e.key==="ArrowRight"){knSlide++;tekenKeynote()}else if(e.key==="ArrowLeft"){knSlide=Math.max(0,knSlide-1);tekenKeynote()}});
+function teken(){tekenKeynote();tekenInput();tekenWacht();tekenRij();tekenKalender();tekenStijl()}
 teken();
+// Directe link: #input, #rij, #keynotes, #keynote-resultaten
+const naarHash=()=>{const h=location.hash.slice(1);if(h==="keynote-resultaten"){knTab="resultaten";teken();huidig.vorig="keynote";toon("keynote")}else if(h==="keynotes"){huidig.vorig="keynote";toon("keynote")}else if(["input","rij","wacht","kalender","stijl"].includes(h)){huidig.vorig=h;toon(h)}};naarHash();window.addEventListener("hashchange",naarHash);
 </script>
 </body>
 </html>
