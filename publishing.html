@@ -135,6 +135,7 @@ h2{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--zach
 .knoppen{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .knop{border:1px solid var(--lijn);background:var(--vlak);border-radius:9px;padding:9px 10px;font-weight:600;font-size:14px}
 .knop:hover{border-color:var(--accent)}
+.knop:disabled{opacity:.45;cursor:not-allowed}
 .knop.hoofd-k{background:var(--accent);border-color:var(--accent);color:var(--accent-inkt)}
 .knop.weg-k{color:var(--laat)}
 .snel{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
@@ -215,6 +216,28 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
 .duimen .slide .st{font-size:11px}.duimen .slide .cijfer{font-size:22px}.duimen .slide .sub,.duimen .slide .stempel{display:none}
 .groot-knop{margin-left:auto}
 .slide:fullscreen{border-radius:0;padding:4% 6%}
+.in-balk{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.in-lijst,.in-kaart{display:flex;flex-direction:column;gap:10px;max-width:860px}
+.in-raster{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;align-items:start}
+.in-item{background:var(--vlak);border-radius:12px;box-shadow:var(--schaduw);padding:14px 16px;display:flex;flex-direction:column;gap:8px;border:2px solid transparent}
+.in-item.focus{border-color:var(--accent-zacht)}
+.in-item h3{margin:0;font:600 18px/1.3 var(--serif);text-wrap:balance}
+.in-kaart .in-item h3{font-size:22px}
+.in-item .labels{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.in-item .label{font:500 12px var(--mono);color:var(--zacht);background:var(--vlak2);border-radius:6px;padding:2px 8px;box-shadow:inset 0 0 0 1px var(--lijn)}
+.in-item .label.bundel{color:var(--wacht);background:var(--wacht-zacht);box-shadow:none}
+.label.w-fout,.waarsch.w-fout{color:var(--laat);background:var(--laat-zacht);box-shadow:none}
+.label.w-let,.waarsch.w-let{color:var(--geel);background:var(--geel-zacht);box-shadow:none}
+.label.w-mail,.waarsch.w-mail{color:var(--mail);background:var(--mail-zacht);box-shadow:none}
+.waarsch{font-size:13px;font-weight:600;border-radius:8px;padding:7px 10px}
+.in-diepte{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--lijn);padding-top:10px}
+.in-diepte .kern{margin:0}.in-diepte .zin{margin:0;color:var(--zacht);font-style:italic;cursor:default}
+.bundel-lijst{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.bundel-lijst li{display:flex;gap:8px;align-items:center}
+.in-voet{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.in-meer{border:0;background:none;color:var(--accent);font-weight:600;padding:4px 0}
+.in-knoppen{display:flex;gap:6px;flex-wrap:wrap}
+.in-knoppen .knop{padding:7px 12px}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--inkt);color:var(--grond);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;box-shadow:var(--schaduw)}
 [hidden]{display:none!important}
 @media (max-width:1060px){.review{grid-template-columns:1fr}.paneel{position:static}.kn-res{grid-template-columns:1fr}.kn-item{grid-template-columns:1fr}}
@@ -238,6 +261,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   <aside class="zij">
     <div class="merk">Publishing Board<small>input → rij → bekijken → live</small></div>
     <nav class="nav" aria-label="Onderdelen">
+      <button data-scherm="triage">Triage <span class="tel leeg" id="tel-triage">0</span></button>
       <button data-scherm="input">Input <span class="tel leeg" id="tel-input">0</span></button>
       <button data-scherm="wacht" aria-current="page">Wacht op jou <span class="tel" id="tel-wacht">0</span></button>
       <button data-scherm="rij">De rij <span class="tel leeg" id="tel-rij">0</span></button>
@@ -249,11 +273,19 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   </aside>
 
   <main class="hoofd">
-    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 16:21</span></div>
+    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 16:38</span></div>
+
+    <section id="scherm-triage" hidden>
+      <div class="kop"><div><h1>Triage</h1><p>Hier geef je alleen akkoord. Daarna bundelt het board eerdere, recente content over hetzelfde onderwerp mee en zet het item in Input. Alles komt in de dossiers.</p></div></div>
+      <div class="lijst" id="triage-lijst"></div>
+    </section>
 
     <section id="scherm-input" hidden>
-      <div class="kop"><div><h1>Input</h1><p>Kaarten uit de triage. Geef een ster: het pakket staat meteen in de rij, en daar kies je de media.</p></div></div>
-      <div class="stapel" id="stapel"></div>
+      <div class="kop"><div><h1>Input</h1><p>Je cockpit. Klap een item open voor diepte, geef een opmerking mee voor het onderzoek en kies Weg, Later of Ster. Met Verwerk gaat alles met een ster naar de rij.</p></div>
+        <button class="knop hoofd-k" id="verwerk">Verwerk</button></div>
+      <div class="in-balk"><div class="kn-tabs" id="in-tabs"></div><div class="kn-tabs" id="in-weergave"></div></div>
+      <div id="in-lijst"></div>
+      <p class="toetsen">Toetsen: <kbd>J</kbd>/<kbd>K</kbd> volgende/vorige · <kbd>Enter</kbd> openklappen · <kbd>S</kbd> ster · <kbd>L</kbd> later · <kbd>W</kbd> weg · <kbd>V</kbd> verwerk</p>
     </section>
 
     <section id="scherm-wacht">
@@ -330,15 +362,34 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
 // ---------- Voorbeelddata (geen echte concepten) ----------
 const MIDDELNAAM={longread:"Long-read",blog:"Blog",linkedin:"LinkedIn",nieuwsbrief:"Nieuwsbrief",beeld:"Beeld",video:"Video",keynote:"Keynote"};
 const MEDIA=["blog","nieuwsbrief","linkedin","video","keynote","longread"];
-// Voorbeeldkaarten zoals de swipe ze toont (fictief): bron, week, titel, kern, één zin.
-const kaarten=[
- {id:"k1",week:"W40",bron:"nieuwsbrief · tech",titel:"Een bank laat AI-agents zelf hypotheekdossiers compleet maken",kern:"De agent vraagt ontbrekende stukken op, controleert ze en zet het dossier klaar voor de adviseur.",zin:"Het werk verschuift van invullen naar beoordelen."},
- {id:"k2",week:"W40",bron:"podcast · zorg",titel:"Thuiszorg test sensoren die vallen voorspellen in plaats van melden",kern:"Een loopanalyse over twee weken geeft een waarschuwing voordat iemand valt.",zin:"Preventie wordt een datastroom."},
- {id:"k3",week:"W39",bron:"whitepaper · energie",titel:"Netbeheerder verkoopt 'flexibele aansluiting' met korting",kern:"Bedrijven krijgen sneller stroom als ze accepteren dat het net hen soms terugschakelt.",zin:"Wachtlijsten worden een prijsmodel."},
- {id:"k4",week:"W39",bron:"jouw notitie · type 1",titel:"Idee: keynote over 'de werkweek van een AI-collega'",kern:"Een dag uit het leven van een agent, uur voor uur, met wat een mens nog doet.",zin:"Maakt het abstracte concreet voor zaal."},
- {id:"k5",week:"W40",bron:"YouTube · retail",titel:"Winkelketen schrapt de kassa in vijftig filialen",kern:"Camera's en gewichtssensoren rekenen af; personeel gaat naar advies en bijvullen.",zin:"Volgt op 'De supermarkt zonder kassa'."}
+// Eerder binnengekomen content (fictief): bron voor bundeling tot mini-dossiers.
+const eerder=[
+ {id:"e1",titel:"Bank test AI die klantgesprekken samenvat",datum:"02-10",onderwerp:"ai-financiele-dienstverlening",dossier:"AI in financiële dienstverlening"},
+ {id:"e2",titel:"Toezichthouder wil uitleg bij automatische kredietbesluiten",datum:"08-10",onderwerp:"ai-financiele-dienstverlening",dossier:"AI in financiële dienstverlening"},
+ {id:"e3",titel:"Ziekenhuis meet loopgedrag met slimme vloer",datum:"29-09",onderwerp:"preventie-zorg",dossier:"Zorg en preventie"},
+ {id:"e4",titel:"Verzekeraar beloont valpreventie bij ouderen",datum:"11-10",onderwerp:"preventie-zorg",dossier:"Zorg en preventie"},
+ {id:"e5",titel:"Netcongestie: wachtlijst bedrijven groeit naar 9000",datum:"04-08",onderwerp:"netcongestie",dossier:"Energie en netten"}
 ];
-let kaartIndex=0;const kaartKeuzes={};
+// Triage (fictief): jij geeft alleen akkoord.
+const triage=[
+ {id:"t1",week:"W42",bron:"nieuwsbrief · tech",titel:"Een bank laat AI-agents zelf hypotheekdossiers compleet maken",kern:"De agent vraagt ontbrekende stukken op, controleert ze en zet het dossier klaar voor de adviseur.",zin:"Het werk verschuift van invullen naar beoordelen.",onderwerp:"ai-financiele-dienstverlening"},
+ {id:"t2",week:"W42",bron:"podcast · zorg",titel:"Thuiszorg test sensoren die vallen voorspellen in plaats van melden",kern:"Een loopanalyse over twee weken geeft een waarschuwing voordat iemand valt.",zin:"Preventie wordt een datastroom.",onderwerp:"preventie-zorg"},
+ {id:"t3",week:"W42",bron:"YouTube · retail",titel:"Winkelketen schrapt de kassa in vijftig filialen",kern:"Camera's en gewichtssensoren rekenen af; personeel gaat naar advies en bijvullen.",zin:"Grote stap voor kassaloos winkelen.",onderwerp:"kassaloos-winkelen"},
+ {id:"t4",week:"W42",bron:"nieuwsbrief · zorg",titel:"Ambulancedrone brengt AED in vier minuten",kern:"Proef in drie gemeenten: de drone is gemiddeld zes minuten eerder dan de ambulance.",zin:"Snelheid redt levens.",onderwerp:"drones-zorg"},
+ {id:"t5",week:"W42",bron:"whitepaper · energie",titel:"Netbeheerder verkoopt 'flexibele aansluiting' met korting",kern:"Bedrijven krijgen sneller stroom als ze accepteren dat het net hen soms terugschakelt.",zin:"Wachtlijsten worden een prijsmodel.",onderwerp:"netcongestie"},
+ {id:"t6",week:"W42",bron:"jouw notitie",titel:"Idee: keynote over 'de werkweek van een AI-collega'",kern:"Een dag uit het leven van een agent, uur voor uur, met wat een mens nog doet.",zin:"Maakt het abstracte concreet voor de zaal.",onderwerp:"ai-werk"}
+];
+const DOSSIERNAAM={"ai-financiele-dienstverlening":"AI in financiële dienstverlening","preventie-zorg":"Zorg en preventie","kassaloos-winkelen":"Retail zonder kassa","drones-zorg":"Drones in de zorg","netcongestie":"Energie en netten","ai-werk":"AI en werk"};
+// Input-items ontstaan na akkoord. stand: input | later | ster | weg | verwerkt
+const inputItems=[];
+let inTab="input",inWeergave="lijst",inOpen=new Set(),inFocus=0;
+// Eén startitem zodat de cockpit niet leeg is (fictief).
+function maakInput(t){const bundel=eerder.filter(e=>e.onderwerp===t.onderwerp&&isRecent(e.datum)).map(e=>({...e,mee:true}));
+  inputItems.push({...t,bundel,stand:"input",opmerking:"",dossier:DOSSIERNAAM[t.onderwerp]||"Algemeen"});return bundel.length}
+function isRecent(dmy){const [d,m]=dmy.split("-").map(Number);const dag=new Date(2026,m-1,d);return (new Date(2026,9,16)-dag)/864e5<=45}
+// Waarschuwing bij dubbel werk: kijkt naar wat al live, goedgekeurd of in de rij staat.
+function overlap(item){const uit=[];for(const p of pakketten){if(p.onderwerp!==item.onderwerp)continue;const f=faseVan(p);
+  if(f==="Live")uit.push(["fout",`Al gepubliceerd: "${p.titel}"`]);else if(f==="Goedgekeurd")uit.push(["let",`Al goedgekeurd of ingepland: "${p.titel}"`]);else if(f)uit.push(["mail",`Zit al in de rij: "${p.titel}"`])}return uit}
 // Keynote-rij (fictief). soort: nieuw (aantal slides) | aanvulling | details
 const keynoteRij=[
  {id:"kn1",pakket:"p1",titel:"Humanoïde robots in de zorg",soort:"nieuw",aantal:3,instructie:"Drie slides: het tekort in één cijfer, wat robots nu al doen, en de vraag welk werk we bij mensen houden.",stand:"Verzameld"},
@@ -361,7 +412,7 @@ function faseVan(p){if(p.nieuw)return "Kies media";const st=Object.entries(p.mid
   if(st.every(s=>["Goedgekeurd","Ingepland","Gepubliceerd"].includes(s)))return "Goedgekeurd";
   return "Onderzoek"}
 const pakketten=[
- {id:"p1",titel:"Humanoïde robots in de zorg",herkomst:"gekozen in input · swipe 14-10",fase:"Middelen",
+ {id:"p1",onderwerp:"robots-zorg",titel:"Humanoïde robots in de zorg",herkomst:"gekozen in input · swipe 14-10",fase:"Middelen",
   middelen:{longread:"Wacht op jou",linkedin:"Wacht op jou",nieuwsbrief:"In productie",beeld:"Goedgekeurd",keynote:"Verzameld"}},
  {id:"p6",titel:"Slimme brillen op de werkvloer",herkomst:"vrije opdracht · 15-10",fase:"Middelen",
   middelen:{nieuwsbrief:"Wacht op jou",linkedin:"In productie"}},
@@ -369,9 +420,9 @@ const pakketten=[
   middelen:{longread:"Aanpassen",linkedin:"Gevraagd",nieuwsbrief:"Gevraagd"}},
  {id:"p4",titel:"AI-agents nemen de klantenservice over",herkomst:"10 voorstellen · nr. 3 · 16-10",fase:"Onderzoek",
   middelen:{longread:"Gevraagd",linkedin:"Gevraagd"}},
- {id:"p3",titel:"De supermarkt zonder kassa",herkomst:"mediavoorraad · 2025",fase:"Klaar",
+ {id:"p3",onderwerp:"kassaloos-winkelen",titel:"De supermarkt zonder kassa",herkomst:"mediavoorraad · 2025",fase:"Klaar",
   middelen:{blog:"Goedgekeurd",linkedin:"Ingepland",nieuwsbrief:"Goedgekeurd",keynote:"Wacht op jou"}},
- {id:"p5",titel:"Drones als ambulance",herkomst:"gekozen in input · swipe 09-10",fase:"Live",
+ {id:"p5",onderwerp:"drones-zorg",titel:"Drones als ambulance",herkomst:"gekozen in input · swipe 09-10",fase:"Live",
   middelen:{blog:"Gepubliceerd",linkedin:"Gepubliceerd"}}
 ];
 // Tekst als alinea's van zinnen. n = nieuw t.o.v. vorige versie, x = geschrapt in deze versie.
@@ -433,7 +484,7 @@ const pak=id=>pakketten.find(p=>p.id===id);
 function wachtItems(){const uit=[];for(const p of pakketten)for(const [m,s] of Object.entries(p.middelen))if(s==="Wacht op jou")uit.push({p,m});return uit}
 // ---------- Navigatie ----------
 let huidig={scherm:"wacht",sleutel:null,versie:null,vorig:"wacht"};
-function toon(scherm){for(const s of ["input","wacht","rij","review","keynote","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
+function toon(scherm){for(const s of ["triage","input","wacht","rij","review","keynote","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
   for(const b of document.querySelectorAll(".nav button"))b.setAttribute("aria-current",b.dataset.scherm===scherm||(scherm==="review"&&b.dataset.scherm===huidig.vorig)?"page":"false");
   huidig.scherm=scherm;window.scrollTo({top:0})}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{huidig.vorig=b.dataset.scherm;teken();toon(b.dataset.scherm)});
@@ -460,7 +511,8 @@ function tekenRij(){
   if(alleenKn)lg.append(el("span","middel",`${alleenKn} pakket(ten) alleen in de keynote-rij`));
   const k=$("kolommen");k.replaceChildren();
   for(const [f,uitleg] of FASES){const kol=el("div","kolom");const ps=pakketten.filter(p=>faseVan(p)===f);const h=el("h3");h.append(el("span",null,f),el("span","middel",String(ps.length)));kol.append(h,el("div","herkomst",uitleg));
-    for(const p of ps){const c=el("div","kaart");c.append(el("div","t",p.titel),el("div","herkomst",p.herkomst));const ch=el("div","chips");
+    for(const p of ps){const c=el("div","kaart");c.append(el("div","t",p.titel),el("div","herkomst",p.herkomst));
+      if(p.bundel)c.append(el("div","herkomst",`+${p.bundel} gekoppeld item(s) mee`));if(p.onderzoek)c.append(el("div","herkomst","Voor het onderzoek: "+p.onderzoek));const ch=el("div","chips");
       for(const [m,s] of Object.entries(p.middelen)){const b=el("button","chip");const i=el("i");i.style.background=kleur[STATUS[s]];b.append(i,MIDDELNAAM[m]);b.title=`${MIDDELNAAM[m]}: ${s}`;b.setAttribute("aria-label",`${MIDDELNAAM[m]}, ${s}`);
         const sl=p.id+":"+m;if(m==="keynote")b.onclick=()=>openKeynote(p.id);else if(uitingen[sl])b.onclick=()=>openReview(sl,"rij");else b.onclick=()=>toast(`${MIDDELNAAM[m]} van "${p.titel}": ${s}. Er is nog geen versie om te bekijken.`);ch.append(b)}
       if(p.nieuw){const md=el("div","media");for(const m of MEDIA){const b=el("button",null,MIDDELNAAM[m]);b.setAttribute("aria-pressed","false");b.onclick=()=>b.setAttribute("aria-pressed",String(b.getAttribute("aria-pressed")!=="true"));b.dataset.m=m;md.append(b)}
@@ -543,24 +595,49 @@ function tekenStijl(){const r=$("regels");r.replaceChildren();const open=regels.
   for(const x of regels){const c=el("div","regel");c.append(el("p",null,x.tekst),el("small",null,x.stand==="vast"?`vaste regel · ${x.telling}× in je feedback`:x.stand==="verzamelt"?`${x.telling}× in je feedback · bij 3× een voorstel`:`${x.telling}× in je feedback · voorstel`));
     const a=el("div","acties");if(x.stand==="voorstel"){const ja=el("button","knop hoofd-k","Maak vast");ja.onclick=()=>{x.stand="vast";tekenStijl();toast("Vaste stijlregel. Nieuwe versies houden er rekening mee.")};const nee=el("button","knop","Nee");nee.onclick=()=>{regels=regels.filter(y=>y!==x);tekenStijl()};a.append(ja,nee)}
     else if(x.stand==="vast"){a.append(status("Goedgekeurd"))}c.append(a);r.append(c)}}
-function tekenInput(){
-  const st=$("stapel");st.replaceChildren();const over=kaarten.length-kaartIndex;
-  $("tel-input").textContent=over;$("tel-input").className="tel"+(over?"":" leeg");
-  const tel=el("div","voortgang");tel.append(el("span",null,`${over} van ${kaarten.length} kaarten te gaan · voorbeeldkaarten`),el("span",null,`${Object.values(kaartKeuzes).filter(k=>k==="Ster").length} met ster`));st.append(tel);
-  if(!over){st.append(el("div","leeg-melding","Alle kaarten zijn bekeken. De pakketten met een ster staan in de rij."));return}
-  const k=kaarten[kaartIndex];const c=el("article","kaartgroot");const lb=el("div","labels");lb.append(el("span","label","fictief voorbeeld"),el("span","label",k.week),el("span","label",k.bron));
-  c.append(lb,el("h3",null,k.titel),el("p","kern",k.kern),el("p","zin",k.zin));
-  const kz=el("div","keuzes");
-  for(const [naam,kl] of [["Weg","weg-k"],["Archief",""],["Later",""],["Ster","ster"]]){const b=el("button","knop "+kl,naam);b.onclick=()=>kies(naam);kz.append(b)}
-  c.append(kz);const t=el("div","toetsen");t.append("Toetsen: ",el("kbd",null,"←")," weg · ",el("kbd",null,"↓")," later · ",el("kbd",null,"→")," ster");c.append(t);st.append(c)}
-function kies(naam){const k=kaarten[kaartIndex];if(!k)return;
-  if(naam==="Ster"){pakketten.push({id:"p-"+k.id,titel:k.titel,herkomst:`gekozen in input · ster · ${k.week}`,middelen:{},nieuw:true});
-    toast("In de rij, kolom Kies media.")}
-  else toast(naam==="Weg"?"Weg. Deze kaart komt niet terug.":naam==="Later"?"Later. Hij komt volgende week terug.":"In het archief.");
-  kaartKeuzes[k.id]=naam;kaartIndex++;teken()}
-document.addEventListener("keydown",e=>{if(huidig.scherm!=="input"||e.target.closest("textarea"))return;
-  if(e.key==="ArrowLeft")kies("Weg");else if(e.key==="ArrowDown")kies("Later");else if(e.key==="ArrowRight")kies("Ster");
-});
+function tekenTriage(){const l=$("triage-lijst");l.replaceChildren();const open=triage.filter(t=>!t.akkoord);
+  $("tel-triage").textContent=open.length;$("tel-triage").className="tel"+(open.length?"":" leeg");
+  if(!open.length){l.append(el("div","leeg-melding","Alles in de triage is bekeken."));return}
+  for(const t of open){const r=el("div","rij");r.style.cursor="default";r.append(el("span","middel",t.bron));const m=el("span");m.append(el("div","t",t.titel),el("div","sub",t.kern));
+    const b=el("button","knop hoofd-k","Akkoord");b.onclick=()=>{t.akkoord=true;const n=maakInput(t);teken();toast(n?`Naar input, gebundeld met ${n} eerder item(s) · in dossier ${DOSSIERNAAM[t.onderwerp]}.`:`Naar input · in dossier ${DOSSIERNAAM[t.onderwerp]}.`)};
+    r.append(m,el("span"),b);l.append(r)}}
+function zetStand(it,stand){it.stand=stand;inFocus=0;teken();
+  toast(stand==="weg"?"Weg uit input. Hij blijft in het dossier.":stand==="later"?"Naar Later.":stand==="ster"?"Ster. Klik Verwerk om hem naar de rij te sturen.":"Terug in Input.")}
+function inputKaart(it,i,altijdOpen){const c=el("article","in-item"+(i===inFocus?" focus":""));c.dataset.i=i;
+  const kop=el("div","in-kop");const lb=el("div","labels");lb.append(el("span","label","fictief voorbeeld"),el("span","label",it.week),el("span","label",it.bron));
+  if(it.bundel.filter(b=>b.mee).length)lb.append(el("span","label bundel",`+${it.bundel.filter(b=>b.mee).length} gekoppeld`));
+  for(const [kl,tekst] of overlap(it))lb.append(el("span","label w-"+kl,tekst.split(":")[0]));
+  const ti=el("h3",null,it.titel);kop.append(lb,ti);c.append(kop);
+  const open=altijdOpen||inOpen.has(it.id);
+  const meer=el("button","in-meer",open?"Minder ▲":"Meer ▼");meer.setAttribute("aria-expanded",String(open));meer.onclick=()=>{open?inOpen.delete(it.id):inOpen.add(it.id);tekenInput()};
+  if(open){const d=el("div","in-diepte");d.append(el("p","kern",it.kern),el("p","zin",it.zin));
+    for(const [kl,tekst] of overlap(it)){const w=el("div","waarsch w-"+kl,tekst);d.append(w)}
+    d.append(el("div","middel",`Opgenomen in dossier: ${it.dossier}`));
+    if(it.bundel.length){d.append(el("div","middel","Gebundeld met eerdere content (recent, zelfde onderwerp):"));const ul=el("ul","bundel-lijst");
+      for(const b of it.bundel){const li=el("li");const cb=el("input");cb.type="checkbox";cb.checked=b.mee;cb.id=`b-${it.id}-${b.id}`;cb.onchange=()=>{b.mee=cb.checked;tekenInput()};const lab=el("label",null,`${b.titel} · ${b.datum}`);lab.htmlFor=cb.id;li.append(cb,lab);ul.append(li)}d.append(ul)}
+    const la=el("label","middel","Opmerking voor het onderzoek (eerste stap in de rij)");la.htmlFor="op-"+it.id;const ta=el("textarea");ta.id="op-"+it.id;ta.value=it.opmerking;ta.placeholder="Bijvoorbeeld: zoek cijfers uit Nederland, vergelijk met de Duitse proef.";ta.oninput=()=>{it.opmerking=ta.value};d.append(la,ta);c.append(d)}
+  const voet=el("div","in-voet");voet.append(meer);const kz=el("div","in-knoppen");
+  const knop=(naam,st,kl)=>{const b=el("button","knop "+(kl||""),naam);b.onclick=()=>zetStand(it,st);kz.append(b)};
+  if(it.stand!=="weg")knop("Weg","weg","weg-k");if(it.stand!=="later")knop("Later","later");if(it.stand!=="ster")knop("Ster","ster","hoofd-k");if(it.stand!=="input")knop("Terug naar Input","input");
+  voet.append(kz);c.append(voet);return c}
+function tekenInput(){const tel=st=>inputItems.filter(x=>x.stand===st).length;
+  $("tel-input").textContent=tel("input");$("tel-input").className="tel"+(tel("input")?"":" leeg");
+  const tb=$("in-tabs");tb.replaceChildren();
+  for(const [k,naam] of [["input","Input"],["later","Later"],["ster","Ster"],["weg","Weg"]]){const b=el("button",null,`${naam} (${tel(k)})`);b.setAttribute("aria-pressed",String(inTab===k));b.onclick=()=>{inTab=k;inFocus=0;tekenInput()};tb.append(b)}
+  const wg=$("in-weergave");wg.replaceChildren();for(const [k,naam] of [["kaart","Kaart"],["raster","Raster"],["lijst","Lijst"]]){const b=el("button",null,naam);b.setAttribute("aria-pressed",String(inWeergave===k));b.onclick=()=>{inWeergave=k;tekenInput()};wg.append(b)}
+  const vk=$("verwerk");vk.textContent=`Verwerk ${tel("ster")} met ster → naar de rij`;vk.disabled=!tel("ster");
+  const w=$("in-lijst");w.replaceChildren();w.className="in-"+inWeergave;const lijst=inputItems.filter(x=>x.stand===inTab);
+  if(!lijst.length){w.append(el("div","leeg-melding",inTab==="input"?"Input is leeg. Geef akkoord in de triage, dan komt het hier.":"Niets in deze lijst."));return}
+  inFocus=Math.max(0,Math.min(inFocus,lijst.length-1));
+  if(inWeergave==="kaart"){const it=lijst[inFocus];w.append(el("div","voortgang",`${inFocus+1} van ${lijst.length}`),inputKaart(it,inFocus,false));return}
+  lijst.forEach((it,i)=>w.append(inputKaart(it,i,false)))}
+function verwerk(){const ster=inputItems.filter(x=>x.stand==="ster");
+  for(const it of ster){pakketten.push({id:"p-"+it.id,onderwerp:it.onderwerp,titel:it.titel,herkomst:`input · ${it.week} · dossier ${it.dossier}`,middelen:{},nieuw:true,onderzoek:it.opmerking,bundel:it.bundel.filter(b=>b.mee).length});it.stand="verwerkt"}
+  teken();toast(`${ster.length} item(s) naar de rij, kolom Kies media. Je opmerkingen gaan mee naar het onderzoek.`)}
+document.addEventListener("keydown",e=>{if(huidig.scherm!=="input"||e.target.closest("textarea,input"))return;const lijst=inputItems.filter(x=>x.stand===inTab);const it=lijst[inFocus];
+  if(e.key==="j"){inFocus=Math.min(lijst.length-1,inFocus+1);tekenInput()}else if(e.key==="k"){inFocus=Math.max(0,inFocus-1);tekenInput()}
+  else if(e.key==="Enter"&&it){inOpen.has(it.id)?inOpen.delete(it.id):inOpen.add(it.id);tekenInput()}
+  else if(it&&e.key==="s")zetStand(it,"ster");else if(it&&e.key==="l")zetStand(it,"later");else if(it&&e.key==="w")zetStand(it,"weg");else if(e.key==="v")verwerk()});
 function tekenKeynote(){
   const verz=keynoteRij.filter(k=>k.stand==="Verzameld"),res=keynoteRij.filter(k=>k.stand!=="Verzameld");
   $("tel-keynote").textContent=verz.length;$("tel-keynote").className="tel"+(verz.length?"":" leeg");
@@ -605,10 +682,12 @@ function draaiBatch(){const verz=keynoteRij.filter(k=>k.stand==="Verzameld");
   knTab="resultaten";knItem=verz[0]?verz[0].id:knItem;knSlide=0;teken();toast(`Simulatie: voorbeeldslides voor ${verz.length} item(s). Er is niets gebouwd.`)}
 document.addEventListener("keydown",e=>{if(huidig.scherm!=="keynote"||knTab!=="resultaten"||e.target.closest("textarea,input"))return;
   if(e.key==="ArrowRight"){knSlide++;tekenKeynote()}else if(e.key==="ArrowLeft"){knSlide=Math.max(0,knSlide-1);tekenKeynote()}});
-function teken(){tekenKeynote();tekenInput();tekenWacht();tekenRij();tekenKalender();tekenStijl()}
+function teken(){tekenTriage();tekenKeynote();tekenInput();tekenWacht();tekenRij();tekenKalender();tekenStijl()}
+$("verwerk").onclick=()=>verwerk();
+for(const t of triage.slice(0,2)){t.akkoord=true;maakInput(t)}
 teken();
 // Directe link: #input, #rij, #keynotes, #keynote-resultaten
-const naarHash=()=>{const h=location.hash.slice(1);if(h==="keynote-resultaten"){knTab="resultaten";teken();huidig.vorig="keynote";toon("keynote")}else if(h==="keynotes"){huidig.vorig="keynote";toon("keynote")}else if(["input","rij","wacht","kalender","stijl"].includes(h)){huidig.vorig=h;toon(h)}};naarHash();window.addEventListener("hashchange",naarHash);
+const naarHash=()=>{const h=location.hash.slice(1);if(h==="keynote-resultaten"){knTab="resultaten";teken();huidig.vorig="keynote";toon("keynote")}else if(h==="keynotes"){huidig.vorig="keynote";toon("keynote")}else if(["triage","input","rij","wacht","kalender","stijl"].includes(h)){huidig.vorig=h;toon(h)}};naarHash();window.addEventListener("hashchange",naarHash);
 </script>
 </body>
 </html>
