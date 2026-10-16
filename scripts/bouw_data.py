@@ -16,6 +16,7 @@ import urllib.error
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 CONFIG = json.loads((Path(__file__).resolve().parent.parent / "config.json").read_text(encoding="utf-8"))
 REPO = CONFIG["route2_repo"]
@@ -27,6 +28,8 @@ PUBLIEKE_ORDER = re.compile(r"^BURNIN-\d{2}$")  # al het andere wordt OPDRACHT-<
 # Alleen deze eindtoestanden zijn een echte burn-in-uitkomst; gesloten, onbekend en zonder uitkomst niet.
 ECHTE_UITKOMST = {"samengevoegd", "afgekeurd", "tests rood"}
 bronnen = {}
+AMS = ZoneInfo("Europe/Amsterdam")
+BIJGEWERKT = re.compile(r"^\d{2}-\d{2}-\d{4} \d{2}:\d{2}$")
 
 
 
@@ -123,6 +126,36 @@ def prioriteiten():
             # Besluit (14-10): publiek alleen wie, open/dicht en het aantal reacties; geen tekst en geen bijwerktijd.
             p.update(reacties=i.get("comments") if isinstance(i.get("comments"), int) else None, open=i.get("state") == "open")
     return lijst
+
+
+def borden():
+    """Tegels van andere borden (bijv. groeibord blog). Naam, eigenaar en link komen uit config; uit status.json
+    alleen status en bijgewerkt in vaste vorm. Let op bij let_op, ouder dan 26 uur, ongeldig of onleesbaar.
+    Telt bewust niet mee in `bronnen`: een onleesbaar ander bord mag de burn-in-kop niet kleuren."""
+    uit = []
+    for b in CONFIG.get("borden", []):
+        tegel = {"naam": b["naam"], "eigenaar": b["eigenaar"], "link": b["link"], "bijgewerkt": None,
+                 "stand": "let_op", "reden": "status niet leesbaar"}
+        try:
+            st = json.loads(base64.b64decode(api(f"repos/{b['repo']}/contents/{b['pad']}")["content"]))
+        except Exception:
+            uit.append(tegel)
+            continue
+        bij = st.get("bijgewerkt") if isinstance(st, dict) else None
+        if not (isinstance(bij, str) and BIJGEWERKT.match(bij)) or st.get("status") not in ("ok", "let_op"):
+            uit.append(dict(tegel, reden="status ongeldig"))
+            continue
+        moment = datetime.strptime(bij, "%d-%m-%Y %H:%M").replace(tzinfo=AMS)
+        tegel["bijgewerkt"] = moment.astimezone(timezone.utc).isoformat()
+        if st["status"] == "let_op":
+            n = st.get("bronnen_met_probleem")
+            tegel["reden"] = f"{len(n)} bron(nen) met een probleem" if isinstance(n, list) and n else "bord meldt let op"
+        elif NU - moment > timedelta(hours=26):
+            tegel["reden"] = "ouder dan 26 uur"
+        else:
+            tegel.update(stand="ok", reden="bijgewerkt")
+        uit.append(tegel)
+    return uit
 
 
 def main():
@@ -253,7 +286,7 @@ def main():
                                           if isinstance(u.get(k), int) and not isinstance(u.get(k), bool)}}
     json.dump({"gemeten_om": NU.isoformat(), "bronnen": bronnen, "telling": telling_publiek, "orders": orders,
                "accounts": accounts, "ticker": ticker[:150], "burnin": burnin,
-               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"], "werkvoorraad": CONFIG.get("werkvoorraad", []), "content": CONFIG.get("content", {})},
+               "projecten": CONFIG["projecten"], "prioriteiten": prioriteiten(), "clusters": CONFIG.get("clusters", []), "register_url": CONFIG.get("register_url"), "wacht_op_richard": CONFIG["wacht_op_richard"], "werkvoorraad": CONFIG.get("werkvoorraad", []), "content": CONFIG.get("content", {}), "borden": borden()},
               sys.stdout, ensure_ascii=False, indent=1)
 
 

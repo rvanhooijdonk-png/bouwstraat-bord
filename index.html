@@ -110,6 +110,7 @@ details summary{cursor:pointer;font:600 14px var(--f-kop);text-transform:upperca
   <section class="oordeel" id="oordeel"><h1 id="oordeel-kop">Gegevens laden…</h1><p id="oordeel-tekst"></p><span class="vers"><span class="stip" id="stip"></span><span id="vers">—</span></span></section>
   <section class="jij"><h2>Wacht op jou</h2><ol id="jij"></ol></section>
   <section class="blok"><div class="blokkop"><h2>Prioriteiten</h2><span class="klein" id="prio-sam">reageren gaat via het privé-issue (alleen jij)</span></div><div class="prios" id="prios"></div></section>
+  <section class="blok" id="borden-blok"><div class="blokkop"><h2>Andere borden</h2><span class="klein">alleen of ze bijgewerkt zijn; de cijfers staan op het bord zelf</span></div><div class="prios" id="borden"></div></section>
   <section class="blok"><div class="blokkop"><h2>Meter · accounts</h2><span class="klein" id="meter-sam"></span></div><div class="meter" id="meter"></div></section>
   <div class="duo">
     <section class="blok"><div class="blokkop"><h2>Ticker · wat er gebeurt</h2><span class="klein">nieuwste boven · ververst elke minuut</span></div><ul class="ticker" id="ticker"></ul></section>
@@ -164,6 +165,13 @@ function teken(d){
     const links=el("span");links.append(ti," ",pil);r.append(el("span","code",p.code),links,re,a);pr.append(r)}
   const pb=(d.bronnen||{}).prioriteiten;const pnoot=pb&&pb.status!=="GEMETEN"?" · status en reacties nog niet leesbaar (leessleutel mist toegang tot projectenregister)":"";
   document.getElementById("prio-sam").textContent=`${(d.prioriteiten||[]).length} prioriteiten · ${bijJou} bij jou of in overleg · reageren via het privé-issue (alleen jij)${pnoot}`;
+  // Andere borden: naam, eigenaar, bijgewerkt en ok/let op; link uit config.
+  const bo=document.getElementById("borden");bo.replaceChildren();
+  for(const t of d.borden||[]){const r=el("div","prio");const pil=el("span","pil "+(t.stand==="ok"?"goed":"let"),t.stand==="ok"?"ok":"let op");
+    const links=el("span");links.append(el("span","titel",t.naam)," ",pil);
+    const a=el("a","knop","Open");a.href=t.link;a.target="_blank";a.rel="noopener";
+    r.append(el("span","code",""),links,el("span","reacties",`${t.eigenaar} · `+(t.bijgewerkt?`${t.reden} ${geleden(t.bijgewerkt)}`:t.reden)),a);bo.append(r)}
+  document.getElementById("borden-blok").hidden=!(d.borden||[]).length;
   // Content: input en output naast elkaar, met stand en volgende stap.
   const ct=d.content||{};document.getElementById("ct-noot").textContent=ct.noot||"";
   const rijCt=(x)=>{const r=el("div","ct-rij");const l=el("div");l.append(el("b",null,x.naam),el("br"),el("small",null,x.wat),el("br"),el("small",null,`waar: ${x.waar} · volgende: ${x.volgende}`));r.append(l,el("span","ct-st "+x.stand,x.stand));return r};

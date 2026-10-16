@@ -24,7 +24,7 @@ def laad():
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 
 
-def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, onvolledig=False, venster_tot_voor_t0=False, toekomst=False):
+def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, onvolledig=False, venster_tot_voor_t0=False, toekomst=False, bord=None):
     from datetime import timedelta as _td2
     t0 = m.CONFIG["burnin"]["t0"]
     na = m.NU.isoformat().replace("+00:00", "Z")
@@ -57,6 +57,12 @@ def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, on
             return prs
         if "/contents/telling" in pad:
             return {"content": base64.b64encode(json.dumps(telling).encode()).decode()}
+        if "/contents/bord/status.json" in pad:
+            if bord == "weg":
+                raise OSError("geen toegang")
+            b = bord or {"bord": "Groeibord blog", "eigenaar": "x", "bijgewerkt": m.NU.astimezone(m.AMS).strftime("%d-%m-%Y %H:%M"),
+                         "status": "ok", "bronnen_met_probleem": [], "link": "javascript:alert(1)", "kosten": KANARIE}
+            return {"content": base64.b64encode(json.dumps(b).encode()).decode()}
         if "/statuses" in pad:
             if "/rood" in pad:  # open PR met rode tests en afwijzende beoordeling
                 return [{"context": "route2/review", "state": "failure", "description": KANARIE, "created_at": na},
@@ -113,6 +119,21 @@ check("open PR ouder dan 3 dagen blijft zichtbaar als lopend", any(o["pr"] == 20
 d_verl = draai("verlaten", 1)
 check("verlaten opdrachten blijven zichtbaar als lopend (geen uitkomst)", all(o["uitkomst"] is None for o in d_verl["orders"] if o["order"].startswith("BURNIN-")))
 check("telling-uitkomsten alleen gehele getallen, geen notitie", d_rood_klaar["telling"]["uitkomsten"] == {"merged": 0, "no_go": 10, "lopend": 0, "pogingen_totaal": 10})
+
+# Andere borden (groeibord blog, SEO/GEO 16-10): alleen vaste velden; let op bij let_op, ouder dan 26 uur of onleesbaar.
+gb = (d.get("borden") or [{}])[0]
+check("groeibord: verse ok-status is ok, link uit config", gb.get("stand") == "ok" and gb.get("link", "").startswith("https://rvanhooijdonk-png.github.io/"), str(gb))
+check("groeibord: alleen vaste velden", set(gb) == {"naam", "eigenaar", "link", "bijgewerkt", "stand", "reden"}, str(sorted(gb)))
+check("groeibord: link uit status.json wordt nooit gebruikt", "javascript:" not in tekst)
+_oud = draai("verlaten", 1, bord={"bord": "Groeibord blog", "bijgewerkt": "01-10-2026 07:15", "status": "ok", "bronnen_met_probleem": []})["borden"][0]
+check("groeibord: ouder dan 26 uur is let op", _oud["stand"] == "let_op" and "26 uur" in _oud["reden"], str(_oud))
+_lo = draai("verlaten", 1, bord={"bord": "Groeibord blog", "bijgewerkt": "01-10-2026 07:15", "status": "let_op", "bronnen_met_probleem": [KANARIE]})
+check("groeibord: let_op telt, probleembron-namen gaan niet mee", _lo["borden"][0]["stand"] == "let_op" and KANARIE not in json.dumps(_lo))
+for _fout in ("weg", {"status": "groen", "bijgewerkt": "nu"}, {"bord": "x"}):
+    _b = draai("verlaten", 1, bord=_fout)["borden"][0]
+    check(f"groeibord: onleesbaar of ongeldig ({str(_fout)[:20]}) is let op, nooit ok", _b["stand"] == "let_op", str(_b))
+_weg = draai("verlaten", 1, bord="weg")
+check("groeibord onleesbaar telt niet mee in de burn-in-bronnen", all(not k.startswith("bord_") for k in _weg["bronnen"]), str(list(_weg["bronnen"])))
 
 m2 = laad(); nep_api(m2, prs_ok=False)
 uit2 = io.StringIO()

@@ -1430,5 +1430,14 @@
       "Intake-inzichten (Granola, alleen met toestemming): wat klanten vragen → onderwerpen"
     ],
     "noot": "Overzicht en planning, geen meting. 'idee' is nog niet besloten."
-  }
+  },
+  "borden": [
+    {
+      "naam": "Groeibord blog",
+      "eigenaar": "SEO/GEO",
+      "repo": "rvanhooijdonk-png/blog-seo-geo",
+      "pad": "bord/status.json",
+      "link": "https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/"
+    }
+  ]
 }
