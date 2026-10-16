@@ -13,6 +13,7 @@ import os
 import re
 import sys
 import urllib.error
+import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -128,6 +129,25 @@ def prioriteiten():
     return lijst
 
 
+PUBLIEK_DOMEIN = "rvanhooijdonk-png.github.io"
+
+
+class GeenOmleiding(urllib.request.HTTPRedirectHandler):
+    """Weigert elke omleiding: anders kan een redirect de https- en domeincontrole omzeilen (Astra 16-10)."""
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        raise urllib.error.HTTPError(req.full_url, code, "omleiding geweigerd", headers, fp)
+
+
+def publiek(url):
+    """Openbaar JSON-bestand lezen, zonder leessleutel: alleen https, alleen het eigen Pages-domein, geen omleidingen."""
+    deel = urllib.parse.urlsplit(url)
+    if deel.scheme != "https" or deel.hostname != PUBLIEK_DOMEIN:
+        raise ValueError("alleen https op " + PUBLIEK_DOMEIN)
+    req = urllib.request.Request(url, headers={"User-Agent": "bouwstraat-bord", "Cache-Control": "no-cache"})
+    with urllib.request.build_opener(GeenOmleiding).open(req, timeout=30) as resp:
+        return json.load(resp)
+
+
 def lokale_tijd(tekst):
     """'dd-mm-jjjj uu:mm' in Amsterdamse tijd naar UTC; None bij een ongeldige, niet-bestaande of dubbelzinnige tijd."""
     if not (isinstance(tekst, str) and BIJGEWERKT.match(tekst)):
@@ -156,11 +176,12 @@ def borden():
             continue  # alleen vertrouwde https-links uit config
         tegel = {"naam": b["naam"], "eigenaar": b["eigenaar"], "link": b["link"], "bijgewerkt": None,
                  "stand": "let_op", "reden": "status niet leesbaar"}
-        if not (b.get("repo") and b.get("pad")):  # bord zonder statusbestand: alleen de link
+        if not (b.get("status_url") or (b.get("repo") and b.get("pad"))):  # bord zonder statusbestand: alleen de link
             uit.append(dict(tegel, stand="link", reden="geen status gekoppeld"))
             continue
         try:
-            st = json.loads(base64.b64decode(api(f"repos/{b['repo']}/contents/{b['pad']}")["content"]))
+            st = (publiek(b["status_url"]) if b.get("status_url")
+                  else json.loads(base64.b64decode(api(f"repos/{b['repo']}/contents/{b['pad']}")["content"])))
         except Exception:
             uit.append(tegel)
             continue

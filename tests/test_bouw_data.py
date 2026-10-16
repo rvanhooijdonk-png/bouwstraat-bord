@@ -11,6 +11,7 @@ from pathlib import Path
 PAD = Path(__file__).resolve().parent.parent / "scripts" / "bouw_data.py"
 KANARIE = "KANARIE-Klant-Acme-Dorpsstraat-1"
 FOUT = 0
+PUBLIEK_AANROEPEN = []
 
 
 def check(naam, ok, detail=""):
@@ -77,6 +78,14 @@ def nep_api(m, prs_ok=True, scenario="verlaten", lopend=1, telling_oud=False, on
                      "labels": [{"name": "bezig"}]} for p in m.CONFIG.get("prioriteiten", [])]
         raise AssertionError("onverwacht pad " + pad)
     m.api = api
+    def publiek(url):
+        PUBLIEK_AANROEPEN.append(url)
+        if bord == "weg":
+            raise OSError("niet bereikbaar")
+        b = bord or {"bord": "Groeibord blog", "eigenaar": "x", "bijgewerkt": m.NU.astimezone(m.AMS).strftime("%d-%m-%Y %H:%M"),
+                     "status": "ok", "bronnen_met_probleem": [], "link": "javascript:alert(1)", "kosten": KANARIE}
+        return b
+    m.publiek = publiek
 
 
 m = laad(); nep_api(m)
@@ -200,6 +209,36 @@ _t = json.loads(_o.getvalue())["borden"]
 check("bord zonder statusbestand: tegel met alleen link, stand 'link', geen statusverzoek",
       _t == [{"naam": "Zonder status", "eigenaar": "SEA", "link": "https://rvanhooijdonk-png.github.io/x/", "bijgewerkt": None,
               "stand": "link", "reden": "geen status gekoppeld"}] and not any("/contents/" in v and "telling" not in v for v in _vraag), str(_t))
+check("groeibord leest het openbare status.json (geen leessleutel nodig)", any(u.startswith("https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json") for u in PUBLIEK_AANROEPEN), str(PUBLIEK_AANROEPEN[:2]))
+_mp = laad()
+import urllib.request as _ur, urllib.error as _ue
+_echt_open = _ur.OpenerDirector.open
+def _geen_netwerk(*a, **k):
+    raise AssertionError("netwerk gebruikt")
+_ur.OpenerDirector.open = _geen_netwerk
+def _fout(f):
+    try:
+        f(); return None
+    except Exception as exc:
+        return exc
+_e1 = _fout(lambda: _mp.publiek("http://rvanhooijdonk-png.github.io/x.json"))
+check("publiek(): http geweigerd vóór elk netwerkverzoek", isinstance(_e1, ValueError), repr(_e1))
+_e2 = _fout(lambda: _mp.publiek("https://evil.example/x.json"))
+check("publiek(): ander domein geweigerd vóór elk netwerkverzoek", isinstance(_e2, ValueError), repr(_e2))
+_ur.OpenerDirector.open = _echt_open
+_e3 = _fout(lambda: _mp.GeenOmleiding().redirect_request(_ur.Request("https://rvanhooijdonk-png.github.io/a"), None, 302, "Found", {}, "https://evil.example/b"))
+check("publiek(): omleiding geweigerd met HTTPError", isinstance(_e3, _ue.HTTPError) and "omleiding geweigerd" in str(_e3), repr(_e3))
+import io as _io, email.message as _em
+class _Nep302(_ur.HTTPSHandler):
+    aanroepen = []
+    def https_open(self, req):
+        _Nep302.aanroepen.append(req.full_url)
+        h = _em.Message(); h["Location"] = "https://evil.example/b"
+        r = _ur.addinfourl(_io.BytesIO(b""), h, req.full_url, 302); r.msg = "Found"
+        return r
+_op = _ur.build_opener(_mp.GeenOmleiding, _Nep302)
+_e4 = _fout(lambda: _op.open("https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json"))
+check("echte opener: 302 geeft HTTPError en geen tweede verzoek", isinstance(_e4, _ue.HTTPError) and _Nep302.aanroepen == ["https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json"], f"{_e4!r} {_Nep302.aanroepen}")
 check("alle borden uit config hebben een https-link en een eigenaar",
       all(str(b.get("link", "")).startswith("https://") and b.get("eigenaar") for b in laad().CONFIG["borden"]) and len(laad().CONFIG["borden"]) >= 9)
 _mm = laad(); _mm.CONFIG = dict(_mm.CONFIG, borden=[dict(_mm.CONFIG["borden"][0], link="javascript:alert(1)")])
