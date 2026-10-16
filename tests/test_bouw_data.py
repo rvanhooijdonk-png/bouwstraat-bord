@@ -210,6 +210,24 @@ check("bord zonder statusbestand: tegel met alleen link, stand 'link', geen stat
       _t == [{"naam": "Zonder status", "eigenaar": "SEA", "link": "https://rvanhooijdonk-png.github.io/x/", "bijgewerkt": None,
               "stand": "link", "reden": "geen status gekoppeld"}] and not any("/contents/" in v and "telling" not in v for v in _vraag), str(_t))
 check("groeibord leest het openbare status.json (geen leessleutel nodig)", any(u.startswith("https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json") for u in PUBLIEK_AANROEPEN), str(PUBLIEK_AANROEPEN[:2]))
+_mp = laad()
+import urllib.request as _ur, urllib.error as _ue
+_echt_open = _ur.OpenerDirector.open
+def _geen_netwerk(*a, **k):
+    raise AssertionError("netwerk gebruikt")
+_ur.OpenerDirector.open = _geen_netwerk
+def _fout(f):
+    try:
+        f(); return None
+    except Exception as exc:
+        return exc
+_e1 = _fout(lambda: _mp.publiek("http://rvanhooijdonk-png.github.io/x.json"))
+check("publiek(): http geweigerd vóór elk netwerkverzoek", isinstance(_e1, ValueError), repr(_e1))
+_e2 = _fout(lambda: _mp.publiek("https://evil.example/x.json"))
+check("publiek(): ander domein geweigerd vóór elk netwerkverzoek", isinstance(_e2, ValueError), repr(_e2))
+_ur.OpenerDirector.open = _echt_open
+_e3 = _fout(lambda: _mp.GeenOmleiding().redirect_request(_ur.Request("https://rvanhooijdonk-png.github.io/a"), None, 302, "Found", {}, "https://evil.example/b"))
+check("publiek(): omleiding geweigerd met HTTPError", isinstance(_e3, _ue.HTTPError) and "omleiding geweigerd" in str(_e3), repr(_e3))
 check("alle borden uit config hebben een https-link en een eigenaar",
       all(str(b.get("link", "")).startswith("https://") and b.get("eigenaar") for b in laad().CONFIG["borden"]) and len(laad().CONFIG["borden"]) >= 9)
 _mm = laad(); _mm.CONFIG = dict(_mm.CONFIG, borden=[dict(_mm.CONFIG["borden"][0], link="javascript:alert(1)")])
