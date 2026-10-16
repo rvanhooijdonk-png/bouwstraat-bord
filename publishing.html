@@ -213,7 +213,6 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
 .duimen button[aria-pressed="true"]{border-color:var(--accent)}
 .duimen .slide{padding:6%;box-shadow:none;border-radius:6px}
 .duimen .slide .st{font-size:11px}.duimen .slide .cijfer{font-size:22px}.duimen .slide .sub,.duimen .slide .stempel{display:none}
-.duimen .opm-stip{position:absolute;bottom:6px;right:6px;width:10px;height:10px;border-radius:50%;background:var(--wacht);box-shadow:0 0 0 2px #fff}
 .groot-knop{margin-left:auto}
 .slide:fullscreen{border-radius:0;padding:4% 6%}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--inkt);color:var(--grond);padding:10px 16px;border-radius:10px;font-size:14px;z-index:30;box-shadow:var(--schaduw)}
@@ -250,7 +249,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   </aside>
 
   <main class="hoofd">
-    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 16:15</span></div>
+    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 16:21</span></div>
 
     <section id="scherm-input" hidden>
       <div class="kop"><div><h1>Input</h1><p>Kaarten uit de triage. Geef een ster: het pakket staat meteen in de rij, en daar kies je de media.</p></div></div>
@@ -350,7 +349,7 @@ const keynoteRij=[
           {cijfer:"38 s",st:"gemiddelde tijd van binnenkomst tot vertrek",sub:"Voor een kleine boodschap. Vergelijk dat met de rij bij de kassa.",bg:"linear-gradient(135deg,#16302a,#2f6b57 55%,#c9e3d6)"},
           {st:"Wat doet jouw winkel als niemand meer hoeft te wachten?",sub:"Slotvraag voor de zaal.",bg:"linear-gradient(135deg,#231a33,#4e3a7a 55%,#c8bde6)"}]}
 ];
-const slideOpm={};let knTab="verzameld",knItem="kn3",knSlide=0;
+let knTab="verzameld",knItem="kn3",knSlide=0;
 const STATUS={"Verzameld":"s-aanpassen","Gevraagd":"s-gevraagd","In productie":"s-productie","Wacht op jou":"s-wacht","Aanpassen":"s-aanpassen","Goedgekeurd":"s-goed","Ingepland":"s-gepland","Gepubliceerd":"s-live","Weg":"s-weg"};
 const FASES=[["Kies media","nieuw uit input: kies wat je wilt"],["Onderzoek","de stack zoekt bronnen en feiten"],["Schrijven","de stack maakt of past aan"],["Bij jou","ligt klaar voor je oordeel"],["Goedgekeurd","wacht op een datum of staat ingepland"],["Live","staat online"]];
 // De kolom volgt uit de uitingen: wie is er aan de beurt?
@@ -586,17 +585,15 @@ function tekenKeynote(){
   const k=res.find(x=>x.id===knItem);const sl=k.slides||[];knSlide=Math.max(0,Math.min(knSlide,sl.length-1));
   const grid=el("div","kn-res");const links=el("div");
   const groot=maakSlide(sl[knSlide],knSlide,sl.length,true);groot.id="groot";links.append(groot);
-  const du=el("div","duimen");sl.forEach((x,i)=>{const b=el("button");b.setAttribute("aria-pressed",String(i===knSlide));b.setAttribute("aria-label","Slide "+(i+1));const m=maakSlide(x,i,sl.length,false);if((slideOpm[k.id+":"+i]||[]).length)m.append(el("span","opm-stip"));b.append(m);b.onclick=()=>{knSlide=i;tekenKeynote()};du.append(b)});links.append(du);
+  const du=el("div","duimen");sl.forEach((x,i)=>{const b=el("button");b.setAttribute("aria-pressed",String(i===knSlide));b.setAttribute("aria-label","Slide "+(i+1));const m=maakSlide(x,i,sl.length,false);b.append(m);b.onclick=()=>{knSlide=i;tekenKeynote()};du.append(b)});links.append(du);
   const rechts=el("div","paneel");const blok=el("div","blok");blok.append(el("h3",null,`Slide ${knSlide+1} van ${sl.length}`));
   const vg=el("div","vtabs");const vol=el("button",null,"Volledig scherm");vol.onclick=()=>{const g=$("groot");if(g.requestFullscreen)g.requestFullscreen()};
   const vorige=el("button",null,"← Vorige");vorige.onclick=()=>{knSlide=Math.max(0,knSlide-1);tekenKeynote()};const volgende=el("button",null,"Volgende →");volgende.onclick=()=>{knSlide=Math.min(sl.length-1,knSlide+1);tekenKeynote()};vg.append(vorige,volgende,vol);blok.append(vg);
-  const sleutel=k.id+":"+knSlide;const lijst=el("ul","opm-lijst");for(const o of slideOpm[sleutel]||[])lijst.append(el("li",null,o));
-  const lab=el("label","middel","Opmerking bij deze slide");lab.htmlFor="slide-opm";const ta=el("textarea");ta.id="slide-opm";ta.placeholder="Bijvoorbeeld: groter cijfer, ander beeld, kortere titel.";
-  const zet=el("button","knop","Zet erbij");zet.onclick=()=>{const t=ta.value.trim();if(!t){ta.focus();return}(slideOpm[sleutel]=slideOpm[sleutel]||[]).push(t);tekenKeynote();toast("Opmerking bij slide "+(knSlide+1)+" gezet.")};
-  blok.append(lijst,lab,ta,el("div","verstuur"));blok.lastChild.append(zet);rechts.append(blok);
-  const oord=el("div","blok");const ins=el("p",null,k.instructie||"Geen instructie meegegeven.");ins.style.cssText="margin:0 0 10px;font-size:13px;color:var(--zacht)";oord.append(el("h3",null,"Oordeel over deze keynote"),ins);
-  const kn=el("div","knoppen");const tel=Object.keys(slideOpm).filter(x=>x.startsWith(k.id+":")).reduce((a,x)=>a+slideOpm[x].length,0);
-  for(const [naam,kl,actie] of [["Goedkeuren","hoofd-k","Goedgekeurd"],["Aanpassen","","Aanpassen"]]){const b=el("button","knop "+kl,naam);b.onclick=()=>{k.stand=actie;const pk=k.pakket&&pak(k.pakket);if(pk&&pk.middelen.keynote)pk.middelen.keynote=actie;teken();toast(actie==="Goedgekeurd"?"Goedgekeurd (simulatie: er wordt geen .key-bestand gemaakt).":`Aanpassen gevraagd met ${tel} opmerking(en) bij slides (simulatie).`)};kn.append(b)}
+  const dl=el("button","knop","Download .key (simulatie)");dl.onclick=()=>toast("Simulatie: in de echte versie download je hier het Keynote-bestand.");blok.append(dl);rechts.append(blok);
+  const oord=el("div","blok");const ins=el("p",null,"Jouw instructie: "+(k.instructie||"geen instructie meegegeven."));ins.style.cssText="margin:0 0 10px;font-size:13px;color:var(--zacht)";oord.append(el("h3",null,"Jouw commentaar op deze presentatie"),ins);
+  const cl=el("label","middel","Eén commentaar voor alle slides. Noem gerust een slidenummer.");cl.htmlFor="kn-comm";const cta=el("textarea");cta.id="kn-comm";cta.placeholder="Bijvoorbeeld: slide 2 korter, slide 3 groter cijfer, slotvraag mag scherper.";cta.value=k.commentaar||"";cta.oninput=()=>{k.commentaar=cta.value};cta.style.minHeight="120px";oord.append(cl,cta);
+  const kn=el("div","knoppen");kn.style.marginTop="10px";
+  for(const [naam,kl,actie] of [["Goedkeuren","hoofd-k","Goedgekeurd"],["Aanpassen","","Aanpassen"]]){const b=el("button","knop "+kl,naam);b.onclick=()=>{if(actie==="Aanpassen"&&!(k.commentaar||"").trim()){toast("Schrijf eerst je commentaar, dan weet de creator wat er anders moet.");$("kn-comm").focus();return}k.stand=actie;const pk=k.pakket&&pak(k.pakket);if(pk&&pk.middelen.keynote)pk.middelen.keynote=actie;teken();toast(actie==="Goedgekeurd"?"Goedgekeurd (simulatie: er wordt geen .key-bestand gemaakt).":"Aanpassen gevraagd met je commentaar (simulatie).")};kn.append(b)}
   oord.append(kn,el("p","middel",`Stand: ${k.stand}`));rechts.append(oord);
   grid.append(links,rechts);w.append(grid)}
 function openKeynote(pid){const k=keynoteRij.find(x=>x.pakket===pid);knTab=k&&k.stand!=="Verzameld"?"resultaten":"verzameld";if(k){knItem=k.id;knSlide=0}huidig.vorig="keynote";teken();toon("keynote")}
