@@ -1,7 +1,9 @@
 // DOM-proef voor tekenBorden in index.html (Astra 16-10 punt 4/5): tekst via textContent, href alleen https.
 import { readFileSync } from "node:fs";
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
-const bron = html.match(/function tekenBorden\(d\)\{[\s\S]*?\n\}/)[0];
+const treffer = html.match(/function tekenBorden\(d\)\{[\s\S]*?\n\}/);
+if (!treffer) { console.log("FAIL tekenBorden ontbreekt in index.html: tegels niet als losse, toetsbare tekenfunctie\n\nER ZIJN FOUTEN"); process.exit(1); }
+const bron = treffer[0];
 const helpers = html.match(/const el=.*\n/)[0] + html.match(/const geleden=.*\n/)[0];
 let fout = 0;
 const check = (naam, ok, x = "") => { console.log((ok ? "PASS " : "FAIL ") + naam + (ok ? "" : ": " + x)); if (!ok) fout = 1; };

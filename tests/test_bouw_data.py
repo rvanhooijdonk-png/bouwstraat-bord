@@ -157,7 +157,9 @@ GEVALLEN = [  # (omschrijving, bijgewerkt, status, klok, verwachte stand, verwac
     ("niet-bestaand uur zomertijdwissel", "29-03-2026 02:30", "ok", "2026-03-29T08:00:00", "let_op", "status ongeldig"),
     ("dubbel uur wintertijdwissel", "25-10-2026 02:30", "ok", "2026-10-25T08:00:00", "let_op", "status ongeldig"),
     ("controle: gewoon uur op de wisseldag", "25-10-2026 03:30", "ok", "2026-10-25T08:00:00", "ok", "bijgewerkt"),
-    ("tijd in de toekomst", "16-10-2026 15:00", "ok", NU_T, "let_op", "status ongeldig"),
+    ("tijd een uur in de toekomst", "16-10-2026 15:00", "ok", NU_T, "let_op", "status ongeldig"),
+    ("tijd een minuut in de toekomst", "16-10-2026 14:01", "ok", NU_T, "let_op", "status ongeldig"),
+    ("controle: precies nu is ok", "16-10-2026 14:00", "ok", NU_T, "ok", "bijgewerkt"),
     ("onbekende status", "16-10-2026 13:00", "groen", NU_T, "let_op", "status ongeldig"),
     ("let_op: vaste tekst, geen telling", "16-10-2026 13:00", "let_op", NU_T, "let_op", "bord meldt let op"),
 ]
@@ -171,8 +173,7 @@ for oms, bord in (("onleesbaar", "weg"), ("geen datum", {"bord": "x", "status": 
     t = (uitv or {}).get("borden", [{}])[0]
     check(f"groeibord: {oms} geeft volledige JSON met let op", code == 0 and t.get("stand") == "let_op", f"code={code} {t}")
     check(f"groeibord: {oms} laat de bronnen exact gelijk",
-          uitv is not None and {k: v["status"] for k, v in uitv["bronnen"].items()} == {k: v["status"] for k, v in basis["bronnen"].items()},
-          str(uitv and uitv["bronnen"].keys()))
+          uitv is not None and uitv["bronnen"] == basis["bronnen"], str(uitv and uitv["bronnen"]))
 _tekst = json.dumps(basis)
 check("groeibord: link, kosten en probleembronnen uit status.json komen er niet in", "javascript:" not in _tekst and KANARIE not in _tekst)
 _mm = laad(); _mm.CONFIG = dict(_mm.CONFIG, borden=[dict(_mm.CONFIG["borden"][0], link="javascript:alert(1)")])

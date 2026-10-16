@@ -162,7 +162,7 @@ def borden():
             uit.append(tegel)
             continue
         moment = lokale_tijd(st.get("bijgewerkt")) if isinstance(st, dict) else None
-        if moment is None or st.get("status") not in ("ok", "let_op") or moment > NU + timedelta(minutes=5):
+        if moment is None or st.get("status") not in ("ok", "let_op") or moment > NU:
             uit.append(dict(tegel, reden="status ongeldig"))
             continue
         tegel["bijgewerkt"] = moment.isoformat()
