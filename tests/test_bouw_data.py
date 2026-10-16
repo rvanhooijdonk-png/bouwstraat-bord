@@ -228,6 +228,17 @@ check("publiek(): ander domein geweigerd vóór elk netwerkverzoek", isinstance(
 _ur.OpenerDirector.open = _echt_open
 _e3 = _fout(lambda: _mp.GeenOmleiding().redirect_request(_ur.Request("https://rvanhooijdonk-png.github.io/a"), None, 302, "Found", {}, "https://evil.example/b"))
 check("publiek(): omleiding geweigerd met HTTPError", isinstance(_e3, _ue.HTTPError) and "omleiding geweigerd" in str(_e3), repr(_e3))
+import io as _io, email.message as _em
+class _Nep302(_ur.HTTPSHandler):
+    aanroepen = []
+    def https_open(self, req):
+        _Nep302.aanroepen.append(req.full_url)
+        h = _em.Message(); h["Location"] = "https://evil.example/b"
+        r = _ur.addinfourl(_io.BytesIO(b""), h, req.full_url, 302); r.msg = "Found"
+        return r
+_op = _ur.build_opener(_mp.GeenOmleiding, _Nep302)
+_e4 = _fout(lambda: _op.open("https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json"))
+check("echte opener: 302 geeft HTTPError en geen tweede verzoek", isinstance(_e4, _ue.HTTPError) and _Nep302.aanroepen == ["https://rvanhooijdonk-png.github.io/blog-voorstellen/groeibord/status.json"], f"{_e4!r} {_Nep302.aanroepen}")
 check("alle borden uit config hebben een https-link en een eigenaar",
       all(str(b.get("link", "")).startswith("https://") and b.get("eigenaar") for b in laad().CONFIG["borden"]) and len(laad().CONFIG["borden"]) >= 9)
 _mm = laad(); _mm.CONFIG = dict(_mm.CONFIG, borden=[dict(_mm.CONFIG["borden"][0], link="javascript:alert(1)")])
