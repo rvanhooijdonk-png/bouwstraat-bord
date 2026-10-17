@@ -271,6 +271,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
       <button data-scherm="rij">De rij <span class="tel leeg" id="tel-rij">0</span></button>
       <button data-scherm="keynote">Keynotes <span class="tel leeg" id="tel-keynote">0</span></button>
       <button data-scherm="productie">Productie <span class="tel">9</span></button>
+      <button data-scherm="software">Software <span class="tel">38</span></button>
       <button data-scherm="kalender">Kalender <span class="later">stap 6</span></button>
       <button data-scherm="stijl">Stijlregels <span class="tel leeg" id="tel-stijl">0</span></button>
     </nav>
@@ -278,7 +279,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   </aside>
 
   <main class="hoofd">
-    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 17-10 11:51</span></div>
+    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 17-10 13:05</span></div>
 
     <section id="scherm-triage" hidden>
       <div class="kop"><div><h1>Triage 1</h1><p>Hier geef je alleen akkoord. In deze mockup staan voorbeelditems; straks komen hier de scans, de trends uit de trechter en de nieuwsbrieven uit je mailbox binnen, en gaan AI-tools apart naar SUPERVISOR. Die routes bestaan nog niet. Daarna bundelt het board eerdere, recente content over hetzelfde onderwerp mee en zet het item in Input. Alles komt in de dossiers.</p></div></div>
@@ -361,10 +362,66 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
           <tr><td><b>Keynotes (CREATOR)</b></td><td>presentaties in Keynote met echte tekst in jouw fonts</td><td><span class="pst groen">werkt</span> tekstpoort 138/138, bouwen op de mini</td><td>batchinvoer koppelen aan dit bord (contract 16-10)</td></tr>
           <tr><td><b>Blog en artikelen (NL/EN)</b></td><td>artikelen op blog.richardvanhooijdonk.com</td><td><span class="pst geel">mockup</span> echte concepten nog niet op dit bord</td><td>echte concepten tonen (alleen lezen), feedback opslaan</td></tr>
           <tr><td><b>LinkedIn en social</b></td><td>posts, artikelen, carrousels</td><td><span class="pst geel">acties klaar</span> 14+26 marketingacties</td><td>werkwijze met interview en stemregels; jij plaatst zelf</td></tr>
-          <tr><td><b>Nieuwsbrief NL en EN</b></td><td>twee varianten van dezelfde editie</td><td><span class="pst geel">gepland</span> 3 proefnummers</td><td>keuze nieuwsbrieftool (jij)</td></tr>
+          <tr><td><b>Nieuwsbrief NL en EN</b></td><td>twee varianten van dezelfde editie</td><td><span class="pst geel">gepland</span> 3 proefnummers</td><td>Beehiiv (in gebruik): 3 proefnummers als concept</td></tr>
           <tr><td><b>Audio en podcast</b></td><td>voice-over, audio van artikelen</td><td><span class="pst geel">proef gepland</span> VoiceStudio tegen ElevenLabs, alleen jouw stem</td><td>blinde vergelijking</td></tr>
           <tr><td><b>Productierollen (agency-agents)</b></td><td>vaste rollen voor schrijven en publiceren</td><td><span class="pst geel">overgedragen</span> aan MARKETING en productie</td><td>rollen kiezen, aanpassen op jouw stem, testen</td></tr>
         </tbody></table></div>
+    </section>
+
+
+    <section id="scherm-software" hidden>
+      <div class="kop"><div><h1>Software</h1><p><b>Echte stand, geen mockup</b> (17-10). De hele outputkant: waarmee we schrijven, beeld en video maken, publiceren en meten. Groen = in gebruik, geel = gebouwd, proef of gepland, rood = stil of ontbreekt.</p></div></div>
+      <div class="prod-wrap"><table class="prod">
+        <thead><tr><th>Software</th><th>Wat het doet</th><th>Stand</th></tr></thead>
+        <tbody>
+          <tr><td colspan="4" style="background:var(--lijn);font-weight:600">Schrijven</td></tr>
+<tr><td><b>Long-read Studio</b></td><td>lange artikelen (2.000-3.500 woorden) uit een goedgekeurd dossier</td><td><span class="pst geel">gebouwd, alleen lokaal bewezen</span></td></tr>
+<tr><td><b>Productielaag per kanaal (CP_09-13)</b></td><td>concepten per kanaal, huisstijl, preview, swipe</td><td><span class="pst geel">gebouwd; herstel-PR #165 open</span></td></tr>
+<tr><td><b>Connectors (content-desk-now)</b></td><td>kaart naar briefing voor long-read, social, nieuwsbrief, short-read, video, keynote, e-book</td><td><span class="pst groen">gebouwd</span></td></tr>
+<tr><td><b>Promptset</b></td><td>social, nieuwsbrief, long-read, redacteur (9 checks), video</td><td><span class="pst groen">gebouwd</span></td></tr>
+<tr><td><b>Schrijfmodellen</b></td><td>Claude Opus/Sonnet via abonnement; geen betaalde API zonder akkoord</td><td><span class="pst groen">in gebruik</span></td></tr>
+<tr><td><b>Stem- en stijlregels</b></td><td>anti-slop, interviewwerkwijze, huisstijl; stemregels wachten op jouw 5 beste posts</td><td><span class="pst geel">deels</span></td></tr>
+<tr><td><b>Schrijfstijltraining</b></td><td>leren van al jouw NL/EN-teksten sinds 2022</td><td><span class="pst geel">voorstel, bij Astra</span></td></tr>
+<tr><td><b>Productierollen (agency-agents)</b></td><td>vaste rollen: schrijver, publisher, podcast, korte video</td><td><span class="pst geel">gekozen, map productie nog leeg</span></td></tr>
+<tr><td colspan="4" style="background:var(--lijn);font-weight:600">Beeld</td></tr>
+<tr><td><b>Stockbeeld: Pexels, Pixabay, Unsplash, Storyblocks</b></td><td>foto's en stockvideo</td><td><span class="pst groen">in gebruik (faceless, keynotes)</span></td></tr>
+<tr><td><b>Kopbeelden met Gemini</b></td><td>beeld bij elk artikel</td><td><span class="pst geel">gepland, wacht op akkoord</span></td></tr>
+<tr><td><b>Replicate Flux</b></td><td>hero- en socialbeeld</td><td><span class="pst rood">code bestaat, verlaten</span></td></tr>
+<tr><td><b>Beeldmodelproef</b></td><td>FLUX.2, GPT-Image, Grok Imagine, Reve: 5 slides blind</td><td><span class="pst geel">proef na burn-in</span></td></tr>
+<tr><td colspan="4" style="background:var(--lijn);font-weight:600">Video</td></tr>
+<tr><td><b>Faceless video</b></td><td>storyboard, voice-over, ondertitels, render; 14 MP4's, 547 tests</td><td><span class="pst rood">stil sinds 28-09; upload-fix eerst</span></td></tr>
+<tr><td><b>Remotion</b></td><td>videorender (basis faceless)</td><td><span class="pst groen">in gebruik</span></td></tr>
+<tr><td><b>Explainer-studio</b></td><td>Hera, Kling, ElevenLabs, Remotion, Vimeo-upload</td><td><span class="pst geel">gebouwd als demo</span></td></tr>
+<tr><td><b>HyperFrames, video-use, Picsart Flow</b></td><td>alternatieven in de 12-clipsproef</td><td><span class="pst geel">proef gepland</span></td></tr>
+<tr><td><b>OpusClip</b></td><td>clips uit lange video's</td><td><span class="pst geel">betaald, wacht op akkoord</span></td></tr>
+<tr><td><b>HeyGen-dubbing</b></td><td>vertaalde clips met jouw stem en beeld</td><td><span class="pst geel">later, alleen met toestemming en AI-vermelding</span></td></tr>
+<tr><td colspan="4" style="background:var(--lijn);font-weight:600">Audio</td></tr>
+<tr><td><b>ElevenLabs</b></td><td>voice-over</td><td><span class="pst groen">in gebruik</span></td></tr>
+<tr><td><b>Whisper (lokaal)</b></td><td>transcriptie</td><td><span class="pst groen">in gebruik</span></td></tr>
+<tr><td><b>VoiceStudio</b></td><td>eigen stem tegen ElevenLabs</td><td><span class="pst geel">proef gepland</span></td></tr>
+<tr><td><b>Podcast / audio-artikel</b></td><td>audioversie van artikelen en nieuwsbrief</td><td><span class="pst geel">idee</span></td></tr>
+<tr><td colspan="4" style="background:var(--lijn);font-weight:600">Keynotes</td></tr>
+<tr><td><b>keynote-creator (CREATOR)</b></td><td>onderwerp tot .key-bestand in jouw fonts; tekstpoort 138/138</td><td><span class="pst groen">werkt</span></td></tr>
+<tr><td><b>Keynote-archief</b></td><td>±1.000 decks ontdubbelen en indelen</td><td><span class="pst geel">deels</span></td></tr>
+<tr><td><b>Keynote-rij op dit bord</b></td><td>verzamelen, één batch, .key downloaden</td><td><span class="pst geel">mockup; koppeling gepland</span></td></tr>
+<tr><td colspan="4" style="background:var(--lijn);font-weight:600">Publiceren</td></tr>
+<tr><td><b>Blog NL/EN (WordPress)</b></td><td>blog.richardvanhooijdonk.com; concept plaatsen via script, nooit direct live</td><td><span class="pst groen">in gebruik; plaatsscript bij Astra</span></td></tr>
+<tr><td><b>Nieuwsbrief (Beehiiv)</b></td><td>NL/EN; laatst verstuurd 16-04</td><td><span class="pst groen">in gebruik; lezen via API, concepten nog niet</span></td></tr>
+<tr><td><b>LinkedIn</b></td><td>posts, carrousels, artikelen; jij plaatst zelf</td><td><span class="pst geel">tekst gebouwd, plaatsen niet</span></td></tr>
+<tr><td><b>Metricool</b></td><td>planner voor LinkedIn, X, Instagram, TikTok, YouTube</td><td><span class="pst geel">afgesloten 15-10; koppelingen open</span></td></tr>
+<tr><td><b>Instagram, TikTok, YouTube</b></td><td>korte en lange video</td><td><span class="pst rood">accounts bestaan, geen code</span></td></tr>
+<tr><td><b>Website (nieuwe site)</b></td><td>richardvanhooijdonk.com, landingspagina's</td><td><span class="pst geel">in bouw, niet live</span></td></tr>
+<tr><td><b>E-book, trendrapport, persbericht</b></td><td>langere producten</td><td><span class="pst rood">alleen format</span></td></tr>
+<tr><td colspan="4" style="background:var(--lijn);font-weight:600">Meten</td></tr>
+<tr><td><b>Search Console + Bing Webmaster</b></td><td>zoekverkeer, AI-citaties</td><td><span class="pst groen">in gebruik</span></td></tr>
+<tr><td><b>GA4</b></td><td>bezoek blog en hoofdsite (sinds 12-10)</td><td><span class="pst groen">in gebruik; cookiebanner en conversie ontbreken</span></td></tr>
+<tr><td><b>Groeibord + GEO-meting</b></td><td>dagelijks SEO/SEA, wekelijks AI-antwoorden</td><td><span class="pst groen">in gebruik</span></td></tr>
+<tr><td><b>Beehiiv-cijfers</b></td><td>opens en kliks</td><td><span class="pst groen">in gebruik</span></td></tr>
+<tr><td><b>Social-cijfers (Metricool)</b></td><td>views en shares per post</td><td><span class="pst geel">deels</span></td></tr>
+<tr><td><b>Uitkomsten terug naar selectie</b></td><td>wat goed loopt stuurt de keuze van onderwerpen</td><td><span class="pst geel">gepland</span></td></tr>
+        </tbody></table></div>
+      <h2 style="margin-top:24px">Wat niet klopt tussen de lijsten</h2>
+      <ul><li>Social-planner: jij koos Metricool (15-10), maar de stacklijst noemt Postiz en Typefully "hebben we al". Er is van beide geen spoor. Voorstel: Metricool blijft, Postiz en Typefully gaan van de lijst.</li><li>Nieuwsbrief: Beehiiv is in gebruik. Op dit bord stond nog "keuze nieuwsbrieftool". Voorstel: Beehiiv blijft.</li><li>Presentaties: de stacklijst noemt Gamma en Beautiful.ai, maar Beautiful.ai is in juli opgezegd. Gamma is betaald.</li><li>Eden (social planning) staat als in gebruik, maar de betaling mislukte in juni.</li><li>GA4 draait al sinds 12-10, zonder cookiebanner. Die banner is nodig.</li><li>Nergens is een route van idee naar publicatie helemaal doorlopen. Dat is het grootste gat.</li></ul>
     </section>
 
     <section id="scherm-kalender" hidden>
@@ -523,7 +580,7 @@ const pak=id=>pakketten.find(p=>p.id===id);
 function wachtItems(){const uit=[];for(const p of pakketten)for(const [m,s] of Object.entries(p.middelen))if(s==="Wacht op jou")uit.push({p,m});return uit}
 // ---------- Navigatie ----------
 let huidig={scherm:"wacht",sleutel:null,versie:null,vorig:"wacht"};
-function toon(scherm){for(const s of ["triage","input","dossiers","wacht","rij","review","keynote","productie","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
+function toon(scherm){for(const s of ["triage","input","dossiers","wacht","rij","review","keynote","productie","software","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
   for(const b of document.querySelectorAll(".nav button"))b.setAttribute("aria-current",b.dataset.scherm===scherm||(scherm==="review"&&b.dataset.scherm===huidig.vorig)?"page":"false");
   huidig.scherm=scherm;window.scrollTo({top:0})}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{huidig.vorig=b.dataset.scherm;teken();toon(b.dataset.scherm)});
