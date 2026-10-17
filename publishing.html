@@ -256,6 +256,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   .web-body h3{font-size:26px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.prod-wrap{overflow-x:auto}.prod{width:100%;border-collapse:collapse;background:var(--vlak);border:1px solid var(--lijn);border-radius:10px;font-size:14px}.prod th,.prod td{text-align:left;vertical-align:top;padding:10px 12px;border-top:1px solid var(--lijn)}.prod th{border-top:0;color:var(--zacht);font-weight:600;font-size:12px;letter-spacing:.04em;text-transform:uppercase}.pst{display:inline-block;padding:1px 8px;border-radius:999px;font-size:12px;margin-right:4px}.pst.rood{background:var(--laat-zacht);color:var(--laat)}.pst.geel{background:var(--geel-zacht);color:var(--geel)}.pst.groen{background:var(--accent-zacht);color:var(--accent)}
 </style>
 </head>
 <body>
@@ -269,6 +270,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
       <button data-scherm="wacht" aria-current="page">Wacht op jou <span class="tel" id="tel-wacht">0</span></button>
       <button data-scherm="rij">De rij <span class="tel leeg" id="tel-rij">0</span></button>
       <button data-scherm="keynote">Keynotes <span class="tel leeg" id="tel-keynote">0</span></button>
+      <button data-scherm="productie">Productie <span class="tel">9</span></button>
       <button data-scherm="kalender">Kalender <span class="later">stap 6</span></button>
       <button data-scherm="stijl">Stijlregels <span class="tel leeg" id="tel-stijl">0</span></button>
     </nav>
@@ -276,7 +278,7 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
   </aside>
 
   <main class="hoofd">
-    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 16-10 17:20</span></div>
+    <div class="banier" role="note"><b>Mockup</b> Voorbeeldteksten, geen echte concepten. Je feedback blijft alleen in dit venster. <span style="margin-left:auto;font-family:var(--mono)">versie 17-10 11:51</span></div>
 
     <section id="scherm-triage" hidden>
       <div class="kop"><div><h1>Triage 1</h1><p>Hier geef je alleen akkoord. In deze mockup staan voorbeelditems; straks komen hier de scans, de trends uit de trechter en de nieuwsbrieven uit je mailbox binnen, en gaan AI-tools apart naar SUPERVISOR. Die routes bestaan nog niet. Daarna bundelt het board eerdere, recente content over hetzelfde onderwerp mee en zet het item in Input. Alles komt in de dossiers.</p></div></div>
@@ -346,6 +348,23 @@ textarea{width:100%;min-height:74px;border:1px solid var(--lijn);border-radius:9
       <div class="kop"><div><h1>Keynotes</h1><p>Een eigen rij, los van de andere content. Je verzamelt items, geeft per item instructies mee en draait dan één batch. In deze mockup is de batch een simulatie met voorbeeldslides.</p></div></div>
       <div class="kn-tabs" id="kn-tabs"></div>
       <div id="kn-inhoud"></div>
+    </section>
+
+    <section id="scherm-productie" hidden>
+      <div class="kop"><div><h1>Productie</h1><p><b>Echte stand, geen mockup</b> (17-10). Alle productielijnen van PIPELINE-OUTPUT. Eigenaar: TOEZICHT. Opdrachten via de postbus <code>trend-pipeline/outbox/</code>.</p></div></div>
+      <div class="prod-wrap"><table class="prod">
+        <thead><tr><th>Lijn</th><th>Wat het maakt</th><th>Stand</th><th>Volgende stap</th></tr></thead>
+        <tbody>
+          <tr><td><b>Faceless video</b></td><td>korte video's zonder gezicht: storyboard, voice-over, ondertitels, Remotion</td><td><span class="pst rood">stil sinds 28-09</span> upload naar Drive geeft een lokaal pad terug (1.13)</td><td>1 upload-fix met proef · 2 formatregister (1.12) · 3 12-clipsproef: huidige route, HyperFrames, video-use, Picsart Flow (2.6)</td></tr>
+          <tr><td><b>Clips (OpusClip)</b></td><td>korte clips uit lange video's en lezingen</td><td><span class="pst geel">gepland</span></td><td>proef op 3 eigen opnames naast de lezingkaart-fragmenten</td></tr>
+          <tr><td><b>Keynote-opnames monteren (video-use)</b></td><td>ruwe opnames van jouw keynotes automatisch gemonteerd</td><td><span class="pst geel">proef gepland</span></td><td>één ruwe keynote-opname; jij beoordeelt de montage</td></tr>
+          <tr><td><b>Keynotes (CREATOR)</b></td><td>presentaties in Keynote met echte tekst in jouw fonts</td><td><span class="pst groen">werkt</span> tekstpoort 138/138, bouwen op de mini</td><td>batchinvoer koppelen aan dit bord (contract 16-10)</td></tr>
+          <tr><td><b>Blog en artikelen (NL/EN)</b></td><td>artikelen op blog.richardvanhooijdonk.com</td><td><span class="pst geel">mockup</span> echte concepten nog niet op dit bord</td><td>echte concepten tonen (alleen lezen), feedback opslaan</td></tr>
+          <tr><td><b>LinkedIn en social</b></td><td>posts, artikelen, carrousels</td><td><span class="pst geel">acties klaar</span> 14+26 marketingacties</td><td>werkwijze met interview en stemregels; jij plaatst zelf</td></tr>
+          <tr><td><b>Nieuwsbrief NL en EN</b></td><td>twee varianten van dezelfde editie</td><td><span class="pst geel">gepland</span> 3 proefnummers</td><td>keuze nieuwsbrieftool (jij)</td></tr>
+          <tr><td><b>Audio en podcast</b></td><td>voice-over, audio van artikelen</td><td><span class="pst geel">proef gepland</span> VoiceStudio tegen ElevenLabs, alleen jouw stem</td><td>blinde vergelijking</td></tr>
+          <tr><td><b>Productierollen (agency-agents)</b></td><td>vaste rollen voor schrijven en publiceren</td><td><span class="pst geel">overgedragen</span> aan MARKETING en productie</td><td>rollen kiezen, aanpassen op jouw stem, testen</td></tr>
+        </tbody></table></div>
     </section>
 
     <section id="scherm-kalender" hidden>
@@ -504,7 +523,7 @@ const pak=id=>pakketten.find(p=>p.id===id);
 function wachtItems(){const uit=[];for(const p of pakketten)for(const [m,s] of Object.entries(p.middelen))if(s==="Wacht op jou")uit.push({p,m});return uit}
 // ---------- Navigatie ----------
 let huidig={scherm:"wacht",sleutel:null,versie:null,vorig:"wacht"};
-function toon(scherm){for(const s of ["triage","input","dossiers","wacht","rij","review","keynote","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
+function toon(scherm){for(const s of ["triage","input","dossiers","wacht","rij","review","keynote","productie","kalender","stijl"])$("scherm-"+s).hidden=s!==scherm;
   for(const b of document.querySelectorAll(".nav button"))b.setAttribute("aria-current",b.dataset.scherm===scherm||(scherm==="review"&&b.dataset.scherm===huidig.vorig)?"page":"false");
   huidig.scherm=scherm;window.scrollTo({top:0})}
 document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{huidig.vorig=b.dataset.scherm;teken();toon(b.dataset.scherm)});
