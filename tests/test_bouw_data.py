@@ -113,8 +113,15 @@ check("eis is tien uitkomsten (OB-0947, besluit 02-10), niet het aantal geschrev
 check("eis-label volgt het aantal orders", "Tien echte uitkomsten" not in (ROOT_ := PAD.parent.parent / "index.html").read_text(encoding="utf-8"))
 
 
+def bevries(mm):
+    # Klok vast op 2 uur na de burn-in-start: de testdata gebruiken t0 uit config, de code leest alleen PR's van de laatste 3 dagen (tijdbom 21-10).
+    from datetime import timedelta as _tdb
+    mm.NU = mm.tijd(mm.CONFIG["burnin"]["t0"]) + _tdb(hours=2)
+    return mm
+
+
 def draai(scenario, lopend, **kw):
-    mm = laad(); nep_api(mm, scenario=scenario, lopend=lopend, **kw)
+    mm = bevries(laad()); nep_api(mm, scenario=scenario, lopend=lopend, **kw)
     o = io.StringIO()
     with contextlib.redirect_stdout(o):
         mm.main()
@@ -127,10 +134,17 @@ check("tien open rode PR's terwijl er nog workflows lopen: geen uitkomst", d_roo
 d_rood_klaar = draai("rood", 0)
 check("tien afgekeurde PR's en telling meldt 0 lopend: tien eindstanden", d_rood_klaar["burnin"]["uitkomsten"] == d_rood_klaar["burnin"]["orders_aantal"],
       str(d_rood_klaar["burnin"]["uitkomsten"]))
+from datetime import timedelta as _tdo
+_mo = laad(); _mo.NU = _mo.tijd(_mo.CONFIG["burnin"]["t0"]) + _tdo(days=10); nep_api(_mo, scenario="rood", lopend=0)
+_oo = io.StringIO()
+with contextlib.redirect_stdout(_oo):
+    _mo.main()
+_do = json.loads(_oo.getvalue())
+check("burn-in-afkeuringen ouder dan 3 dagen blijven meetellen (regressie 22-10)", _do["burnin"]["uitkomsten"] == _do["burnin"]["orders_aantal"], str(_do["burnin"]["uitkomsten"]))
 _bc = laad().CONFIG["burnin"]
 check("alleen de afgesproken orders tellen; 00 en 98 ná T0 niet, de laatste wel", d_rood_klaar["burnin"]["uitkomsten"] == _bc["orders_aantal"] and _bc["orders"][-1] == _bc["orders_prefix"] + "%02d" % _bc["orders_aantal"] and _bc["orders_prefix"] + "00" not in _bc["orders"])
 _mf = laad(); _mf.CONFIG = dict(_mf.CONFIG, burnin={k: v for k, v in _mf.CONFIG["burnin"].items() if k != "orders"})
-nep_api(_mf, scenario="rood", lopend=0); _of = io.StringIO()
+bevries(_mf); nep_api(_mf, scenario="rood", lopend=0); _of = io.StringIO()
 with contextlib.redirect_stdout(_of):
     _mf.main()
 check("zonder orderlijst telt elk uniek nummer met het voorvoegsel (oude runs): 00..N-1 + 98 = N+1", json.loads(_of.getvalue())["burnin"]["uitkomsten"] == laad().CONFIG["burnin"]["orders_aantal"] + 1)

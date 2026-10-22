@@ -234,7 +234,10 @@ def main():
         if not PUBLIEKE_ORDER.match(order_id):
             order_id = f"OPDRACHT-{pr['number']}"
         geopend, merged, gesloten = tijd(pr["created_at"]), tijd(pr.get("merged_at")), tijd(pr.get("closed_at"))
-        recent = geopend >= NU - timedelta(days=3)
+        _bi = CONFIG["burnin"]; _afg = set(_bi.get("orders") or [])
+        is_burnin = geopend >= t0 and (order_id in _afg if _afg else order_id.startswith(_bi["orders_prefix"]))
+        # Burn-in-orders altijd lezen, ook na 3 dagen: anders verdwijnen oude afkeuringen uit de telling (Astra NO_GO 22-10).
+        recent = is_burnin or geopend >= NU - timedelta(days=3)
         st = (lees(f"statussen_pr_{pr['number']}", lambda: statussen(pr["head"]["sha"])) or []) if recent else []
         laatste = {}
         for s in st:  # GitHub geeft nieuwste eerst
